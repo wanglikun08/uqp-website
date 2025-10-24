@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regularisation</title>
+    <script src="../scripts/mathjax-config.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../scripts/demotab.css">
+    <link rel="stylesheet" href="../demo-common.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="iframe-content">
+        <div class="container">
+
+        <div class="info-tabs">
+            <div class="tab-header">
+            </div>
+
+            <div class="tab-content">
+                <div class="tab-panel active" data-tab-title="Introduction">
+                    Regularization is a crucial technique to prevent overfitting in machine learning models. When models become too complex, they can memorize training data rather than learning generalizable patterns.<br><br>
+                    In civil engineering applications, regularization helps create more robust models for tasks like predicting structural responses, material behavior, or system performance under varying conditions.
+                </div>
+
+                <div class="tab-panel" data-tab-title="Instructions">
+                    • Adjust polynomial degree and L1/L2 regularization sliders—L1 (Lasso) creates sparse coefficients, L2 (Ridge) smooths the curve<br>
+                    • Click the plot to add data points, or use <em>"Generate New Data"</em> and <em>"Clear All Data"</em> buttons<br>
+                    • Try high polynomial degrees with and without regularization to observe overfitting prevention<br><br>
+
+                    <strong>What polynomial degree causes overfitting without regularization? How does adding L1 or L2 regularization help?</strong>
+                </div>
+
+                <div class="tab-panel" data-tab-title="Tips">
+                    • <strong>High polynomial degree:</strong> Creates complex curves that may overfit without regularization<br>
+                    • <strong>L1 regularization:</strong> Watch coefficients become exactly zero - automatic feature selection<br>
+                    • <strong>L2 regularization:</strong> Smooths the curve and reduces oscillations<br>
+                    • <strong>Bias-variance tradeoff:</strong> Higher regularization increases bias but reduces variance<br>
+                    • <strong>Optimal balance:</strong> Find the sweet spot between underfitting and overfitting
+                </div>
+            </div>
+        </div>
+
+        <!-- Fitted Equation Display -->
+        <div class="equation-container" style="margin: 20px 0;">
+            <div class="equation-row" id="equation">
+                y = a₀ + a₁x
+            </div>
+        </div>
+
+        <div class="demo-area">
+            <div class="left-column-wrapper">
+                <div class="plot-container">
+                    <div style="position: relative; width: 600px; height: 400px;">
+                        <canvas id="plot"></canvas>
+                        <canvas id="overlay-canvas" style="position: absolute; top: 0; left: 0; pointer-events: none; background: transparent; z-index: 1; visibility: hidden;"></canvas>
+                    </div>
+                </div>
+
+                <!-- Control Row: Data Buttons and Visualization Selector -->
+                <div class="control-row">
+                    <!-- Data Buttons Panel -->
+                    <div class="data-buttons-panel">
+                        <button class="data-btn" id="generate-data-btn">Generate New Data</button>
+                        <button class="data-btn" id="clear-data-btn">Clear All Data</button>
+                    </div>
+
+                    <!-- Visualization Selector Panel -->
+                    <div class="visualization-selector-panel">
+                        <div class="visualization-boxes">
+                            <div class="visualization-box" data-visualization="squared-errors">
+                                <svg class="visualization-graphic" viewBox="0 0 60 60" width="35" height="35">
+                                    <rect x="15" y="15" width="30" height="30" fill="rgba(231, 76, 60, 0.3)" stroke="currentColor" stroke-width="2"/>
+                                    <line x1="15" y1="45" x2="45" y2="15" stroke="currentColor" stroke-width="2" stroke-dasharray="2,2"/>
+                                </svg>
+                                <span class="visualization-label">Squared Errors</span>
+                                <input type="checkbox" id="show-squares" class="visualization-checkbox">
+                            </div>
+                            <div class="visualization-box" data-visualization="l1-norm">
+                                <span class="visualization-label">L1 Norm</span>
+                                <div class="norm-display" id="l1-norm-display"></div>
+                            </div>
+                            <div class="visualization-box" data-visualization="l2-norm">
+                                <span class="visualization-label">L2 Norm</span>
+                                <div class="norm-display" id="l2-norm-display"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="control-group">
+                    <label for="degree">Polynomial Degree (Max Power)</label>
+                    <div class="slider-container">
+                        <input type="range" id="degree" min="0" max="9" step="1" value="1">
+                        <div class="value-display" id="degree-value">1</div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="l1-reg">L1 Regularisation ($\lambda_1$)</label>
+                    <div class="slider-container">
+                        <input type="range" id="l1-reg" min="0" max="10000" step="1" value="0">
+                        <div class="value-display" id="l1-value">0</div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="l2-reg">L2 Regularisation ($\lambda_2$)</label>
+                    <div class="slider-container">
+                        <input type="range" id="l2-reg" min="0" max="10000" step="1" value="0">
+                        <div class="value-display" id="l2-value">0</div>
+                    </div>
+                </div>
+
+                <div class="equation" id="mse" style="margin-top: 10px;">
+                    MSE = 0.0
+                </div>
+
+                <div class="equation" id="mae" style="margin-top: 10px;">
+                    MAE = 0.0
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Coefficients Table -->
+        <div class="coefficients-container">
+            <div class="coefficients-title">Coefficients & Regularization Effects</div>
+            <div class="coefficients-scroll" id="coefficientsScroll">
+                <table class="coefficients-table" id="coefficientsTable">
+                    <tbody id="coefficientsBody">
+                        <!-- Table rows will be dynamically generated -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Theory Section -->
+        <div class="theory-section" style="display: none;">
+            <h3>Mathematical Foundations</h3>
+            <p>
+                The regularized cost function adds a penalty term to the standard mean squared error:<br>
+                $$J(\boldsymbol{\beta}) = \frac{1}{2m} \sum_{i=1}^{m} \left( h_{\boldsymbol{\beta}}(\mathbf{x}^{(i)}) - y^{(i)} \right)^2 + \lambda \cdot \text{penalty}(\boldsymbol{\beta})$$<br>
+
+                where $\lambda \geq 0$ is the <strong>regularization parameter</strong> controlling penalty strength. When $\lambda = 0$, we recover ordinary least squares (no regularization). As $\lambda$ increases, we constrain parameter magnitudes, favoring simpler models.<br><br>
+
+                <strong>L2 Regularization (Ridge)</strong> adds the sum of squared parameter values: $\lambda \sum_{j=1}^{n} \beta_j^2$. Ridge regression shrinks all coefficients towards zero proportionally but never eliminates features entirely. This is particularly effective when many features are relevant but should have modest contributions. Ridge tends to perform better when features are correlated, as it distributes weight among correlated features rather than arbitrarily selecting one.<br><br>
+
+                <strong>L1 Regularization (Lasso)</strong> adds the sum of absolute parameter values: $\lambda \sum_{j=1}^{n} |\beta_j|$. The L1 penalty drives some parameters to <em>exactly zero</em>, performing automatic <strong>feature selection</strong>. Lasso is preferred when we believe only a sparse subset of features are truly relevant, producing interpretable models by eliminating irrelevant features. However, when many features are correlated, Lasso tends to arbitrarily select one and zero out the others.<br><br>
+
+                <strong>Practical guidance:</strong> Use Ridge when most features are relevant and should contribute modestly. Use Lasso when you need automatic feature selection and interpretable models with sparse coefficients. Both methods require tuning the regularization strength $\lambda$ (typically via cross-validation). Feature scaling is essential before applying regularization to ensure penalties apply fairly across all features.
+            </p>
+        </div>
+
+        <p style="font-style: italic; text-align: right; margin-top: 10px; color: #666; font-size: 14px;">
+            Developed by <a href="https://transport-systems.imperial.ac.uk/members/qu-k" target="_blank" style="color: #666; text-decoration: underline;">Kevin Yu</a> & <a href="https://transport-systems.imperial.ac.uk/members/angeloudis-p" target="_blank" style="color: #666; text-decoration: underline;">Panagiotis Angeloudis</a>
+        </p>
+
+    </div>
+    </div>
+
+    <script src="../scripts/demotab.js"></script>
+    <script src="../scripts/metric-box-display.js"></script>
+    <script src="../scripts/slider-control.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

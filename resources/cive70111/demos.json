@@ -37,30 +37,62 @@
       "week": 4,
       "lectureNumber": "03",
       "lectureTitle": "Supervised Learning II",
-      "locked": true,
+      "locked": false,
       "demos": [
         {
-          "id": "regularization",
+          "id": "bias-variance",
           "code": "lec03a",
-          "path": "lec03a_regularization",
-          "title": "Regularisation",
+          "path": "lec03a_bias-variance",
+          "title": "Higher-Order Features",
+          "description": "Visualize the bias-variance tradeoff using real bike rental data. Adjust polynomial degree to see underfitting, optimal fit, and overfitting.",
+          "preview": "preview.svg"
+        },
+        {
+          "id": "feature-engineering",
+          "code": "lec03b",
+          "path": "lec03b_feature-engineering",
+          "title": "Feature Engineering",
           "description": "Explore how higher model capacity can cause overfitting in polynomial regression and the effects of L1 and L2 regularisation to mitigate this.",
           "preview": "preview.svg"
         },
         {
+          "id": "regularization",
+          "code": "lec03c",
+          "path": "lec03c_regularisation",
+          "title": "Regularisation",
+          "description": "Understand how L1 (Lasso) and L2 (Ridge) regularisation prevent overfitting by penalizing model complexity. Interactive visualization of regularisation effects on polynomial regression.",
+          "preview": "preview.svg"
+        },
+        {
+          "id": "perceptrons",
+          "code": "lec03d",
+          "path": "lec03e_perceptrons",
+          "title": "Perceptrons",
+          "description": "The first neural network algorithm: step through perceptron learning epoch-by-epoch, watching the decision boundary adapt to separate two classes.",
+          "preview": "preview.svg"
+        },
+        {
           "id": "classification",
-          "code": "lec03b",
-          "path": "lec03b_classification",
-          "title": "1D Classification",
+          "code": "lec03e",
+          "path": "lec03f_classification",
+          "title": "1-D Classification",
           "description": "Interactive logistic regression with adjustable decision boundaries. See how the sigmoid function creates smooth classification boundaries.",
           "preview": "preview.svg"
         },
         {
           "id": "2d-classification",
-          "code": "lec03c",
-          "path": "lec03c_2d-classification",
-          "title": "2D Classification",
+          "code": "lec03f",
+          "path": "lec03g_2d-classification",
+          "title": "2-D Classification",
           "description": "Multi-class classification with various boundary types (linear, polynomial, radial basis). Experiment with different decision boundary shapes.",
+          "preview": "preview.svg"
+        },
+        {
+          "id": "classification-metrics",
+          "code": "lec03g",
+          "path": "lec03h_metrics",
+          "title": "Classification Metrics",
+          "description": "Adjust decision thresholds and explore sensitivity, specificity, precision, accuracy, F1-score, and balanced accuracy. See why accuracy fails with imbalanced data.",
           "preview": "preview.svg"
         }
       ]

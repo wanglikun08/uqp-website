@@ -172,25 +172,7 @@
             color: #2c3e50;
         }
 
-        /* Equation box styling */
-        .mae-equation {
-            background: #e8f5e8;
-            color: #2e7d32;
-            border: 1px solid #c8e6c9;
-            border-left: 4px solid #4caf50;
-        }
-
-        .mse-equation {
-            background: #f3e5f5;
-            color: #7b1fa2;
-            border: 1px solid #e1bee7;
-            border-left: 4px solid #9c27b0;
-        }
-
-        .r2-equation {
-            transition: all 0.3s ease;
-        }
-
+        /* R² dynamic color classes */
         .r2-poor {
             background: #ffebee;
             color: #d32f2f;

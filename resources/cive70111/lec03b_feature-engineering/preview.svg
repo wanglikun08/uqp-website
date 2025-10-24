@@ -1,0 +1,77 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="300" fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="200" y="30" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#1e293b">
+    Feature Engineering
+  </text>
+
+  <!-- Feature Grid Background -->
+  <rect x="40" y="55" width="320" height="185" fill="white" stroke="#cbd5e1" stroke-width="1"/>
+
+  <!-- Column Headers (Features) -->
+  <rect x="60" y="70" width="50" height="35" rx="4" fill="linear-gradient(135deg, #5a9fd4, #4a89c4)"/>
+  <text x="85" y="87" font-family="Arial, sans-serif" font-size="10" font-weight="600" text-anchor="middle" fill="white">📐</text>
+  <text x="85" y="98" font-family="Arial, sans-serif" font-size="8" text-anchor="middle" fill="white">Area</text>
+
+  <rect x="125" y="70" width="50" height="35" rx="4" fill="linear-gradient(135deg, #66c98e, #56b97e)"/>
+  <text x="150" y="87" font-family="Arial, sans-serif" font-size="10" font-weight="600" text-anchor="middle" fill="white">🛏️</text>
+  <text x="150" y="98" font-family="Arial, sans-serif" font-size="8" text-anchor="middle" fill="white">Rooms</text>
+
+  <rect x="190" y="70" width="50" height="35" rx="4" fill="linear-gradient(135deg, #e88b7b, #d87b6b)"/>
+  <text x="215" y="87" font-family="Arial, sans-serif" font-size="10" font-weight="600" text-anchor="middle" fill="white">🚇</text>
+  <text x="215" y="98" font-family="Arial, sans-serif" font-size="8" text-anchor="middle" fill="white">Dist.</text>
+
+  <rect x="255" y="70" width="50" height="35" rx="4" fill="linear-gradient(135deg, #a87ab8, #9a6aa8)"/>
+  <text x="280" y="87" font-family="Arial, sans-serif" font-size="10" font-weight="600" text-anchor="middle" fill="white">🗺️</text>
+  <text x="280" y="98" font-family="Arial, sans-serif" font-size="8" text-anchor="middle" fill="white">Loc.</text>
+
+  <!-- Row Labels (Transformations) -->
+  <text x="50" y="125" font-family="Arial, sans-serif" font-size="9" font-weight="600" text-anchor="end" fill="#64748b">x</text>
+  <text x="50" y="155" font-family="Arial, sans-serif" font-size="9" font-weight="600" text-anchor="end" fill="#64748b">x²</text>
+  <text x="50" y="185" font-family="Arial, sans-serif" font-size="9" font-weight="600" text-anchor="end" fill="#64748b">x³</text>
+  <text x="50" y="215" font-family="Arial, sans-serif" font-size="9" font-weight="600" text-anchor="end" fill="#64748b">1/x</text>
+
+  <!-- Transformation Grid (showing coefficients with colors) -->
+  <!-- Row 1: x -->
+  <rect x="60" y="115" width="50" height="18" rx="2" fill="#16a34a" fill-opacity="0.7" stroke="#16a34a" stroke-width="1"/>
+  <rect x="125" y="115" width="50" height="18" rx="2" fill="#16a34a" fill-opacity="0.9" stroke="#16a34a" stroke-width="1"/>
+  <rect x="190" y="115" width="50" height="18" rx="2" fill="#dc2626" fill-opacity="0.6" stroke="#dc2626" stroke-width="1"/>
+  <rect x="255" y="115" width="50" height="18" rx="2" fill="#16a34a" fill-opacity="0.5" stroke="#16a34a" stroke-width="1"/>
+
+  <!-- Row 2: x² -->
+  <rect x="60" y="145" width="50" height="18" rx="2" fill="#16a34a" fill-opacity="0.4" stroke="#16a34a" stroke-width="1"/>
+  <rect x="125" y="145" width="50" height="18" rx="2" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <rect x="190" y="145" width="50" height="18" rx="2" fill="#dc2626" fill-opacity="0.8" stroke="#dc2626" stroke-width="1"/>
+  <rect x="255" y="145" width="50" height="18" rx="2" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+
+  <!-- Row 3: x³ -->
+  <rect x="60" y="175" width="50" height="18" rx="2" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <rect x="125" y="175" width="50" height="18" rx="2" fill="#16a34a" fill-opacity="0.3" stroke="#16a34a" stroke-width="1"/>
+  <rect x="190" y="175" width="50" height="18" rx="2" fill="#dc2626" fill-opacity="0.4" stroke="#dc2626" stroke-width="1"/>
+  <rect x="255" y="175" width="50" height="18" rx="2" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+
+  <!-- Row 4: 1/x -->
+  <rect x="60" y="205" width="50" height="18" rx="2" fill="#dc2626" fill-opacity="0.5" stroke="#dc2626" stroke-width="1"/>
+  <rect x="125" y="205" width="50" height="18" rx="2" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <rect x="190" y="205" width="50" height="18" rx="2" fill="#16a34a" fill-opacity="0.8" stroke="#16a34a" stroke-width="1"/>
+  <rect x="255" y="205" width="50" height="18" rx="2" fill="#dc2626" fill-opacity="0.3" stroke="#dc2626" stroke-width="1"/>
+
+  <!-- Legend -->
+  <g transform="translate(40, 260)">
+    <rect x="0" y="0" width="15" height="12" rx="2" fill="#16a34a" fill-opacity="0.7" stroke="#16a34a" stroke-width="1"/>
+    <text x="20" y="10" font-family="Arial, sans-serif" font-size="9" fill="#475569">Positive</text>
+
+    <rect x="85" y="0" width="15" height="12" rx="2" fill="#dc2626" fill-opacity="0.7" stroke="#dc2626" stroke-width="1"/>
+    <text x="105" y="10" font-family="Arial, sans-serif" font-size="9" fill="#475569">Negative</text>
+
+    <rect x="175" y="0" width="15" height="12" rx="2" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+    <text x="195" y="10" font-family="Arial, sans-serif" font-size="9" fill="#475569">Zero</text>
+  </g>
+
+  <!-- Subtitle -->
+  <text x="200" y="290" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#64748b" font-style="italic">
+    Multi-linear regression with feature transformations
+  </text>
+</svg>

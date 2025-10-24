@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feature Engineering</title>
+    <script src="../scripts/mathjax-config.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../scripts/demotab.css">
+    <link rel="stylesheet" href="../demo-common.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="iframe-content">
+        <div class="container">
+
+        <div class="info-tabs">
+            <div class="tab-header">
+            </div>
+
+            <div class="tab-content">
+                <div class="tab-panel active" data-tab-title="Introduction">
+                    Multi-linear regression extends simple linear regression to handle multiple input features simultaneously. Instead of predicting from just one variable, we can use several features to make more accurate predictions.<br><br>
+                    In civil engineering, this is particularly valuable for projects like predicting housing costs from multiple property characteristics, estimating structural loads from various design parameters, or forecasting traffic flow from multiple environmental factors.
+                </div>
+
+                <div class="tab-panel" data-tab-title="Instructions">
+                    • Click transformation boxes below each feature to activate/deactivate them (blue = active). Each feature can have multiple transformations active simultaneously.<br>
+                    • By default, linear ($x$) is selected for all features. Try adding polynomial ($x^2$, $x^3$) or inverse ($1/x$, $1/x^2$) transformations to improve predictions.<br>
+                    • The model automatically retrains when you toggle any transformation. Watch the metrics (MAE, MSE, R²) to see how different transformations affect performance.<br>
+                    • The scatter plot shows actual vs predicted prices—points closer to the diagonal line indicate better predictions.<br><br>
+
+                    <strong>Can you find a feature engineering strategy that maximizes R² beyond the linear baseline?</strong>
+
+                </div>
+
+                <div class="tab-panel" data-tab-title="Tips">
+                    <strong>Understanding the Results:</strong><br><br>
+                    • <strong>R² values:</strong> 0.0-0.3 (poor), 0.3-0.7 (moderate), 0.7+ (good fit)<br>
+                    • <strong>MSE (Mean Squared Error):</strong> Lower values indicate better fit - measures average squared differences<br>
+                    • <strong>MAE (Mean Absolute Error):</strong> More intuitive than MSE - average absolute prediction error<br>
+                    • <strong>Feature importance:</strong> Notice which features contribute most to prediction accuracy<br>
+                    • <strong>Overfitting vs Underfitting:</strong> Too few features may underfit; all features don't always improve performance
+                </div>
+
+                <div class="tab-panel" data-tab-title="Lasso">
+                    <strong>L1 Regularization (Lasso Regression)</strong><br><br>
+                    Lasso adds an L1 penalty term to the loss function that encourages coefficient sparsity. As regularization strength increases, more coefficients are driven to exactly zero, automatically performing feature selection.<br><br>
+
+                    • <strong>All features active:</strong> In this mode, all feature transformations are enabled<br>
+                    • <strong>Adjust λ (lambda):</strong> Use the strength buttons to control regularization intensity<br>
+                    • <strong>Coefficient visualization:</strong> Feature panel shows coefficient values through color and saturation<br>
+                    &nbsp;&nbsp;- <span style="color: #16a34a; font-weight: bold;">Green</span>: Positive coefficients (saturation = magnitude)<br>
+                    &nbsp;&nbsp;- <span style="color: #dc2626; font-weight: bold;">Red</span>: Negative coefficients (saturation = magnitude)<br>
+                    &nbsp;&nbsp;- <span style="color: #6b7280; font-weight: bold;">Grey</span>: Near-zero coefficients (driven to zero by regularization)<br><br>
+
+                    <strong>Observe how higher λ values create sparser models by eliminating less important features!</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-area">
+            <!-- Top section: Chart + Sidebar -->
+            <div class="top-section">
+                <!-- Chart -->
+                <div class="plot-container">
+                    <canvas id="prediction-plot"></canvas>
+                </div>
+
+                <!-- Sidebar with metrics -->
+                <div class="metrics-sidebar">
+                    <div class="metrics-panel">
+                        <h3 style="margin-top: 0; margin-bottom: 15px; font-size: 16px;">Metrics</h3>
+
+                        <!-- Train/Test Toggle -->
+                        <div class="dataset-toggle">
+                            <div class="feature-box dataset-box dataset-train active" id="toggle-train">
+                                <div class="feature-icon">📚</div>
+                                <div class="feature-label">Train</div>
+                            </div>
+                            <div class="feature-box dataset-box dataset-test" id="toggle-test">
+                                <div class="feature-icon">🔬</div>
+                                <div class="feature-label">Test</div>
+                            </div>
+                        </div>
+
+                        <div id="mae" class="metric-box"></div>
+                        <div id="mse" class="metric-box"></div>
+                        <div id="r2" class="metric-box"></div>
+                        <div id="feature-count" class="metric-box"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Model controls row: buttons + loss curve -->
+            <div class="model-controls-row">
+                <!-- Model control buttons -->
+                <div class="model-controls-panel">
+                    <button class="model-btn" id="train-model-btn">Train Model</button>
+                    <button class="model-btn reset-btn" id="reset-features-btn">Reset Features</button>
+
+                    <!-- Lambda controls for Lasso mode (hidden by default) -->
+                    <div class="lambda-controls" id="lambda-controls" style="display: none;">
+                        <div class="lambda-label">Regularization Strength (λ):</div>
+                        <div class="lambda-buttons">
+                            <button class="lambda-btn active" data-lambda="0">None</button>
+                            <button class="lambda-btn" data-lambda="0.01">Low</button>
+                            <button class="lambda-btn" data-lambda="0.1">Medium</button>
+                            <button class="lambda-btn" data-lambda="1.0">High</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Loss curve -->
+                <canvas id="loss-curve-canvas" style="height: 115px;"></canvas>
+            </div>
+
+            <!-- Bottom section: Feature engineering panel -->
+            <div class="feature-panel">
+                <h3 style="margin-top: 0; margin-bottom: 15px; font-size: 16px;">
+                    Feature Engineering
+                    <span id="training-badge" class="training-badge" style="display: none;">Training in Progress</span>
+                    <span id="retrain-badge" class="retrain-badge" style="display: none;"></span>
+                </h3>
+                <div class="feature-engineering-grid">
+                    <!-- Features will be dynamically generated -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Theory Section -->
+        <div class="theory-section" style="display: none;">
+            <h3>Mathematical Foundations</h3>
+            <p>
+                <strong>Multiple linear regression</strong> extends the single-variable framework to handle multiple features simultaneously. With $p$ features, the linear model becomes $\hat{y} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \cdots + \beta_p x_p$, where $\beta_0$ is the intercept (previously denoted $\alpha$ in single-variable regression) and $\beta_1, \ldots, \beta_p$ are the weights for each feature. <br><br>
+
+                For our London housing dataset: $\widehat{\mathrm{SaleEstimate}} = \beta_0 + \beta_1 \mathrm{Latitude} + \beta_2 \mathrm{Longitude} + \beta_3 \mathrm{Bathrooms} + \beta_4 \mathrm{Bedrooms} + \beta_5 \mathrm{FloorArea} + \beta_6 \mathrm{LivingRooms} + \beta_7 \mathrm{DistanceToTube} + \beta_8 \mathrm{DistanceToBus} + \beta_9 \mathrm{BusStops}_{1\text{km}}$. Each feature contributes independently to the prediction, weighted by its corresponding parameter.<br><br>
+            </p>
+        </div>
+
+        <p style="font-style: italic; text-align: right; margin-top: 10px; color: #666; font-size: 14px;">
+            Developed by <a href="https://transport-systems.imperial.ac.uk/members/qu-k" target="_blank" style="color: #666; text-decoration: underline;">Kevin Yu</a> & <a href="https://transport-systems.imperial.ac.uk/members/angeloudis-p" target="_blank" style="color: #666; text-decoration: underline;">Panagiotis Angeloudis</a>
+        </p>
+
+        </div>
+    </div>
+
+    <script src="../scripts/demotab.js"></script>
+    <script src="../scripts/metric-box-display.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Hook into MathJax's ready callback
+        if (!window.MathJax) {
+            window.MathJax = {};
+        }
+        if (!window.MathJax.startup) {
+            window.MathJax.startup = {};
+        }
+
+        const originalPageReady = window.MathJax.startup.pageReady || (() => MathJax.startup.defaultPageReady());
+
+        window.MathJax.startup.pageReady = function() {
+            return originalPageReady.call(this).then(() => {
+                console.log('MathJax is ready and has processed the page');
+            });
+        };
+
+        // Initialize the demo when the page loads
+        window.addEventListener('load', () => {
+            new MultiLinearRegressionDemo();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classification Metrics</title>
+    <script src="../scripts/mathjax-config.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../scripts/demotab.css">
+    <link rel="stylesheet" href="../demo-common.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="iframe-content">
+        <div class="container">
+
+        <div class="info-tabs">
+            <div class="tab-header">
+            </div>
+
+            <div class="tab-content">
+                <div class="tab-panel active" data-tab-title="Introduction">
+                    Classification metrics help us evaluate model performance beyond simple accuracy. This demo shows how different metrics respond to threshold changes and why accuracy alone can be misleading, especially with imbalanced data.<br><br>
+                    In civil engineering, choosing the right metric is critical for safety-critical applications like structural failure prediction, where missing a dangerous case (false negative) can be catastrophic.
+                </div>
+
+                <div class="tab-panel" data-tab-title="Instructions">
+                    • Adjust the <strong>threshold slider</strong> to change the classification boundary and observe how all metrics respond<br>
+                    • Select different <strong>datasets</strong> to explore balanced vs. imbalanced scenarios<br>
+                    • Watch the <strong>confusion matrix</strong> update in real-time<br>
+                    • Hover over confusion matrix cells to highlight corresponding points on the plot<br><br>
+
+                    <strong>Can you find a threshold where accuracy is high but sensitivity is terrible? What does this mean for real-world applications?</strong>
+                </div>
+
+                <div class="tab-panel" data-tab-title="Tips">
+                    • <strong>Threshold trade-off:</strong> Lower threshold → higher sensitivity, lower specificity<br>
+                    • <strong>Accuracy paradox:</strong> With imbalanced data, always predicting the majority class gives high accuracy but fails the objective<br>
+                    • <strong>Melanoma scenario:</strong> Shows why 99% accuracy can be useless (0% sensitivity)<br>
+                    • <strong>Bridge safety:</strong> False negatives (missed failures) are more costly than false positives<br>
+                    • <strong>Balanced accuracy:</strong> Averages sensitivity and specificity, unaffected by class imbalance<br>
+                    • <strong>F1-score:</strong> Harmonic mean of precision and recall, balances both error types
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-area">
+            <!-- Top Row: Plot and Controls -->
+            <div class="top-row">
+                <div class="plot-container">
+                    <canvas id="plotCanvas" width="600" height="500"></canvas>
+                </div>
+
+                <div class="controls">
+                <!-- Threshold Control -->
+                <div class="control-group">
+                    <label for="threshold">Decision Threshold</label>
+                    <div class="slider-container">
+                        <input type="range" id="threshold" min="0" max="1" step="0.01" value="0.5">
+                        <div class="value-display" id="threshold-value">0.50</div>
+                    </div>
+                </div>
+
+                <!-- Metrics Boxes -->
+                <div class="metrics-grid">
+                    <div class="metric-box metric-sensitivity">
+                        <div class="metric-label">Sensitivity</div>
+                        <div class="metric-value" id="metric-sensitivity">0.00</div>
+                        <div class="metric-bar"><div class="metric-bar-fill" id="bar-sensitivity"></div></div>
+                        <div class="metric-formula">TP / (TP + FN)</div>
+                    </div>
+
+                    <div class="metric-box metric-specificity">
+                        <div class="metric-label">Specificity</div>
+                        <div class="metric-value" id="metric-specificity">0.00</div>
+                        <div class="metric-bar"><div class="metric-bar-fill" id="bar-specificity"></div></div>
+                        <div class="metric-formula">TN / (TN + FP)</div>
+                    </div>
+
+                    <div class="metric-box metric-precision">
+                        <div class="metric-label">Precision (PPV)</div>
+                        <div class="metric-value" id="metric-precision">0.00</div>
+                        <div class="metric-bar"><div class="metric-bar-fill" id="bar-precision"></div></div>
+                        <div class="metric-formula">TP / (TP + FP)</div>
+                    </div>
+
+                    <div class="metric-box metric-accuracy">
+                        <div class="metric-label">Accuracy</div>
+                        <div class="metric-value" id="metric-accuracy">0.00</div>
+                        <div class="metric-bar"><div class="metric-bar-fill" id="bar-accuracy"></div></div>
+                        <div class="metric-formula">(TP + TN) / Total</div>
+                    </div>
+
+                    <div class="metric-box metric-f1">
+                        <div class="metric-label">F1-Score</div>
+                        <div class="metric-value" id="metric-f1">0.00</div>
+                        <div class="metric-bar"><div class="metric-bar-fill" id="bar-f1"></div></div>
+                        <div class="metric-formula">2·P·R / (P + R)</div>
+                    </div>
+
+                    <div class="metric-box metric-balanced">
+                        <div class="metric-label">Bal. Accuracy</div>
+                        <div class="metric-value" id="metric-balanced">0.00</div>
+                        <div class="metric-bar"><div class="metric-bar-fill" id="bar-balanced"></div></div>
+                        <div class="metric-formula">(Sens + Spec) / 2</div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <!-- Bottom Row: Dataset Selector and Confusion Matrix -->
+            <div class="bottom-row">
+                <!-- Dataset Selector -->
+                <div class="dataset-selector-panel">
+                    <h4>Dataset Scenario</h4>
+                    <div class="dataset-boxes">
+                        <div class="dataset-box active" data-dataset="balanced">
+                            <div class="dataset-icon">✨</div>
+                            <div class="dataset-label">Balanced</div>
+                            <div class="dataset-info">50/50</div>
+                        </div>
+                        <div class="dataset-box" data-dataset="melanoma">
+                            <div class="dataset-icon">🔬</div>
+                            <div class="dataset-label">Melanoma</div>
+                            <div class="dataset-info">99.5/0.5</div>
+                        </div>
+                        <div class="dataset-box" data-dataset="bridge">
+                            <div class="dataset-icon">🌉</div>
+                            <div class="dataset-label">Bridge</div>
+                            <div class="dataset-info">95/5</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Confusion Matrix -->
+                <div class="confusion-matrix-container">
+                    <table class="confusion-matrix">
+                        <tr>
+                            <td class="cm-header"></td>
+                            <td class="cm-header">Predicted Positive</td>
+                            <td class="cm-header">Predicted Negative</td>
+                        </tr>
+                        <tr>
+                            <td class="cm-header cm-row-header"><span class="rotated-text">True<br>Positive</span></td>
+                            <td class="cm-cell cm-tp" id="cm-tp" data-cell="tp">
+                                <div class="cm-label">TP</div>
+                                <div class="cm-count" id="count-tp">0</div>
+                            </td>
+                            <td class="cm-cell cm-fn" id="cm-fn" data-cell="fn">
+                                <div class="cm-label">FN</div>
+                                <div class="cm-count" id="count-fn">0</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="cm-header cm-row-header"><span class="rotated-text">True<br>Negative</span></td>
+                            <td class="cm-cell cm-fp" id="cm-fp" data-cell="fp">
+                                <div class="cm-label">FP</div>
+                                <div class="cm-count" id="count-fp">0</div>
+                            </td>
+                            <td class="cm-cell cm-tn" id="cm-tn" data-cell="tn">
+                                <div class="cm-label">TN</div>
+                                <div class="cm-count" id="count-tn">0</div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Theory Section -->
+        <div class="theory-section" style="display: none;">
+            <h3>Understanding Classification Metrics</h3>
+            <p>
+                <strong>The Confusion Matrix</strong> is the foundation of all classification metrics. It breaks down predictions into four categories based on true vs. predicted class:<br><br>
+
+                • <strong>True Positives (TP):</strong> Correctly predicted positive class<br>
+                • <strong>True Negatives (TN):</strong> Correctly predicted negative class<br>
+                • <strong>False Positives (FP):</strong> Incorrectly predicted positive (Type I error, "false alarm")<br>
+                • <strong>False Negatives (FN):</strong> Incorrectly predicted negative (Type II error, "missed detection")<br><br>
+
+                <strong>Key Metrics Derived from the Confusion Matrix:</strong><br><br>
+
+                <strong>1. Sensitivity (Recall, TPR):</strong> Fraction of actual positives correctly identified. Formula: $$\text{Sensitivity} = \frac{TP}{TP + FN}$$
+                High sensitivity means few false negatives—critical in medical diagnosis and structural safety where missing positive cases is dangerous.<br><br>
+
+                <strong>2. Specificity (TNR):</strong> Fraction of actual negatives correctly identified. Formula: $$\text{Specificity} = \frac{TN}{TN + FP}$$
+                High specificity means few false positives—important when intervention costs are high and false alarms waste resources.<br><br>
+
+                <strong>3. Precision (PPV):</strong> Fraction of positive predictions that are correct. Formula: $$\text{Precision} = \frac{TP}{TP + FP}$$
+                High precision means when the model says "positive", it's usually right—key when acting on predictions is expensive.<br><br>
+
+                <strong>4. Accuracy:</strong> Overall fraction of correct predictions. Formula: $$\text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}$$
+                While intuitive, accuracy is <em>misleading with imbalanced classes</em>. A model predicting only the majority class can achieve high accuracy while failing its purpose.<br><br>
+
+                <strong>5. F1-Score:</strong> Harmonic mean of precision and recall. Formula: $$F_1 = \frac{2 \cdot \text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}$$
+                Provides a single metric balancing both precision and recall. Useful when both error types have comparable costs.<br><br>
+
+                <strong>6. Balanced Accuracy:</strong> Average of sensitivity and specificity. Formula: $$\text{Balanced Accuracy} = \frac{\text{Sensitivity} + \text{Specificity}}{2}$$
+                Unlike standard accuracy, balanced accuracy treats both classes equally regardless of their frequency—essential for imbalanced datasets.<br><br>
+
+                <strong>The Accuracy Paradox:</strong> With the melanoma dataset (99.5% benign), a classifier that always predicts "benign" achieves 99.5% accuracy but 0% sensitivity—it misses all cancers! This demonstrates why accuracy alone is insufficient. Balanced accuracy (50%) and F1-score (0%) correctly reveal this model's failure.<br><br>
+
+                <strong>Threshold Selection Trade-off:</strong> Moving the decision threshold creates a fundamental trade-off between sensitivity and specificity. Lower thresholds predict more positives (higher sensitivity, lower specificity); higher thresholds predict fewer positives (lower sensitivity, higher specificity). The optimal threshold depends on the relative costs of false positives vs. false negatives in your application.
+            </p>
+        </div>
+
+        </div>
+    </div>
+
+    <script src="../scripts/demotab.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

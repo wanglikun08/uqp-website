@@ -1,0 +1,89 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="300" fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="200" y="30" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#1e293b">
+    Bias-Variance Tradeoff
+  </text>
+
+  <!-- Scatter plot background -->
+  <rect x="30" y="50" width="340" height="180" fill="white" stroke="#cbd5e1" stroke-width="1"/>
+
+  <!-- Grid lines -->
+  <line x1="30" y1="100" x2="370" y2="100" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="30" y1="150" x2="370" y2="150" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="30" y1="200" x2="370" y2="200" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- Axes -->
+  <line x1="30" y1="230" x2="370" y2="230" stroke="#64748b" stroke-width="2"/>
+  <line x1="30" y1="50" x2="30" y2="230" stroke="#64748b" stroke-width="2"/>
+
+  <!-- Axis labels -->
+  <text x="200" y="255" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#475569">
+    Temperature
+  </text>
+  <text x="15" y="140" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#475569" transform="rotate(-90 15 140)">
+    Rentals
+  </text>
+
+  <!-- Training data points (blue) -->
+  <circle cx="60" cy="190" r="3" fill="#2563eb" opacity="0.6"/>
+  <circle cx="80" cy="180" r="3" fill="#2563eb" opacity="0.6"/>
+  <circle cx="100" cy="165" r="3" fill="#2563eb" opacity="0.6"/>
+  <circle cx="120" cy="145" r="3" fill="#2563eb" opacity="0.6"/>
+  <circle cx="140" cy="125" r="3" fill="#2563eb" opacity="0.6"/>
+  <circle cx="160" cy="105" r="3" fill="#2563eb" opacity="0.6"/>
+  <circle cx="180" cy="90" r="3" fill="#2563eb" opacity="0.6"/>
+  <circle cx="200" cy="80" r="3" fill="#2563eb" opacity="0.6"/>
+  <circle cx="220" cy="75" r="3" fill="#2563eb" opacity="0.6"/>
+  <circle cx="240" cy="73" r="3" fill="#2563eb" opacity="0.6"/>
+  <circle cx="260" cy="75" r="3" fill="#2563eb" opacity="0.6"/>
+  <circle cx="280" cy="80" r="3" fill="#2563eb" opacity="0.6"/>
+  <circle cx="300" cy="90" r="3" fill="#2563eb" opacity="0.6"/>
+  <circle cx="320" cy="105" r="3" fill="#2563eb" opacity="0.6"/>
+  <circle cx="340" cy="125" r="3" fill="#2563eb" opacity="0.6"/>
+  <circle cx="360" cy="150" r="3" fill="#2563eb" opacity="0.6"/>
+
+  <!-- Test data points (orange) -->
+  <circle cx="70" cy="185" r="3" fill="#f59e0b" opacity="0.6"/>
+  <circle cx="110" cy="155" r="3" fill="#f59e0b" opacity="0.6"/>
+  <circle cx="150" cy="115" r="3" fill="#f59e0b" opacity="0.6"/>
+  <circle cx="190" cy="85" r="3" fill="#f59e0b" opacity="0.6"/>
+  <circle cx="230" cy="75" r="3" fill="#f59e0b" opacity="0.6"/>
+  <circle cx="270" cy="78" r="3" fill="#f59e0b" opacity="0.6"/>
+  <circle cx="310" cy="95" r="3" fill="#f59e0b" opacity="0.6"/>
+  <circle cx="350" cy="135" r="3" fill="#f59e0b" opacity="0.6"/>
+
+  <!-- Degree 1 polynomial (straight line - underfitting) -->
+  <path d="M 30 210 L 370 90" stroke="#dc2626" stroke-width="2" fill="none" opacity="0.3" stroke-dasharray="5,5"/>
+
+  <!-- Degree 3 polynomial (good fit) -->
+  <path d="M 30 200 Q 100 150 200 75 Q 300 75 370 140" stroke="#059669" stroke-width="2.5" fill="none"/>
+
+  <!-- Degree 9 polynomial (overfitting - wiggly) -->
+  <path d="M 30 195 C 60 210 80 150 100 160 C 120 170 140 100 160 95 C 180 90 200 60 220 70 C 240 80 260 65 280 75 C 300 85 320 130 340 115 C 350 110 360 160 370 145" stroke="#7c3aed" stroke-width="2" fill="none" opacity="0.4"/>
+
+  <!-- Legend -->
+  <rect x="30" y="245" width="340" height="45" fill="white" stroke="#cbd5e1" stroke-width="1"/>
+
+  <!-- Legend items -->
+  <circle cx="45" cy="260" r="3" fill="#2563eb" opacity="0.6"/>
+  <text x="55" y="263" font-family="Arial, sans-serif" font-size="10" fill="#1e293b">Train</text>
+
+  <circle cx="100" cy="260" r="3" fill="#f59e0b" opacity="0.6"/>
+  <text x="110" y="263" font-family="Arial, sans-serif" font-size="10" fill="#1e293b">Test</text>
+
+  <line x1="150" y1="260" x2="170" y2="260" stroke="#dc2626" stroke-width="2" opacity="0.3" stroke-dasharray="3,3"/>
+  <text x="175" y="263" font-family="Arial, sans-serif" font-size="10" fill="#1e293b">Deg 1</text>
+
+  <line x1="225" y1="260" x2="245" y2="260" stroke="#059669" stroke-width="2.5"/>
+  <text x="250" y="263" font-family="Arial, sans-serif" font-size="10" fill="#1e293b">Deg 3 ✓</text>
+
+  <line x1="310" y1="260" x2="330" y2="260" stroke="#7c3aed" stroke-width="2" opacity="0.4"/>
+  <text x="335" y="263" font-family="Arial, sans-serif" font-size="10" fill="#1e293b">Deg 9</text>
+
+  <!-- Bottom labels -->
+  <text x="40" y="280" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Bias ↓</text>
+  <text x="320" y="280" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Variance ↑</text>
+</svg>

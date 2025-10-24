@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Background -->
+  <rect width="200" height="200" fill="#ecf0f1"/>
+
+  <!-- Title -->
+  <text x="100" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">
+    Classification Metrics
+  </text>
+
+  <!-- Confusion Matrix -->
+  <g transform="translate(40, 50)">
+    <!-- TP (Top-left, green) -->
+    <rect x="0" y="0" width="50" height="50" fill="#d4edda" stroke="#27ae60" stroke-width="2"/>
+    <text x="25" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#155724">TP</text>
+    <text x="25" y="35" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#155724">45</text>
+
+    <!-- FN (Top-right, red) -->
+    <rect x="70" y="0" width="50" height="50" fill="#f8d7da" stroke="#e74c3c" stroke-width="2"/>
+    <text x="95" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#721c24">FN</text>
+    <text x="95" y="35" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#721c24">5</text>
+
+    <!-- FP (Bottom-left, red) -->
+    <rect x="0" y="70" width="50" height="50" fill="#f8d7da" stroke="#e74c3c" stroke-width="2"/>
+    <text x="25" y="90" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#721c24">FP</text>
+    <text x="25" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#721c24">8</text>
+
+    <!-- TN (Bottom-right, green) -->
+    <rect x="70" y="70" width="50" height="50" fill="#d4edda" stroke="#27ae60" stroke-width="2"/>
+    <text x="95" y="90" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#155724">TN</text>
+    <text x="95" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#155724">42</text>
+  </g>
+
+  <!-- Metrics bars -->
+  <g transform="translate(20, 145)">
+    <text x="0" y="10" font-family="Arial, sans-serif" font-size="10" fill="#555">Accuracy</text>
+    <rect x="0" y="15" width="160" height="8" fill="#ecf0f1" rx="4"/>
+    <rect x="0" y="15" width="140" height="8" fill="#27ae60" rx="4"/>
+
+    <text x="0" y="35" font-family="Arial, sans-serif" font-size="10" fill="#555">Precision</text>
+    <rect x="0" y="40" width="160" height="8" fill="#ecf0f1" rx="4"/>
+    <rect x="0" y="40" width="120" height="8" fill="#9b59b6" rx="4"/>
+  </g>
+</svg>

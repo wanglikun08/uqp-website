@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2D Classification</title>
+    <script src="../scripts/mathjax-config.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../scripts/demotab.css">
+    <link rel="stylesheet" href="../demo-common.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="iframe-content">
+        <div class="container">
+
+        <div class="info-tabs">
+            <div class="tab-header">
+                <!-- Tab buttons will be auto-generated -->
+            </div>
+            <div class="tab-content">
+                <div class="tab-panel" data-tab-title="Introduction">
+                    Classification problems involve predicting which category or class an input belongs to. In 2D binary classification, we have two features (X₁ and X₂) and need to separate data points into two classes.<br><br>
+
+                    In civil engineering, this could represent:<br>
+                    • <em>Soil stability:</em> Classifying soil samples as "stable" or "unstable" based on moisture content and density<br>
+                    • <em>Structural safety:</em> Categorizing bridge components as "safe" or "requires inspection" based on load and age<br>
+                    • <em>Traffic flow:</em> Predicting "congested" vs "free-flowing" traffic based on time of day and weather conditions<br><br>
+
+                    The goal is to find a decision boundary that best separates the two classes, minimizing classification errors.
+                </div>
+
+                <div class="tab-panel" data-tab-title="Instructions">
+                    • Select boundary type (linear/quadratic), adjust weight parameters, and use <em>"Find Optimal Solution"</em> to optimize<br>
+                    • Load sample datasets or add points by clicking the plot—use "Click adds" boxes to choose class (red circles or teal squares)<br>
+                    • Observe three boundary lines: red solid (high confidence Class 0), magenta dotted (decision boundary at 50%), teal solid (high confidence Class 1)<br>
+                    • Background shading shows probability surface - darker shading indicates higher model confidence<br><br>
+
+                    <strong>When does a linear boundary suffice, and when do you need a quadratic boundary? Try the sample datasets to explore.</strong>
+                </div>
+
+                <div class="tab-panel" data-tab-title="Visual Guide">
+                    • <span style="color: #ff6b6b;"><strong>Red circles:</strong></span> Class 0 data points<br>
+                    • <span style="color: #4ecdc4;"><strong>Teal squares:</strong></span> Class 1 data points<br>
+                    • <em style="color: #ff6b6b;">Red solid line:</em> High confidence Class 0 threshold (25% probability)<br>
+                    • <em style="color: #9b59b6;">Magenta dotted line:</em> Decision boundary (50% probability - separates the two classes)<br>
+                    • <em style="color: #4ecdc4;">Teal solid line:</em> High confidence Class 1 threshold (75% probability)<br>
+                    • <em>Background shading:</em> Probability surface (faint red = likely Class 0, faint teal = likely Class 1, intensity shows confidence)<br>
+                    • <em>Linear boundary:</em> Uses θ₀, θ₁, θ₂ → Straight line boundary<br>
+                    • <em>Quadratic boundary:</em> Uses θ₀, θ₁, θ₂, θ₁₁, θ₂₂, θ₁₂ → Curved boundaries (ellipses, parabolas)<br>
+                </div>
+
+                <div class="tab-panel" data-tab-title="Tips">
+                    • Start with linear boundaries for linearly separable data<br>
+                    • Use quadratic boundaries when data forms curved patterns<br>
+                    • The "Find Optimal Solution" button uses gradient descent to minimize loss<br>
+                    • <em>Accuracy:</em> Percentage of correctly classified points (higher is better)<br>
+                    • <em>Loss:</em> Cross-entropy loss measuring prediction confidence (lower is better)<br>
+                    • Perfect separation: Loss approaches 0, accuracy approaches 100%<br>
+                    • Overfitting risk: Complex boundaries may not generalize to new data<br>
+                    • Use simpler boundaries (linear) when interpretability is important<br>
+                    • Complex boundaries may be needed for real-world civil engineering data<br>
+                    • Always validate on separate test data to check generalization
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-area">
+            <div class="left-column-wrapper">
+                <div class="plot-container">
+                    <div style="position: relative; width: 600px; height: 400px;">
+                        <canvas id="plot" style="width: 100%; height: 100%;"></canvas>
+                        <canvas id="overlay-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; background: transparent; z-index: 1;"></canvas>
+                    </div>
+                </div>
+
+                <!-- Equation Display -->
+                <div class="equation" id="equation" style="margin-top: 15px;">
+                    f(x) = σ(0.0 + 0.1x₁ + 0.1x₂)
+                </div>
+
+                <!-- Data Buttons Panel and Class Selector -->
+                <div class="control-row">
+                    <div class="data-buttons-panel">
+                        <button class="data-btn" id="generate-data-btn">Generate New Data</button>
+                        <button class="data-btn" id="clear-data-btn">Clear All Data</button>
+                        <button class="data-btn solution-btn" id="solution-btn">Find Optimal Solution</button>
+                    </div>
+
+                    <!-- Class Selector Panel -->
+                    <div class="class-selector-panel">
+                        <h4>Click adds:</h4>
+                        <div class="class-boxes">
+                            <div class="class-box" data-class="0">
+                                <svg class="class-graphic" viewBox="0 0 60 60" width="45" height="45">
+                                    <circle cx="30" cy="30" r="18" fill="none" stroke="#ff6b6b" stroke-width="3"/>
+                                </svg>
+                                <span class="class-label">Class 0</span>
+                            </div>
+                            <div class="class-box active" data-class="1">
+                                <svg class="class-graphic" viewBox="0 0 60 60" width="45" height="45">
+                                    <rect x="12" y="12" width="36" height="36" rx="4" fill="none" stroke="#4ecdc4" stroke-width="3"/>
+                                </svg>
+                                <span class="class-label">Class 1</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dataset loading section -->
+                <div class="dataset-buttons-section">
+                    <label class="dataset-section-label">Sample Datasets:</label>
+                    <div class="dataset-buttons">
+                        <button class="dataset-btn structures-btn" id="structures-btn">Structures</button>
+                        <button class="dataset-btn geotech-btn" id="geotech-btn">Geotechnics</button>
+                        <button class="dataset-btn transport-btn" id="transport-btn">Transport</button>
+                        <button class="dataset-btn environment-btn" id="environment-btn">Environment</button>
+                    </div>
+
+                    <div class="dataset-info-box" id="dataset-info-box">
+                        <div class="dataset-info-title" id="dataset-info-title"></div>
+                        <div class="dataset-info-description" id="dataset-info-description"></div>
+                        <div class="dataset-info-variables" id="dataset-info-variables"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="controls">
+                <div class="control-group">
+                    <label style="font-weight: bold; margin-bottom: 10px; display: block;">Decision Boundary Type</label>
+                    <div class="boundary-grid">
+                        <div class="boundary-box boundary-linear active" data-boundary="linear">
+                            <div class="boundary-icon">📏</div>
+                            <div class="boundary-label">Linear</div>
+                        </div>
+                        <div class="boundary-box boundary-quadratic" data-boundary="quadratic">
+                            <div class="boundary-icon">〰️</div>
+                            <div class="boundary-label">Quadratic</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metrics Display -->
+                <div class="control-group">
+                    <div class="equation" id="accuracy">Accuracy = 0.0%</div>
+                </div>
+
+                <div class="control-group">
+                    <div class="equation" id="loss">Loss = 0.0</div>
+                </div>
+
+                <!-- Linear parameters (shown for linear, quadratic, polynomial) -->
+                <div class="control-group" id="w1-group">
+                    <label for="w1">$\theta_0$</label>
+                    <div class="slider-container">
+                        <input type="range" id="bias" min="-10" max="10" step="0.1" value="0.0">
+                        <div class="value-display" id="bias-value">0.0</div>
+                    </div>
+                </div>
+
+                <div class="control-group" id="w2-group">
+                    <label for="w2">$\theta_1$ ($x_1$)</label>
+                    <div class="slider-container">
+                        <input type="range" id="w1" min="-5" max="5" step="0.1" value="0.1">
+                        <div class="value-display" id="w1-value">0.1</div>
+                    </div>
+                </div>
+
+                <div class="control-group" id="bias-group">
+                    <label for="bias">$\theta_2$ ($x_2$)</label>
+                    <div class="slider-container">
+                        <input type="range" id="w2" min="-5" max="5" step="0.1" value="0.1">
+                        <div class="value-display" id="w2-value">0.1</div>
+                    </div>
+                </div>
+
+                <!-- Additional parameters for nonlinear boundaries -->
+                <div class="control-group" id="w11-group" style="display: none;">
+                    <label for="w11">$\theta_{11}$ ($x_1^2$)</label>
+                    <div class="slider-container">
+                        <input type="range" id="w11" min="-2" max="2" step="0.1" value="0.0">
+                        <div class="value-display" id="w11-value">0.0</div>
+                    </div>
+                </div>
+
+                <div class="control-group" id="w22-group" style="display: none;">
+                    <label for="w22">$\theta_{22}$ ($x_2^2$)</label>
+                    <div class="slider-container">
+                        <input type="range" id="w22" min="-2" max="2" step="0.1" value="0.0">
+                        <div class="value-display" id="w22-value">0.0</div>
+                    </div>
+                </div>
+
+                <div class="control-group" id="w12-group" style="display: none;">
+                    <label for="w12">$\theta_{12}$ ($x_1x_2$)</label>
+                    <div class="slider-container">
+                        <input type="range" id="w12" min="-2" max="2" step="0.1" value="0.0">
+                        <div class="value-display" id="w12-value">0.0</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Theory Section -->
+        <div class="theory-section" style="display: none;">
+            <h3>Mathematical Foundations</h3>
+            <p>
+                <strong>Logistic Regression in 2D</strong> uses the sigmoid function to map any decision function to a probability between 0 and 1:
+                $$P(y=1 \mid \mathbf{x}) = \sigma(f(\mathbf{x})) = \frac{1}{1 + e^{-f(\mathbf{x})}}$$<br>
+
+                where $f(\mathbf{x})$ is the <strong>decision function</strong> that depends on the boundary type.<br><br>
+
+                <strong>Linear Decision Boundary:</strong> The simplest case uses a linear decision function:
+                $$z = \theta_0 + \theta_1x_1 + \theta_2x_2$$<br>
+
+                The decision boundary occurs where $z = 0$ (where probability equals 0.5), which forms a straight line in 2D space. Points on one side of this line are classified as class 1, points on the other side as class 0. The parameters $\theta_1$ and $\theta_2$ control the orientation (slope) of the boundary, while the bias $\theta_0$ controls its position (intercept).<br><br>
+
+                <strong>Quadratic Decision Boundary:</strong> For non-linearly separable data, we can use quadratic terms to create curved boundaries:
+                $$z = \theta_0 + \theta_1x_1 + \theta_2x_2 + \theta_{11}x_1^2 + \theta_{22}x_2^2 + \theta_{12}x_1x_2$$<br>
+
+                This allows the decision boundary to form ellipses, parabolas, or hyperbolas depending on the learned parameters. The quadratic terms $\theta_{11}x_1^2$ and $\theta_{22}x_2^2$ create curvature along each axis, while the interaction term $\theta_{12}x_1x_2$ allows for rotated or skewed boundaries.<br><br>
+
+                <strong>Training and Optimization:</strong> As with 1D classification, we train using cross-entropy loss:
+                $$J(\boldsymbol{\theta}) = -\frac{1}{m}\sum_{i=1}^{m}\left[y^{(i)}\log(h(\mathbf{x}^{(i)})) + (1-y^{(i)})\log(1-h(\mathbf{x}^{(i)}))\right]$$<br>
+
+                and optimize using gradient descent. The "Find Optimal Solution" button in this demo uses gradient descent to minimize cross-entropy loss for the selected boundary type.<br><br>
+
+                <strong>Practical guidance:</strong> Start with linear boundaries for linearly separable data—they are simpler, more interpretable, and less prone to overfitting. Use quadratic (or higher-order) boundaries when data exhibits curved separation patterns that cannot be captured by a straight line. Always validate on separate test data to ensure the model generalizes beyond the training set. For engineering applications where interpretability matters, prefer simpler (linear) boundaries when performance is comparable.
+            </p>
+        </div>
+
+        <p style="font-style: italic; text-align: right; margin-top: 10px; color: #666; font-size: 14px;">
+            Developed by <a href="https://transport-systems.imperial.ac.uk/members/qu-k" target="_blank" style="color: #666; text-decoration: underline;">Kevin Yu</a> & <a href="https://transport-systems.imperial.ac.uk/members/angeloudis-p" target="_blank" style="color: #666; text-decoration: underline;">Panagiotis Angeloudis</a>
+        </p>
+
+    </div>
+    </div>
+
+    <script src="../scripts/demotab.js"></script>
+    <script src="../scripts/metric-box-display.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

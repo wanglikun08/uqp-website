@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1D Classification</title>
+    <script src="../scripts/mathjax-config.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../scripts/demotab.css">
+    <link rel="stylesheet" href="../demo-common.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="iframe-content">
+        <div class="container">
+
+        <div class="info-tabs">
+            <div class="tab-header">
+            </div>
+
+            <div class="tab-content">
+                <div class="tab-panel active" data-tab-title="Introduction">
+                    Classification is a fundamental machine learning task where we predict discrete categories rather than continuous values. This demo explores binary classification in one dimension, comparing linear models with and without sigmoid activation.<br><br>
+                    In civil engineering, classification problems include failure prediction, quality assessment, safety categorization, and risk classification for structures and systems.<br><br>
+                    <strong>Threshold selection:</strong> While this demo uses the standard threshold of 0.5 (predict class 1 if $P(y=1) \geq 0.5$), in practice we often adjust this threshold based on application requirements. For safety-critical applications (e.g., structural failure detection), we might lower the threshold to $t=0.3$ to increase sensitivity—accepting more false alarms to avoid missing critical cases. The handout discusses this practical consideration in detail.
+                </div>
+
+                <div class="tab-panel" data-tab-title="Instructions">
+                    • Adjust $\alpha$ (slope) and $\beta$ (position) sliders, and toggle sigmoid activation to compare linear vs sigmoid models<br>
+                    • Click above/below y=0.5 to add class 1/0 points, or use <em>"Generate New Data"</em> and <em>"Clear All Data"</em> buttons<br>
+                    • Observe how sigmoid activation changes predictions, loss functions, and decision boundaries<br><br>
+
+                    <strong>How does the sigmoid activation change the model behavior? Which loss function is more appropriate for classification?</strong>
+                </div>
+
+                <div class="tab-panel" data-tab-title="Tips">
+                    • <strong>Decision boundary:</strong> The point where the model switches between classes<br>
+                    • <strong>Sigmoid benefits:</strong> Outputs probabilities (0-1 range) and smooth transitions<br>
+                    • <strong>Linear vs sigmoid:</strong> Linear can predict outside [0,1], sigmoid cannot<br>
+                    • <strong>Accuracy:</strong> Percentage of correctly classified points (same for both modes)<br>
+                    • <strong>Cross-entropy loss:</strong> More appropriate for classification than MSE<br>
+                    • <strong>Parameter interpretation:</strong> $\alpha$ controls steepness, $\beta$ controls position
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-area">
+            <div class="left-column-wrapper">
+                <div class="plot-container">
+                    <div style="position: relative; width: 680px; height: 280px;">
+                        <canvas id="plot"></canvas>
+                    </div>
+                </div>
+
+                <!-- Control Row: Data Buttons and Classifier Selector -->
+                <div class="control-row">
+                    <!-- Data Buttons Panel -->
+                    <div class="data-buttons-panel">
+                        <button class="data-btn" id="generate-data-btn">Generate New Data</button>
+                        <button class="data-btn" id="clear-data-btn">Clear All Data</button>
+                        <button class="data-btn solution-btn" id="solution-btn">Find Optimal Solution</button>
+                    </div>
+
+                    <!-- Classifier Selector Panel -->
+                    <div class="classifier-selector-panel">
+                        <h4>Classifier Type</h4>
+                        <div class="classifier-boxes">
+                            <div class="classifier-box active" data-classifier="linear">
+                                <svg class="classifier-graphic" viewBox="0 0 60 60" width="45" height="45">
+                                    <line x1="10" y1="50" x2="50" y2="10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                                </svg>
+                                <span class="classifier-label">Linear</span>
+                            </div>
+                            <div class="classifier-box" data-classifier="step">
+                                <svg class="classifier-graphic" viewBox="0 0 60 60" width="45" height="45">
+                                    <path d="M 10 50 L 30 50 L 30 10 L 50 10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span class="classifier-label">Step</span>
+                            </div>
+                            <div class="classifier-box" data-classifier="sigmoid">
+                                <svg class="classifier-graphic" viewBox="0 0 60 60" width="45" height="45">
+                                    <path d="M 10 50 Q 20 50 30 30 Q 40 10 50 10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                                </svg>
+                                <span class="classifier-label">Sigmoid</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="control-group">
+                    <label for="alpha">$\alpha$ (Slope)</label>
+                    <div class="slider-container">
+                        <input type="range" id="alpha" min="-5" max="5" step="0.1" value="0.1">
+                        <div class="value-display" id="alpha-value">0.1</div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="beta">$\beta$ (Threshold)</label>
+                    <div class="slider-container">
+                        <input type="range" id="beta" min="-10" max="10" step="0.1" value="0">
+                        <div class="value-display" id="beta-value">0.0</div>
+                    </div>
+                </div>
+
+                <div class="equation" id="equation">
+                    f(x) = 0.1x + 0.0
+                </div>
+
+                <div class="equation" id="accuracy" style="margin-top: 15px;">
+                    Accuracy = 0.0%
+                </div>
+
+                <div class="equation" id="loss" style="margin-top: 10px;">
+                    Loss = 0.0
+                </div>
+            </div>
+        </div>
+
+        <!-- Predictions Table -->
+        <div class="predictions-table-section">
+            <h3>Predictions Table</h3>
+            <div class="table-scroll">
+                <table class="predictions-table" id="predictionsTable">
+                    <tbody>
+                        <tr id="tableIDRow">
+                            <th>ID</th>
+                        </tr>
+                        <tr id="tableXRow">
+                            <th>$x$</th>
+                        </tr>
+                        <tr id="tableTrueYRow">
+                            <th>True $y$</th>
+                        </tr>
+                        <tr id="tablePredYRow">
+                            <th>Pred $y$</th>
+                        </tr>
+                        <tr id="tableCorrectRow">
+                            <th>Correct</th>
+                        </tr>
+                        <tr id="tableConfidenceRow">
+                            <th>Confidence</th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Theory Section -->
+        <div class="theory-section" style="display: none;">
+            <h3>Mathematical Foundations</h3>
+            <p>
+                <strong>The Sigmoid (Logistic) Function</strong> maps any real value to a probability between 0 and 1:
+                $$\sigma(z) = \frac{1}{1 + e^{-z}}$$<br>
+
+                The sigmoid has several crucial properties: its <em>range</em> is bounded to $(0, 1)$, making outputs interpretable as probabilities; it is <em>smooth</em> and differentiable everywhere, enabling gradient-based optimization; it is <em>monotonic</em>, with large positive values yielding $\sigma(z) \approx 1$ and large negative values yielding $\sigma(z) \approx 0$; and it is <em>symmetric</em> around $z=0$ where $\sigma(0) = 0.5$.<br><br>
+
+                <strong>Logistic Regression Model:</strong> The model computes a weighted combination of inputs and passes it through the sigmoid to obtain a probability:
+                $$h(\mathbf{x}) = P(y=1 \mid \mathbf{x}) = \sigma(\alpha x + \beta) = \frac{1}{1 + e^{-(\alpha x + \beta)}}$$<br>
+
+                To classify, we use a threshold (typically 0.5): predict class 1 if $h(\mathbf{x}) \geq 0.5$, otherwise predict class 0. The decision boundary occurs where $\alpha x + \beta = 0$ (where the sigmoid equals 0.5).<br><br>
+
+                <strong>Loss Functions:</strong> Unlike regression, we cannot use mean squared error (MSE) for classification because combining MSE with the sigmoid output creates a non-convex cost surface with multiple local minima. Instead, we use <strong>cross-entropy loss</strong> (also called log loss or negative log-likelihood), which is designed for probabilistic classification and remains convex:
+                $$J(\alpha, \beta) = -\frac{1}{m}\sum_{i=1}^{m}\left[y^{(i)}\log(h(x^{(i)})) + (1-y^{(i)})\log(1-h(x^{(i)}))\right]$$<br>
+
+                Cross-entropy heavily penalizes confident wrong predictions: predicting probability 0.9 for class 1 when the true label is 0 incurs much larger loss than predicting 0.6. This encourages the model to be calibrated and honest about uncertainty.<br><br>
+
+                <strong>Practical guidance:</strong> Use sigmoid activation for classification to obtain probabilistic outputs and smooth decision boundaries. The sigmoid ensures predictions stay in the valid probability range [0,1] and provides confidence estimates. Cross-entropy loss is the standard choice for training classification models because it properly handles probabilistic predictions and enables efficient gradient-based optimization.
+            </p>
+        </div>
+
+        <p style="font-style: italic; text-align: right; margin-top: 10px; color: #666; font-size: 14px;">
+            Developed by <a href="https://transport-systems.imperial.ac.uk/members/qu-k" target="_blank" style="color: #666; text-decoration: underline;">Kevin Yu</a> & <a href="https://transport-systems.imperial.ac.uk/members/angeloudis-p" target="_blank" style="color: #666; text-decoration: underline;">Panagiotis Angeloudis</a>
+        </p>
+
+    </div>
+    </div>
+
+    <script src="../scripts/demotab.js"></script>
+    <script src="../scripts/metric-box-display.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

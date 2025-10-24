@@ -1,0 +1,322 @@
+/* Classification Metrics Demo Styles */
+
+.demo-area {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.top-row {
+    display: flex;
+    gap: 20px;
+}
+
+.bottom-row {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+}
+
+.plot-container {
+    flex: 2;
+    border: 2px solid #ddd;
+    background: white;
+    padding: 10px;
+}
+
+.controls {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.dataset-selector-panel {
+    flex: 1;
+}
+
+.confusion-matrix-container {
+    flex: 1;
+}
+
+canvas {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+/* Dataset Selector Panel */
+.dataset-selector-panel {
+    border: 2px solid #ddd;
+    background: white;
+    padding: 15px;
+}
+
+.dataset-selector-panel h4 {
+    margin: 0 0 12px 0;
+    color: #2c3e50;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.dataset-boxes {
+    display: flex;
+    gap: 15px;
+    justify-content: space-between;
+}
+
+.dataset-box {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 10px;
+    border: 3px solid #bdc3c7;
+    border-radius: 8px;
+    background: #ecf0f1;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dataset-box:hover {
+    border-color: #95a5a6;
+    background: #dfe6e9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dataset-box.active {
+    border-color: #3498db;
+    background: #ebf5fb;
+}
+
+.dataset-icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.dataset-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #34495e;
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+.dataset-info {
+    font-size: 11px;
+    color: #7f8c8d;
+    text-align: center;
+}
+
+/* Confusion Matrix */
+.confusion-matrix-container {
+    border: 2px solid #ddd;
+    background: white;
+    padding: 15px;
+}
+
+.confusion-matrix-container h4 {
+    margin: 0 0 12px 0;
+    color: #2c3e50;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.confusion-matrix {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.cm-header {
+    font-weight: 600;
+    padding: 8px;
+    text-align: center;
+    color: #2c3e50;
+    font-size: 12px;
+}
+
+.cm-row-header {
+    width: 50px;
+    padding: 0;
+}
+
+.rotated-text {
+    display: inline-block;
+    transform: rotate(-90deg);
+    white-space: nowrap;
+    transform-origin: center center;
+}
+
+.cm-cell {
+    width: 120px;
+    height: 40px;
+    border: 2px solid #34495e;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    vertical-align: middle;
+}
+
+.cm-cell:hover {
+    transform: scale(1.05);
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.cm-label {
+    font-weight: 700;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.cm-count {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.cm-tp {
+    background: #d4edda;
+    color: #155724;
+}
+
+.cm-tn {
+    background: #d4edda;
+    color: #155724;
+}
+
+.cm-fp {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.cm-fn {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Alert Banner */
+.alert-banner {
+    background: #fff3cd;
+    border: 2px solid #ffc107;
+    border-radius: 4px;
+    padding: 12px;
+    color: #856404;
+    font-weight: 600;
+    text-align: center;
+    font-size: 13px;
+}
+
+/* Metrics Grid */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.metric-box {
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    padding: 12px;
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.metric-box:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.metric-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #7f8c8d;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.metric-value {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.metric-bar {
+    height: 8px;
+    background: #ecf0f1;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+
+.metric-bar-fill {
+    height: 100%;
+    transition: width 0.3s ease, background-color 0.3s ease;
+    border-radius: 4px;
+}
+
+.metric-formula {
+    font-size: 10px;
+    color: #95a5a6;
+    font-family: monospace;
+}
+
+/* Metric-specific colors */
+.metric-sensitivity .metric-value {
+    color: #27ae60;
+}
+
+.metric-sensitivity .metric-bar-fill {
+    background: linear-gradient(90deg, #27ae60, #2ecc71);
+}
+
+.metric-specificity .metric-value {
+    color: #2980b9;
+}
+
+.metric-specificity .metric-bar-fill {
+    background: linear-gradient(90deg, #2980b9, #3498db);
+}
+
+.metric-precision .metric-value {
+    color: #8e44ad;
+}
+
+.metric-precision .metric-bar-fill {
+    background: linear-gradient(90deg, #8e44ad, #9b59b6);
+}
+
+.metric-accuracy .metric-value {
+    color: #7f8c8d;
+}
+
+.metric-accuracy .metric-bar-fill {
+    background: linear-gradient(90deg, #7f8c8d, #95a5a6);
+}
+
+.metric-f1 .metric-value {
+    color: #d35400;
+}
+
+.metric-f1 .metric-bar-fill {
+    background: linear-gradient(90deg, #d35400, #e67e22);
+}
+
+.metric-balanced .metric-value {
+    color: #16a085;
+}
+
+.metric-balanced .metric-bar-fill {
+    background: linear-gradient(90deg, #16a085, #1abc9c);
+}
+
+/* Value display */
+.value-display {
+    font-size: 16px;
+    font-weight: bold;
+    color: #2563eb;
+}
