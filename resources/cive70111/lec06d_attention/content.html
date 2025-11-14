@@ -40,7 +40,7 @@
                     <p>The attention mechanism computes a weighted average of value vectors, where weights are determined by the compatibility between queries and keys:</p>
 
                     <div class="metriclabel-block">
-                        $$\text{Attention}(Q,K,V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
+                        $$\operatorname{Attention}(Q,K,V) = \operatorname{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
                     </div>
 
                     <p><strong>Step-by-step process:</strong></p>
@@ -48,7 +48,7 @@
                         <li><strong>Linear Transformations:</strong> $Q = XW_Q$, $K = XW_K$, $V = XW_V$</li>
                         <li><strong>Compute Scores:</strong> $S = \frac{QK^T}{\sqrt{d_k}}$ (scaled dot-product)</li>
                         <li><strong>Apply Mask:</strong> Set future positions to $-\infty$ for causal attention</li>
-                        <li><strong>Normalize:</strong> $A = \text{softmax}(S)$ (attention weights sum to 1)</li>
+                        <li><strong>Normalize:</strong> $A = \operatorname{softmax}(S)$ (attention weights sum to 1)</li>
                         <li><strong>Weighted Sum:</strong> $O = AV$ (final output)</li>
                     </ol>
 
@@ -183,7 +183,7 @@
             <p>
                 <strong>Query, Key, Value Transformations:</strong> The input embeddings are transformed into three different representations using learned weight matrices: $Q = XW_Q$, $K = XW_K$, $V = XW_V$ where $X$ is the input embedding matrix. These transformations allow each token to simultaneously ask for information (Query), offer information (Key), and contain information (Value).<br><br>
 
-                <strong>Attention Weights:</strong> $A = \mathrm{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)$ where each row sums to 1. The attention mechanism computes compatibility scores between queries and keys using the scaled dot-product. The scaling factor $\sqrt{d_k}$ prevents the dot products from becoming too large, which would push the softmax into regions with extremely small gradients. The softmax operation ensures that attention weights are normalized probabilities that sum to 1 for each position.<br><br>
+                <strong>Attention Weights:</strong> $A = \operatorname{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)$ where each row sums to 1. The attention mechanism computes compatibility scores between queries and keys using the scaled dot-product. The scaling factor $\sqrt{d_k}$ prevents the dot products from becoming too large, which would push the softmax into regions with extremely small gradients. The softmax operation ensures that attention weights are normalized probabilities that sum to 1 for each position.<br><br>
 
                 <strong>Output Computation:</strong> $O = AV$ - the final output is a weighted combination of value vectors. Each output position receives a weighted sum of all value vectors, where the weights are determined by the attention scores. This allows the model to dynamically aggregate information from relevant positions in the input sequence based on learned patterns of relevance.
             </p>
