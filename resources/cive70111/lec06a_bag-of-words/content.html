@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bag of Words</title>
+    <script src="../phoebe-js/mathhelper.js"></script>
+    <script src="../phoebe-js/canvashelper.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../phoebe-js/phoebe.css">
+    <link rel="stylesheet" href="../phoebe-js/demo-common.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="iframe-content">
+        <div class="container">
+
+        <div class="infotab">
+            <div class="infotab-header">
+            </div>
+
+            <div class="infotab-content">
+                <div class="infotab-panel active" data-tab-title="Introduction">
+                    <strong>Bag of Words</strong><br><br>
+                    This interactive demo demonstrates how text is converted into numerical representations using the bag-of-words approach. Enter sentences to see how each word maps to a position in a 370,000+ word dictionary.<br><br>
+                    The demo uses one-hot encoding to create sparse vectors representing each sentence. Compare two sentences to see how bag-of-words treats text as an unordered collection of words - "john ate the horse" and "the horse ate john" produce identical representations.
+                </div>
+
+                <div class="infotab-panel" data-tab-title="Theory">
+                    <strong>Bag of Words Representation:</strong><br><br>
+                    The bag-of-words model represents text as a collection of words, disregarding grammar and word order. Each unique word in the vocabulary gets assigned an index position.<br><br>
+                    <strong>One-Hot Encoding:</strong><br>
+                    For a vocabulary of size $n$, each sentence is represented as a binary vector of length $n$, where position $i$ is 1 if word $w_i$ appears in the sentence, and 0 otherwise.<br><br>
+                    For vocabulary $V = \{w_1, w_2, ..., w_n\}$ and sentence $s$:<br>
+                    <div class="math-block">$$\mathrm{BoW}(s) = [b_1, b_2, \ldots, b_n]$$</div>
+                    where $b_i = 1$ if $w_i \in s$, else $b_i = 0$<br><br>
+                    <strong>Cosine Similarity:</strong><br>
+                    To compare two vectors $\mathbf{A}$ and $\mathbf{B}$:<br>
+                    <div class="math-block">$$\mathrm{similarity} = \frac{\mathbf{A} \cdot \mathbf{B}}{\lVert\mathbf{A}\rVert\, \lVert\mathbf{B}\rVert} = \frac{\sum_{i=1}^{n} A_i B_i}{\sqrt{\sum_{i=1}^{n} A_i^2} \times \sqrt{\sum_{i=1}^{n} B_i^2}}$$</div>
+                    This gives a value between 0 and 1, which we convert to a percentage.
+                </div>
+
+                <div class="infotab-panel" data-tab-title="Instructions">
+                    <strong>How to Use:</strong><br><br>
+                    1. <em>Enter a sentence</em> in Sentence 1 input field (e.g., "john ate the horse")<br>
+                    2. <em>Click "Analyze Sentence 1"</em> to see word-to-index mappings and the sparse vector representation<br>
+                    3. <em>Enter a different sentence</em> in Sentence 2 (e.g., "the horse ate john")<br>
+                    4. <em>Click "Analyze Sentence 2"</em> to process the second sentence<br>
+                    5. <em>Click "Compare Sentences"</em> to calculate cosine similarity between the two vectors<br><br>
+                    <strong>Try these examples:</strong><br>
+                    • "john ate the horse" vs "the horse ate john" - should show 100% similarity (same words, different order)<br>
+                    • "i love cats" vs "i love dogs" - moderate similarity (two shared words out of three)<br>
+                    • "the cat sleeps" vs "dogs run fast" - low similarity (no shared words)
+                </div>
+
+                <div class="infotab-panel" data-tab-title="Tips">
+                    <strong>Understanding Bag of Words:</strong><br><br>
+                    • <strong>Order Independence:</strong> Word order is completely ignored. "john ate the horse" = "the horse ate john" in terms of representation<br>
+                    • <strong>Loss of Meaning:</strong> "john ate the horse" and "the horse ate john" have very different meanings but identical bag-of-words representations<br>
+                    • <strong>Sparse Vectors:</strong> With 370,103 words in the dictionary, most vector positions are 0. A typical sentence only activates 3-8 positions<br>
+                    • <strong>Unknown Words:</strong> Words not in the dictionary are highlighted in red and ignored in the vector representation<br>
+                    • <strong>Case Insensitive:</strong> All words are converted to lowercase before lookup<br>
+                    • <strong>Punctuation:</strong> Automatically removed during tokenization<br><br>
+                    <strong>Real-World Applications:</strong><br>
+                    • Document classification (spam detection, topic categorization)<br>
+                    • Information retrieval (search engines)<br>
+                    • Sentiment analysis (positive/negative classification)<br>
+                    • Text clustering (grouping similar documents)
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-area">
+            <div class="plot-container">
+                <!-- Sentence 1 Section -->
+                <div class="sentence-section">
+                    <h4 class="section-title">Sentence 1</h4>
+                    <div class="input-row">
+                        <input type="text" id="sentence1-input" class="sentence-input" placeholder="Enter a sentence (e.g., john ate the horse)" value="john ate the horse">
+                        <button id="analyze1-btn" class="analyze-btn">Analyze Sentence 1</button>
+                    </div>
+                    <div id="sentence1-results" class="results-area">
+                        <div class="result-section">
+                            <div class="result-label">Word-to-Index Mapping:</div>
+                            <div id="sentence1-mapping" class="mapping-display">Click "Analyze Sentence 1" to see results</div>
+                        </div>
+                        <div class="result-section">
+                            <div class="result-label">Active Indices (One-Hot Vector):</div>
+                            <div id="sentence1-indices" class="indices-display">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sentence 2 Section -->
+                <div class="sentence-section">
+                    <h4 class="section-title">Sentence 2</h4>
+                    <div class="input-row">
+                        <input type="text" id="sentence2-input" class="sentence-input" placeholder="Enter a sentence (e.g., the horse ate john)" value="the horse ate john">
+                        <button id="analyze2-btn" class="analyze-btn">Analyze Sentence 2</button>
+                    </div>
+                    <div id="sentence2-results" class="results-area">
+                        <div class="result-section">
+                            <div class="result-label">Word-to-Index Mapping:</div>
+                            <div id="sentence2-mapping" class="mapping-display">Click "Analyze Sentence 2" to see results</div>
+                        </div>
+                        <div class="result-section">
+                            <div class="result-label">Active Indices (One-Hot Vector):</div>
+                            <div id="sentence2-indices" class="indices-display">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Comparison Section -->
+                <div class="comparison-section">
+                    <h4 class="section-title">Sentence Comparison</h4>
+                    <div class="comparison-content">
+                        <button id="compare-btn" class="compare-btn">Compare Sentences</button>
+                        <div id="similarity-result" class="similarity-display">
+                            <div class="similarity-label">Cosine Similarity:</div>
+                            <div id="similarity-value" class="similarity-value">-</div>
+                        </div>
+                    </div>
+                    <div id="comparison-note" class="comparison-note"></div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div style="padding: 15px; background: white; border-radius: 8px; border: 1px solid #ddd;">
+                    <h4>Dictionary Information</h4>
+                    <p>Using English dictionary with <strong id="dict-size">-</strong> words</p>
+                    <p id="loading-status" class="loading-status">Loading dictionary...</p>
+                </div>
+            </div>
+        </div>
+
+        </div>
+    </div>
+
+    <script src="../phoebe-js/infotab.js"></script>
+    <script src="../phoebe-js/paramslider.js"></script>
+    <script src="../phoebe-js/metriclabel.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Initialize the demo when the page loads
+        window.addEventListener('DOMContentLoaded', function() {
+            // Initialize info tabs
+            new InfoTab();
+
+            // Initialize the demo
+            new BagOfWordsDemo();
+        });
+    </script>
+</body>
+</html>

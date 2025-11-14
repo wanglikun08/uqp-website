@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recurrent Neural Networks</title>
+    <script src="../phoebe-js/mathhelper.js"></script>
+    <script src="../phoebe-js/canvashelper.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../phoebe-js/phoebe.css">
+    <link rel="stylesheet" href="../phoebe-js/demo-common.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="iframe-content">
+        <div class="container">
+
+        <div class="infotab">
+            <div class="infotab-header">
+            </div>
+
+            <div class="infotab-content">
+                <div class="infotab-panel active" data-tab-title="Introduction">
+                    <strong>Recurrent Neural Networks (RNNs)</strong><br><br>
+                    This interactive demo shows how Recurrent Neural Networks process sequential data step-by-step. RNNs have a "memory" that allows them to use information from previous timesteps when processing current inputs.<br><br>
+                    You'll explore how the hidden state evolves over time and see how different weights and activation functions affect the network's behavior on various sequence patterns.
+                </div>
+
+                <div class="infotab-panel" data-tab-title="Theory">
+                    <strong>RNN Architecture Components:</strong><br><br>
+                    • <strong>Hidden State:</strong> $h_t$ - Memory that carries information from previous timesteps<br>
+                    • <strong>Input Weight:</strong> $W_{input}$ - How much the current input affects the hidden state<br>
+                    • <strong>Hidden Weight:</strong> $W_{hidden}$ - How much the previous hidden state influences the current one<br>
+                    • <strong>Output Weight:</strong> $W_{output}$ - Projects hidden state to prediction space<br>
+                    • <strong>Biases:</strong> Constant terms added to the computation<br>
+                    • <strong>Activation Function:</strong> Non-linear transformation (tanh, ReLU, sigmoid)<br><br>
+                    <strong>RNN Formulas:</strong><br>
+                    $h_t = f(W_{input} \cdot x_t + W_{hidden} \cdot h_{t-1} + b_{hidden})$<br>
+                    $y_t = W_{output} \cdot h_t + b_{output}$<br><br>
+                    Where $f$ is the activation function, $x_t$ is the input at time $t$, $h_{t-1}$ is the previous hidden state, and $y_t$ is the output prediction.<br><br>
+                    <strong>Note:</strong> The output layer separates internal memory ($h_t$) from task-specific predictions ($y_t$).
+                </div>
+
+                <div class="infotab-panel" data-tab-title="Instructions">
+                    <strong>How to Use:</strong><br><br>
+                    • <em>Select a sequence</em> to see different patterns (Fibonacci, linear, etc.)<br>
+                    • <em>Adjust weights</em> to see how they affect hidden state and output evolution<br>
+                    • <em>Try different activation functions</em> to understand their impact<br>
+                    • <em>Use "Step Forward"</em> to manually process each timestep<br>
+                    • <em>Click "Train (BPTT)"</em> to train using gradient-based backpropagation through time (the real algorithm)<br>
+                    • <em>Click "Random Search"</em> for comparison baseline (tries random weights without gradients)<br>
+                    • <em>Toggle "Raw/Normalized Inputs"</em> to scale sequences to [-1, 1] range<br><br>
+                    <strong>Sequence Types:</strong><br>
+                    • <em>Fibonacci:</em> Each number is sum of previous two (requires richer state)<br>
+                    • <em>Linear:</em> Simple counting sequence<br>
+                    • <em>Alternating:</em> Pattern that switches between values<br>
+                    • <em>Exponential:</em> Powers of 2 sequence<br>
+                    • <em>Sine Pattern:</em> Smooth oscillating values
+                </div>
+
+                <div class="infotab-panel" data-tab-title="Tips">
+                    <strong>Understanding RNN Behavior:</strong><br><br>
+                    • <strong>Input Weight ($W_{input}$):</strong> Higher values make current input more influential<br>
+                    • <strong>Hidden Weight ($W_{hidden}$):</strong> Controls memory retention. |$W_{hidden}$| > 1 can cause explosion, < 1 causes decay<br>
+                    • <strong>Output Layer:</strong> Separates internal memory ($h_t$) from predictions ($y_t$). Essential for flexible modeling<br>
+                    • <strong>Activation Functions:</strong><br>
+                      - <em>Tanh:</em> Outputs between -1 and 1, standard for RNN hidden states<br>
+                      - <em>ReLU:</em> Only positive outputs, can cause exploding gradients in recurrence<br>
+                      - <em>Sigmoid:</em> Outputs between 0 and 1, prone to vanishing gradients<br>
+                      - <em>Linear:</em> No saturation but unstable without careful weight tuning<br><br>
+                    <strong>Training Insights:</strong><br>
+                    • <strong>BPTT vs Random Search:</strong> "Train (BPTT)" uses gradient descent (the real algorithm used in practice). "Random Search" tries random weight combinations as a baseline for comparison. BPTT is vastly more efficient and shows why gradient-based optimization revolutionized neural networks.<br>
+                    • <strong>BPTT Algorithm:</strong> Backpropagation through time unfolds the network and computes gradients across all timesteps using the chain rule. Updates weights via gradient descent: w = w - lr * ∇w.<br>
+                    • <strong>Gradient Clipping:</strong> The demo clips gradients to [-5, 5] to prevent explosion, a critical technique for RNN training<br>
+                    • <strong>Learning Rate:</strong> Controls step size during gradient descent. Too high causes instability, too low causes slow convergence<br>
+                    • <strong>Normalization:</strong> Helps prevent activation saturation with bounded functions<br><br>
+                    <strong>Limitations:</strong><br>
+                    • This demo uses a single scalar hidden unit. Real RNNs use vector hidden states for richer memory<br>
+                    • Fibonacci requires memory of two previous values - a single scalar $h_t$ is insufficient
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-area">
+            <div class="plot-container">
+                <div style="margin-bottom: 20px;">
+                    <h4 class="section-title">Input Sequence ($x_t$)</h4>
+                    <canvas id="input-canvas" width="635" height="150"></canvas>
+                </div>
+
+                <div style="margin-bottom: 20px; position: relative;">
+                    <h4 class="section-title">RNN Cell</h4>
+                    <canvas id="rnn-canvas" width="635" height="300"></canvas>
+                    <button id="step-btn" class="generate-data-btn canvas-button-left">Step Forward</button>
+                    <button id="reset-btn" class="clear-data-btn canvas-button-right">Reset</button>
+                    <button id="train-btn" class="generate-data-btn canvas-button-bottom-left">Train (BPTT)</button>
+                    <button id="optimise-btn" class="generate-data-btn canvas-button-bottom-right">Random Search</button>
+
+                    <!-- Metrics Display -->
+                    <div style="position: absolute; bottom: 55px; left: 10px; width: 150px; box-sizing: border-box; background: rgba(255,255,255,0.9); padding: 8px 12px; border-radius: 4px; border: 1px solid #ddd;">
+                        <div style="font-size: 11px; color: #666; margin-bottom: 4px;">Loss: <span id="metric-loss" style="font-weight: bold; color: #333;">-</span></div>
+                        <div style="font-size: 11px; color: #666;">Grad Norm: <span id="metric-gradnorm" style="font-weight: bold; color: #333;">-</span></div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h4 class="section-title">Output Sequence ($y_t$)</h4>
+                    <canvas id="output-canvas" width="635" height="200"></canvas>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="fancybox-panel">
+                    <h4>Input Sequence</h4>
+                    <div class="fancybox-container">
+                        <div class="fancybox active sequence-box" data-type="fibonacci" data-color="blue" data-label="Fibonacci">
+                            <svg class="sequence-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <line x1="10" y1="2" x2="10" y2="18" stroke="currentColor" stroke-width="1" opacity="0.3"/>
+                                <line x1="2" y1="10" x2="18" y2="10" stroke="currentColor" stroke-width="1" opacity="0.3"/>
+                                <text x="5" y="7.5" text-anchor="middle" font-size="7" font-weight="bold" fill="currentColor">1</text>
+                                <text x="15" y="7.5" text-anchor="middle" font-size="7" font-weight="bold" fill="currentColor">1</text>
+                                <text x="5" y="16.5" text-anchor="middle" font-size="7" font-weight="bold" fill="currentColor">2</text>
+                                <text x="15" y="16.5" text-anchor="middle" font-size="7" font-weight="bold" fill="currentColor">3</text>
+                            </svg>
+                        </div>
+                        <div class="fancybox sequence-box" data-type="linear" data-color="orange" data-label="Linear">
+                            <svg class="sequence-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <line x1="2" y1="18" x2="18" y2="2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <polyline points="14,2 18,2 18,6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                            </svg>
+                        </div>
+                        <div class="fancybox sequence-box" data-type="alternating" data-color="purple" data-label="Alternating">
+                            <svg class="sequence-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <polyline points="2,14 2,6 6,6 6,14 10,14 10,6 14,6 14,14 18,14" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" fill="none"/>
+                            </svg>
+                        </div>
+                        <div class="fancybox sequence-box" data-type="exponential" data-color="teal" data-label="Exponential">
+                            <svg class="sequence-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2 17.5 L5 17 L8 15.5 L11 12 L14 6 L17 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                            </svg>
+                        </div>
+                        <div class="fancybox sequence-box" data-type="sine" data-color="green" data-label="Sine">
+                            <svg class="sequence-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2 10 Q 5 2, 10 10 T 18 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fancybox-panel">
+                    <h4>Activation Function</h4>
+                    <div class="fancybox-container">
+                        <div class="fancybox" data-type="linear" data-color="blue" data-icon="━" data-label="Linear"></div>
+                        <div class="fancybox" data-type="relu" data-color="orange" data-icon="⌐" data-label="ReLU"></div>
+                        <div class="fancybox" data-type="sigmoid" data-color="purple" data-icon="∫" data-label="Sigmoid"></div>
+                        <div class="fancybox active" data-type="tanh" data-color="teal" data-icon="∿" data-label="Tanh"></div>
+                    </div>
+                </div>
+
+                <div class="fancybox-panel">
+                    <h4>Input Scaling</h4>
+                    <div class="fancybox-container" id="input-scaling-container">
+                        <div class="fancybox active" data-type="raw" data-color="blue" data-icon="#" data-label="Raw Inputs"></div>
+                        <div class="fancybox" data-type="normalized" data-color="teal" data-icon="~" data-label="Normalized"></div>
+                    </div>
+                </div>
+
+                <div style="padding: 15px; background: white; border-radius: 8px; border: 1px solid #ddd; margin-top: 15px;">
+                    <div id="paramslider-learning-rate"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Parameter Sliders Section -->
+        <div style="width: 100%; max-width: 100%; box-sizing: border-box; margin-top: 20px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px;">
+                <div id="paramslider-input-weight"></div>
+                <div id="paramslider-hidden-weight"></div>
+                <div id="paramslider-output-weight"></div>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin-top: 15px;">
+                <div></div>
+                <div id="paramslider-hidden-bias"></div>
+                <div id="paramslider-output-bias"></div>
+            </div>
+        </div>
+
+        <!-- Sequence Processing History Table -->
+        <div class="horizontal-scroll-container" style="width: 100%; max-width: 100%; overflow: hidden; box-sizing: border-box; margin-top: 20px;">
+            <div class="horizontal-scroll-title">Sequence Processing History</div>
+            <div class="horizontal-scroll" id="historyScroll">
+                <table class="horizontal-scroll-table" id="historyTable">
+                    <tbody id="historyBody">
+                        <tr class="history-row-step">
+                            <th>Step</th>
+                            <td class="current-iteration">-</td>
+                        </tr>
+                        <tr class="history-row-input">
+                            <th>Input (x<sub>t</sub>)</th>
+                            <td class="current-iteration">-</td>
+                        </tr>
+                        <tr class="history-row-expected">
+                            <th>Expected Next</th>
+                            <td class="current-iteration">-</td>
+                        </tr>
+                        <tr class="history-row-output">
+                            <th>Actual Output (y<sub>t</sub>)</th>
+                            <td class="current-iteration">-</td>
+                        </tr>
+                        <tr class="history-row-error">
+                            <th>Error (Δ)</th>
+                            <td class="current-iteration">-</td>
+                        </tr>
+                        <tr class="history-row-expected-delta">
+                            <th>Expected Δ Output</th>
+                            <td class="current-iteration">-</td>
+                        </tr>
+                        <tr class="history-row-actual-delta">
+                            <th>Actual Δ Output</th>
+                            <td class="current-iteration">-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        </div>
+    </div>
+
+    <script src="../phoebe-js/infotab.js"></script>
+    <script src="../phoebe-js/paramslider.js"></script>
+    <script src="../phoebe-js/metriclabel.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Initialize the demo when the page loads
+        window.addEventListener('DOMContentLoaded', function() {
+            // Initialize info tabs
+            new InfoTab();
+
+            // Initialize the demo
+            new RNNDemo();
+        });
+    </script>
+</body>
+</html>

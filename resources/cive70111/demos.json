@@ -165,20 +165,36 @@
       "week": 7,
       "lectureNumber": "06",
       "lectureTitle": "Attention",
-      "locked": true,
+      "locked": false,
       "demos": [
         {
-          "id": "rnn",
+          "id": "bag-of-words",
           "code": "lec06a",
-          "path": "lec06a_rnn",
-          "title": "Recurrent Neural Networks",
+          "path": "lec06a_bag-of-words",
+          "title": "Bag of Words",
+          "description": "Explore how text can be converted into numerical representations using the bag-of-words approach. See how documents become vectors based on word frequencies.",
+          "preview": "preview.svg"
+        },
+        {
+          "id": "rnn",
+          "code": "lec06b",
+          "path": "lec06b_rnn",
+          "title": "RNNs",
           "description": "Discover how RNNs process sequential data step-by-step. Visualize hidden state evolution and understand the core mechanics of recurrent processing.",
           "preview": "preview.svg"
         },
         {
+          "id": "lstm",
+          "code": "lec06c",
+          "path": "lec06c_lstm",
+          "title": "LSTMs",
+          "description": "Explore Long Short-Term Memory networks with sophisticated gating mechanisms. See how forget, input, cell, and output gates work together to maintain long-term dependencies.",
+          "preview": "preview.svg"
+        },
+        {
           "id": "attention",
-          "code": "lec06b",
-          "path": "lec06b_attention",
+          "code": "lec06d",
+          "path": "lec06d_attention",
           "title": "Attention Mechanism",
           "description": "Explore how attention mechanisms work through Q, K, V computations and dot-product attention. Visualize how tokens attend to each other in sequence processing.",
           "preview": "preview.svg"

@@ -1,0 +1,152 @@
+/* Demo-specific styling for RNN demo */
+
+/* Override fancybox greying - keep text/icons visible */
+.fancybox {
+    opacity: 0.7 !important;
+    filter: grayscale(0%) !important;
+    padding: 5px !important;
+}
+
+.fancybox:hover {
+    opacity: 0.85 !important;
+}
+
+.fancybox.active {
+    opacity: 1 !important;
+}
+
+/* Keep icon and label text fully visible on inactive boxes */
+.fancybox:not(.active)::before,
+.fancybox:not(.active)::after {
+    opacity: 1;
+    color: #333 !important;
+}
+
+/* Slightly desaturate background color only on inactive boxes */
+.fancybox:not(.active) {
+    background: #f5f5f5;
+    border-color: #d0d0d0;
+}
+
+/* Ensure graphics/SVG remain visible on inactive boxes */
+.fancybox:not(.active) .fancybox-graphic {
+    opacity: 1;
+}
+
+/* Adjust fancybox panels for better spacing */
+.fancybox-panel {
+    margin-bottom: 15px;
+}
+
+/* Make fancybox containers wrap and center nicely */
+.fancybox-container {
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* Hide emoji icons for sequence boxes (using SVG instead) */
+.fancybox.sequence-box::before {
+    content: none !important;
+}
+
+/* Style SVG icons in sequence boxes */
+.sequence-icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 6px;
+    color: currentColor;
+    width: 28px;
+    height: 28px;
+}
+
+/* Ensure SVG icons inherit the fancybox color */
+.fancybox.sequence-box[data-color="blue"] .sequence-icon {
+    color: #1976d2;
+}
+
+.fancybox.sequence-box[data-color="orange"] .sequence-icon {
+    color: #f57c00;
+}
+
+.fancybox.sequence-box[data-color="purple"] .sequence-icon {
+    color: #7b1fa2;
+}
+
+.fancybox.sequence-box[data-color="teal"] .sequence-icon {
+    color: #00897b;
+}
+
+.fancybox.sequence-box[data-color="green"] .sequence-icon {
+    color: #388e3c;
+}
+
+/* Position buttons over RNN canvas */
+.canvas-button-left,
+.canvas-button-right,
+.canvas-button-bottom-right {
+    position: absolute;
+    z-index: 10;
+    width: 150px;
+}
+
+.canvas-button-left {
+    top: 40px;
+    left: 10px;
+}
+
+.canvas-button-right {
+    top: 40px;
+    right: 10px;
+}
+
+.canvas-button-bottom-right {
+    bottom: 10px;
+    right: 10px;
+}
+
+/* Make Step Forward button green */
+#step-btn.generate-data-btn {
+    background-color: #4caf50;
+    border-color: #4caf50;
+}
+
+#step-btn.generate-data-btn:hover {
+    background-color: #45a049;
+    border-color: #45a049;
+}
+
+/* Parameter grid layout - 4 columns for LSTM gates */
+.parameter-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    width: 100%;
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+/* 2x2 grid for sliders within each gate column */
+.parameter-column {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.parameter-column h4 {
+    margin: 0 0 10px 0;
+    color: #2c3e50;
+    font-size: 14px;
+    text-align: center;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #ddd;
+    grid-column: 1 / -1; /* Span both columns */
+}
+
+/* Center the parameter slider labels */
+.control-group label {
+    text-align: center;
+}

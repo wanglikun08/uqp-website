@@ -124,34 +124,33 @@
 
                 <!-- Input Sequence & QKV Matrices -->
                 <div class="attention-container">
-                    <h4 style="margin: 0 0 15px 0; text-align: center; color: #2c3e50;">Input Sequence & Query, Key, Value Matrices</h4>
                     <div style="display: flex; align-items: flex-start; gap: 30px;">
                         <!-- Input Sequence -->
                         <div style="flex: 0 0 200px;">
-                            <h5 style="margin: 0 0 10px 0; color: #2c3e50; text-align: center;">Input Tokens</h5>
+                            <h4 style="margin: 0 0 15px 0; color: #2c3e50; text-align: center;">Input Tokens</h4>
                             <div class="vertical-sequence-container" id="input-sequence">
                                 <!-- Tokens will be dynamically generated -->
                             </div>
                         </div>
 
                         <!-- QKV Matrices -->
-                        <div style="flex: 1; display: flex; gap: 20px;">
-                            <div class="vertical-matrix-section">
-                                <div class="matrix-title query">Query (Q)</div>
-                                <canvas id="q-canvas" width="160" height="220"></canvas>
-                            </div>
-                            <div class="vertical-matrix-section">
-                                <div class="matrix-title key">Key (K)</div>
-                                <canvas id="k-canvas" width="160" height="220"></canvas>
-                            </div>
-                            <div class="vertical-matrix-section">
-                                <div class="matrix-title value">Value (V)</div>
-                                <canvas id="v-canvas" width="160" height="220"></canvas>
+                        <div style="flex: 1;">
+                            <h4 style="margin: 0 0 15px 0; text-align: center; color: #2c3e50;">Query, Key, Value Matrices</h4>
+                            <div style="display: flex; gap: 20px; justify-content: center;">
+                                <div class="vertical-matrix-section">
+                                    <div class="matrix-title query">Query (Q)</div>
+                                    <canvas id="q-canvas" width="200"></canvas>
+                                </div>
+                                <div class="vertical-matrix-section">
+                                    <div class="matrix-title key">Key (K)</div>
+                                    <canvas id="k-canvas" width="200"></canvas>
+                                </div>
+                                <div class="vertical-matrix-section">
+                                    <div class="matrix-title value">Value (V)</div>
+                                    <canvas id="v-canvas" width="200"></canvas>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="math-explanation" id="qkv-explanation">
-                        $Q = XW_Q$, $K = XW_K$, $V = XW_V$ where $X$ is the input embedding matrix
                     </div>
                 </div>
 
@@ -174,16 +173,20 @@
                             </div>
                         </div>
                     </div>
-                    <div style="display: flex; gap: 20px;">
-                        <div class="math-explanation" id="attention-explanation" style="width: 31%; margin: 10px 0 0 0;">
-                            Attention weights: $A = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)$ where each row sums to 1
-                        </div>
-                        <div class="math-explanation" id="output-explanation" style="width: 62%; margin: 10px 0 0 0;">
-                            Output: $O = AV$ - weighted combination of value vectors
-                        </div>
-                    </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Theory Section -->
+        <div class="theory-section">
+            <h3>Mathematical Foundations</h3>
+            <p>
+                <strong>Query, Key, Value Transformations:</strong> The input embeddings are transformed into three different representations using learned weight matrices: $Q = XW_Q$, $K = XW_K$, $V = XW_V$ where $X$ is the input embedding matrix. These transformations allow each token to simultaneously ask for information (Query), offer information (Key), and contain information (Value).<br><br>
+
+                <strong>Attention Weights:</strong> $A = \mathrm{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)$ where each row sums to 1. The attention mechanism computes compatibility scores between queries and keys using the scaled dot-product. The scaling factor $\sqrt{d_k}$ prevents the dot products from becoming too large, which would push the softmax into regions with extremely small gradients. The softmax operation ensures that attention weights are normalized probabilities that sum to 1 for each position.<br><br>
+
+                <strong>Output Computation:</strong> $O = AV$ - the final output is a weighted combination of value vectors. Each output position receives a weighted sum of all value vectors, where the weights are determined by the attention scores. This allows the model to dynamically aggregate information from relevant positions in the input sequence based on learned patterns of relevance.
+            </p>
         </div>
 
         </div>

@@ -1,0 +1,108 @@
+/* Demo-specific styling for convolution & pooling demo */
+
+/* Make demo-area a column layout */
+.demo-area {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+/* 2x2 Grid for canvases */
+.canvas-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    width: 100%;
+}
+
+.canvas-grid > div {
+    text-align: center;
+}
+
+.canvas-grid h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+/* Make fancybox containers wrap and center nicely */
+.fancybox-container {
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* Adjust fancybox panels for better spacing */
+.fancybox-panel {
+    margin-bottom: 15px;
+}
+
+/* Override fancybox greying - keep text/icons visible */
+.fancybox {
+    opacity: 0.7 !important;
+    filter: grayscale(0%) !important;
+}
+
+.fancybox:hover {
+    opacity: 0.85 !important;
+}
+
+.fancybox.active {
+    opacity: 1 !important;
+}
+
+/* Keep icon and label text fully visible on inactive boxes */
+.fancybox:not(.active)::before,
+.fancybox:not(.active)::after {
+    opacity: 1;
+    color: #333 !important;
+}
+
+/* Slightly desaturate background color only on inactive boxes */
+.fancybox:not(.active) {
+    background: #f5f5f5;
+    border-color: #d0d0d0;
+}
+
+/* Ensure graphics/SVG remain visible on inactive boxes */
+.fancybox:not(.active) .fancybox-graphic {
+    opacity: 1;
+}
+
+/* Filter editor styling */
+#filter-editor {
+    margin-top: 10px;
+}
+
+#filter-editor label {
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* Ensure metric labels are displayed inline */
+.metriclabel {
+    flex: 1;
+    min-width: 120px;
+}
+
+/* Pooling controls row - full width horizontal layout */
+.pooling-controls-row {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.pooling-controls-row .fancybox-panel {
+    margin-bottom: 0;
+    flex-shrink: 0;
+}
+
+.pooling-controls-row .fancybox-panel h4 {
+    margin-top: 0;
+    margin-bottom: 8px;
+}

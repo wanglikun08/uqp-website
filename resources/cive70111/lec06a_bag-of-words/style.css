@@ -1,0 +1,235 @@
+/* Bag of Words Demo - Custom Styles */
+
+/* Sentence Section Styling */
+.sentence-section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.input-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.sentence-input {
+    flex: 1;
+    padding: 12px 16px;
+    font-size: 16px;
+    border: 2px solid #4a90e2;
+    border-radius: 6px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    transition: border-color 0.2s;
+}
+
+.sentence-input:focus {
+    outline: none;
+    border-color: #357abd;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.analyze-btn {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    background: #4a90e2;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+
+.analyze-btn:hover {
+    background: #357abd;
+}
+
+.analyze-btn:active {
+    background: #2868a8;
+}
+
+/* Results Area */
+.results-area {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.result-section {
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+}
+
+.result-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.mapping-display {
+    font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #333;
+    word-wrap: break-word;
+}
+
+.word-found {
+    color: #28a745;
+    font-weight: 500;
+}
+
+.word-not-found {
+    color: #dc3545;
+    font-weight: 600;
+    background: #fff5f5;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+.indices-display {
+    font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+    font-size: 14px;
+    color: #333;
+}
+
+.indices-list {
+    color: #4a90e2;
+    font-weight: 600;
+}
+
+.indices-count {
+    color: #666;
+    font-size: 13px;
+    font-style: italic;
+    margin-left: 8px;
+}
+
+/* Comparison Section */
+.comparison-section {
+    margin-top: 30px;
+    padding: 25px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 8px;
+    color: white;
+}
+
+.comparison-section .section-title {
+    color: white;
+    margin-bottom: 20px;
+}
+
+.comparison-content {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 15px;
+}
+
+.compare-btn {
+    padding: 14px 32px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #667eea;
+    background: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.compare-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.compare-btn:active {
+    transform: translateY(0);
+}
+
+.similarity-display {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.similarity-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.similarity-value {
+    font-size: 48px;
+    font-weight: 800;
+    color: white;
+    font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.comparison-note {
+    font-size: 15px;
+    font-weight: 500;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+/* Loading Status */
+.loading-status {
+    font-weight: 600;
+    color: #f0ad4e;
+}
+
+/* MathJax blocks inside theory tab */
+.math-block {
+    margin: 12px 0 18px;
+    text-align: left;
+    line-height: 1.5;
+}
+
+.math-block mjx-container {
+    display: block;
+    margin: 0 !important;
+}
+
+.infotab-panel mjx-container[jax='CHTML'] {
+    line-height: 1.35 !important;
+}
+
+.infotab-panel mjx-container[display='true'] {
+    margin: 6px 0 10px !important;
+    text-align: left !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .input-row {
+        flex-direction: column;
+    }
+
+    .comparison-content {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .similarity-display {
+        justify-content: center;
+    }
+
+    .similarity-value {
+        font-size: 36px;
+    }
+}
