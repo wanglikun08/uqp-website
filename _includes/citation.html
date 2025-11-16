@@ -41,7 +41,7 @@
           {{ citation.title | default: "[no title info]" }}
         </a>
         
-        {% if citation.date %}
+        {% if citation.date and citation.date != "" %}
           &nbsp;({{ citation.date | date: "%Y" }})
         {% endif %}
 
