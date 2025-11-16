@@ -18,9 +18,7 @@ redirect_from:
 
 # Publications
 
-We primarily publish our research in the Transportation Research journal series and relevant IEEE Transactions titles. 
-
-Most of our recent work should be accessible on an Open Access basis. However, if you cannot locate a specific manuscript online, please feel free to contact us.
+We primarily publish our research in the Transportation Research journal series and relevant IEEE Transactions titles. Most of our recent work should be accessible on an Open Access basis. However, if you cannot locate a specific manuscript online, please feel free to contact us.
 
 
 
