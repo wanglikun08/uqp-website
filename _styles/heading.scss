@@ -7,7 +7,7 @@ h3,
 h4,
 h5,
 h6 {
-  margin: 40px 0 20px 0;
+  margin: 10px 0 20px 0;
   font-family: var(--heading);
   font-weight: var(--semi-bold);
   text-align: left;
@@ -47,4 +47,12 @@ h6 {
 :where(h1, h2, h3, h4, h5, h6) > .icon {
   margin-right: 1em;
   color: var(--light-gray);
+}
+
+.subheader {
+  color: var(--gray);
+  margin-top: -15px;
+  margin-left: -10px;
+  display: block;
+  font-size: 0.95rem;
 }

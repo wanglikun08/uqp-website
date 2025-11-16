@@ -1,6 +1,15 @@
-<div class="cols" style="--cols: {{ include | object_items | size }}">
+{% assign col_count = 0 %}
+{% for param in include %}
+  {% assign key = param[0] %}
+  {% unless key == "align" %}
+    {% assign col_count = col_count | plus: 1 %}
+  {% endunless %}
+{% endfor %}
+<div class="cols{% if include.align == 'top' %} cols-top{% endif %}" style="--cols: {{ col_count }}">
   {% for param in include %}
     {% assign key = param[0] %}
+    {% unless key == "align" %}
     <div>{{ include[key] | markdownify }}</div>
+    {% endunless %}
   {% endfor %}
 </div>

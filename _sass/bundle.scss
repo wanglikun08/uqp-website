@@ -622,8 +622,8 @@ $one: 350px;
   align-items: center;
   gap: 40px;
   margin: auto;
-  padding: 20px 0;
-  
+  padding: 10px 0;
+
   // For funder logos specifically
   &.funders-grid {
     img {
@@ -632,6 +632,10 @@ $one: 350px;
       max-height: 80px;
       object-fit: contain;
     }
+  }
+
+  &.cols-top {
+    align-items: start;
   }
 }
 
@@ -1183,7 +1187,7 @@ h3,
 h4,
 h5,
 h6 {
-  margin: 40px 0 20px 0;
+  margin: 10px 0 20px 0;
   font-family: var(--heading);
   font-weight: var(--semi-bold);
   text-align: left;
@@ -1223,6 +1227,14 @@ h6 {
 :where(h1, h2, h3, h4, h5, h6) > .icon {
   margin-right: 1em;
   color: var(--light-gray);
+}
+
+.subheader {
+  color: var(--gray);
+  margin-top: -15px;
+  margin-left: -10px;
+  display: block;
+  font-size: 0.95rem;
 }
 
 /* From highlight.scss */
@@ -1587,7 +1599,7 @@ $breadcrumb-border-radius:          $border-radius !default;
 
 /* From paragraph.scss */
 p {
-  margin: 20px 10px;
+  margin: 15px 10px;
   text-align: justify;
   line-height: var(--spacing);
   font-size: 1.15em;

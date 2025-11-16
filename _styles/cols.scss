@@ -11,8 +11,8 @@ $one: 350px;
   align-items: center;
   gap: 40px;
   margin: auto;
-  padding: 20px 0;
-  
+  padding: 10px 0;
+
   // For funder logos specifically
   &.funders-grid {
     img {
@@ -21,6 +21,10 @@ $one: 350px;
       max-height: 80px;
       object-fit: contain;
     }
+  }
+
+  &.cols-top {
+    align-items: start;
   }
 }
 

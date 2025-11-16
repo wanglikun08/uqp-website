@@ -83,14 +83,20 @@ We do not currently have direct funding available for postdocs and research fell
 
  Some indicative schemes within the remit of our research are:
 
+{% capture col1 %}
 - [Imperial College Research Fellowships](https://www.imperial.ac.uk/research-fellowships)
 - [Royal Academy of Engineering Fellowship](http://www.raeng.org.uk/grants-and-prizes/support-for-research/raeng-research-fellowship)
 - [Royal Commission for the Exhibition of 1851](https://www.royalcommission1851.org/awards/)
 - [Royal Society University Research Fellowship](https://royalsociety.org/grants/schemes/university-research/)
+{% endcapture %}
+
+{% capture col2 %}
 - [EPSRC Postdoctoral Fellowships](https://www.epsrc.ac.uk/skills/fellows/overview/)
 - [Newton International Fellowships](https://royalsociety.org/grants-schemes-awards/grants/newton-international/)
 - [Leverhulme Fellowships](https://www.leverhulme.ac.uk/funding/grant-schemes/early-career-fellowships)
+{% endcapture %}
 
+{% include cols.html col1=col1 col2=col2 align="top" %}
 
 {% include section.html %}
 

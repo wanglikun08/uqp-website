@@ -1,21 +1,17 @@
 ---
-title: Teaching
+title: Education
 nav:
   order: 4
-redirect_from:
-  - recruitment
 ---
 
 # Education
 
-Prof Panagiotis Angeloudis is the course director for the [MSc in Transport and Data Science](https://www.imperial.ac.uk/study/courses/postgraduate-taught/transport-data-science/), offered by the Centre for Transport Engineering & Modelling at Imperial College London.
-
-We are also offering the following modules:
+Prof Panagiotis Angeloudis is the course director for the [MSc in Transport and Data Science](https://www.imperial.ac.uk/study/courses/postgraduate-taught/transport-data-science/) at Imperial College London. We also offer the following modules:
 
 {% include section.html %}
 
 ## CIVE70111 – Machine Learning
-_MSc Engineering & Data Science Cluster (PG), Autumn Term &nbsp; (2024 - Present)_
+<span class="subheader">MSc Engineering & Data Science Cluster (PG), Autumn Term (2024 - Present)</span>
 
 {% capture text_ML %}
 
@@ -36,7 +32,7 @@ It covers the three principal subfields of modern machine learning, i.e. supervi
 {% include section.html %}
 
 ## CIVE70108 – Freight Transport
-_MSc Transport Cluster (PG), Spring Term &nbsp; (2020 - Present)_
+<span class="subheader">MSc Transport Cluster (PG), Spring Term (2020 - Present)</span>
 
 
 {% capture text_freight %}
@@ -58,7 +54,7 @@ The module has a clear focus on analytical methods, decision models and optimisa
 {% include section.html %}
 
 ## CIVE60008 - Transport Systems
-_MEng Civil & Environmental Engineering (UG), Autumn Term &nbsp; (2012 - Present)_
+<span class="subheader">MEng Civil & Environmental Engineering (UG), Autumn Term (2012 - Present)</span>
 
 
 {% capture text_ts %}
@@ -80,11 +76,11 @@ It also offers an initial introduction to Data Science principles for Civil Engi
 {% include section.html %}
 
 ## Climate Learning Programme
-_Imperial College Business School x CMA CGM - TANGRAM &nbsp; (2024 - Present)_
+<span class="subheader">Imperial College Business School x CMA CGM - TANGRAM</span>
 
 {% capture text_cma %}
 
-This bespoke Executive Education programme has been offered to CMA CGM employees at the TANGRAM facility in Marseille. Over 1000 attendees have attended the programme to-date over multiple cohorts.
+This bespoke Executive Education programme was offered to CMA CGM employees at the TANGRAM facility in Marseille. Over 1000 attendees attended the programme over 18 cohorts.
 
 We led the delivery of the Sustainable Shipping segment, offering an overview of the policy landscapes, technological initiatives to support decarbonisation. A deep dive is offered on operational measures that reduce emissions and improve operational efficiency.
 
