@@ -49,16 +49,10 @@
           &nbsp;·&nbsp;
           <span
             class="citation-authors"
-            {% if citation.authors.size > 3 %}
-              data-tooltip="{{ citation.authors | join: ", " }} "
-            {% endif %}
             tabindex="0"
           >
             {{
               citation.authors
-              | join: ","
-              | split: ","
-              | array_carve: 2
               | join: ", "
               | markdownify
               | remove: "<p>" | remove: "</p>"
@@ -68,8 +62,9 @@
         
         {% if citation.publisher and citation.publisher != "" %}
           &nbsp;·&nbsp;
+          {% assign year_suffix = ", " | append: citation.date | date: "%Y" %}
           <span class="citation-publisher">
-            {{ citation.publisher }}
+            {{ citation.publisher | remove: year_suffix }}
           </span>
         {% endif %}
       </div>

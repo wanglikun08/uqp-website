@@ -77,20 +77,6 @@ Should you decide to proceed with an application, please make sure that you incl
 
 ## Postdoctoral Opportunities
 
-<!-- {% capture content %}
-**Update 01/11/20**
-
-We are currently recruiting for an open Research Associate position in Autonomous Vehicle Operations. Applications are due on the 29th of November - more information is available [here](https://www.linkedin.com/pulse/postdoc-autonomous-vehicle-operations-imperial-london-angeloudis/).
-
-{% endcapture %}
-
-{%
-  include alert.html
-  type="info"
-  content=content
-%} -->
-
-
 We do not currently have direct funding available for postdocs and research fellows. However, if you would like to propose a collaboration based on an externally-funded post-doctoral scholarship, please [get in touch](mailto:p.angeloudis@imperial.ac.uk).
 
 ##### Where can I find information on external fellowship funding sources?
