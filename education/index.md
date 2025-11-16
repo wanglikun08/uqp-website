@@ -54,9 +54,9 @@ _MSc Transport Cluster (PG), Spring Term &nbsp; (2020 - Present)_
 
 {% capture text_freight %}
 
-Offers an overview of  freight transport operations and the underpinning mathematical modelling techniques that are used to manage supply chains and design efficient freight distribution strategies.
+Offers an overview of freight transport operations and the underpinning mathematical modelling techniques that are used to manage supply chains and design efficient freight distribution strategies.
 
-The module has a clear focus on analytical methods,  decision models and optimisation tools to facilitate the safe, cost-efficient, and timely distribution of goods within cities, countries and across borders. 
+The module has a clear focus on analytical methods, decision models and optimisation tools to facilitate the safe, cost-efficient, and timely distribution of goods within cities, countries and across borders. 
 
 {% endcapture %}
 

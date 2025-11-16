@@ -27,3 +27,4 @@ website1.code-workspace
 *.13
 .venv/bin/python
 .venv/bin/python3
+.env.local
