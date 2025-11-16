@@ -4,11 +4,11 @@ nav:
   order: 2
 ---
 
-# {% include icon.html icon="fa-solid fa-flask" %}Research Projects
+# Research Projects
 
-Our work addresses modelling challenges in transportation and infrastructure systems. We combine specialised scientific software development expertise with advanced machine learning and optimisation methods developed and utilised in our research, focusing on applications in vehicle autonomy, freight logistics, construction, maritime transport, and infrastructure management.
+We develop computational models for transportation and infrastructure systems. Our research uses machine learning and optimisation methods, with applications in autonomous vehicles, freight logistics, maritime transport, and infrastructure management.
 
-Through both fundamental research and applied industry collaborations, we develop innovative solutions and models aimed at improving efficiency, safety, and sustainability in transportation and infrastructure.
+Our projects range from fundamental research to applications through industry collaborations.
 
 {% include project-tags.html %}
 

@@ -16,7 +16,7 @@ redirect_from:
 
 ---
 
-# {% include icon.html icon="fa-solid fa-file-lines" %}Publications
+# Publications
 
 We primarily publish our research in the Transportation Research journal series and relevant IEEE Transactions titles. 
 

@@ -3,6 +3,10 @@
     {% if include.link %}
       href="{{ include.link | relative_url }}"
     {% endif %}
+    {% if include.new_tab %}
+      target="_blank"
+      rel="noopener noreferrer"
+    {% endif %}
     class="figure-image"
     aria-label="{{ include.caption | default: "figure link" }}"
   >

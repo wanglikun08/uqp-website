@@ -1,24 +1,24 @@
 ---
 name: Jose Escribano
-position: Lecturer
+position: Assistant Professor
 image: images/team/escribano-j.jpg
 role: senior
 education: 
   - "Imperial College London: PhD in Operations Research 2020"
   - "Imperial College London: MEng in Civil & Environmental Engineering 2015"
 brief-position: Aviation, Logistics, Simulation, Optimisation
-brief-desc: Lecturer
+brief-desc: Assistant Professor
 links:
   email: jose.escribano-macias11@imperial.ac.uk
   linkedin: jose-escribano
   google-scholar: oG83iIoAAAAJ
   github: JoseEscribano
 affiliations:
-  - Lecturer in Aviation & Logistics
+  - Assistant Professor in Aviation & Logistics
   - Director of Admissions, MSc in Transport
 ---
 
-Jose is Lecturer in Air Transport & Logistics and a member of the Centre for Transport Engineering & Modelling at Imperial College London. His research focuses on collaborative vehicle control, optimisation of last-mile logistics, urban air mobility, and machine learning and game theoretical models.
+Jose is Assistant Professor in Air Transport & Logistics and a member of the Centre for Transport Engineering & Modelling at Imperial College London. His research focuses on collaborative vehicle control, optimisation of last-mile logistics, urban air mobility, and machine learning and game theoretical models.
 
 Jose joined the Centre for Transport Studies in October 2015 as part of the [EPSRC Centre for Doctoral Training (CDT) in Sustainable Civil Engineering](https://www.imperial.ac.uk/sustainable-civil-engineering) and was awarded his PhD in March 2021. His thesis focused on the optimisation of humanitarian relief operations using unmanned aerial vehicles (UAVs), developing a framework to design and evaluate relief efforts. This incorporates UAV-specific constraints (such as energy consumption patterns, flight trajectories, and recharging operations), setting it apart from conventional humanitarian operations models. The models conform to the latest Civil Aviation navigation specification frameworks.
 

@@ -14,21 +14,24 @@
 .tag {
   max-width: 100%;
   margin: 0;
-  padding: 5px 10px;
-  border-radius: 999px;
-  background: var(--secondary);
+  padding: 3px 10px;
+  border-radius: 4px;
+  background: var(--light-gray);
   color: var(--text);
   text-decoration: none;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-size: 0.9rem;
   transition: background var(--transition), color var(--transition);
 }
 
 .tag:hover {
-  background: var(--light-gray);
+  background: var(--gray);
+  color: var(--background);
 }
 
 .tag[data-active] {
-  background: var(--light-gray);
+  background: var(--gray);
+  color: var(--background);
 }

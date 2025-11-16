@@ -41,9 +41,12 @@ $wrap: 700px;
   height: min-content;
   padding: 10px;
   padding-left: 20px;
-  text-align: left;
+  text-align: justify;
   overflow-wrap: break-word;
   z-index: 0;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
 }
 
 .citation-title,

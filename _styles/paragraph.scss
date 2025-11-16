@@ -3,7 +3,10 @@
 
 p {
   margin: 20px 10px;
-  text-align: left;
+  text-align: justify;
   line-height: var(--spacing);
   font-size: 1.15em;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
 }

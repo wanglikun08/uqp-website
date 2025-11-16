@@ -29,9 +29,9 @@
 
 :root {
   // font families
-  --title: "Barlow", sans-serif;
-  --heading: "Barlow", sans-serif;
-  --body: "Barlow", sans-serif;
+  --title: "Imperial Sans", "Barlow", sans-serif;
+  --heading: "Imperial Sans", "Barlow", sans-serif;
+  --body: "Imperial Sans", "Barlow", sans-serif;
   --code: "Roboto Mono", monospace;
 
   // font sizes
@@ -43,7 +43,7 @@
   --thin: 200;
   --regular: 400;
   --semi-bold: 500;
-  --bold: 600;
+  --bold: 500;
 
   // text line spacing
   --spacing: 1.5;
