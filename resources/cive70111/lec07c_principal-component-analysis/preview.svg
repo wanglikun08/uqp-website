@@ -24,10 +24,4 @@
       <line x1="90" y1="-140" x2="150" y2="40" />
     </g>
   </g>
-  <text x="40" y="35" font-family="'IBM Plex Sans', Arial, sans-serif" font-size="16" fill="#1d2233" font-weight="600">
-    lec07b · Principal Component Analysis
-  </text>
-  <text x="40" y="60" font-family="'IBM Plex Sans', Arial, sans-serif" font-size="13" fill="#4b5563">
-    Compare datasets, inspect variance, and link features to components.
-  </text>
 </svg>
