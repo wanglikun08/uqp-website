@@ -1,0 +1,118 @@
+/* Hierarchical Clustering Demo - Specific Styles */
+
+/* Override default layout - full width charts on top */
+.demo-area {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+/* Two-plot layout for scatter and dendrogram - 50/50 split */
+.two-plot-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+}
+
+.scatter-plot-section,
+.dendrogram-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.scatter-plot-section h4,
+.dendrogram-section h4 {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #2c3e50;
+    text-align: center;
+}
+
+/* Horizontal controls layout */
+.controls-horizontal {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    width: 100%;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.controls-horizontal .control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.controls-horizontal .plot-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.controls-horizontal .plot-buttons button {
+    width: 100%;
+}
+
+.controls-horizontal .display-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Linkage method selector */
+.linkage-select {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    color: #333;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.linkage-select:hover {
+    border-color: #3498db;
+}
+
+.linkage-select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.1);
+}
+
+/* Dataset info styling */
+.dataset-info-title {
+    color: #2c3e50;
+    font-size: 14px;
+}
+
+.dataset-info-description {
+    color: #555;
+    font-size: 13px;
+}
+
+.dataset-info-variables {
+    color: #666;
+    font-size: 12px;
+    font-style: italic;
+}
+
+.dataset-section-label {
+    font-size: 14px;
+    color: #333;
+}
+
+/* Responsive layout for smaller screens */
+@media (max-width: 1200px) {
+    .two-plot-layout {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+}

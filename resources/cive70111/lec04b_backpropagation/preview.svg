@@ -1,43 +1,60 @@
-<svg viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
   <defs>
-    <linearGradient id="backpropGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#8e44ad;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#3498db;stop-opacity:1" />
+    <linearGradient id="bpBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#eef4ff"/>
     </linearGradient>
+    <linearGradient id="forward" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#93c5fd"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+    <linearGradient id="backward" x1="100%" y1="0%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#fca5a5"/>
+      <stop offset="100%" stop-color="#fcd34d"/>
+    </linearGradient>
+    <marker id="arrowHead" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
+      <polygon points="0 0, 6 3, 0 6" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowHeadBack" markerWidth="6" markerHeight="6" refX="1" refY="3" orient="auto" markerUnits="strokeWidth">
+      <polygon points="6 0, 0 3, 6 6" fill="#fbbf24"/>
+    </marker>
   </defs>
 
-  <!-- Background -->
-  <rect width="120" height="80" fill="url(#backpropGradient)"/>
+  <rect width="400" height="300" fill="url(#bpBg)" rx="20" stroke="#d7e3f3" stroke-width="2"/>
+  <rect x="40" y="40" width="320" height="220" rx="24" fill="#ffffff" stroke="#e0e8f5" stroke-width="2"/>
+  <line x1="200" y1="60" x2="200" y2="260" stroke="#eef2ff" stroke-width="2" stroke-dasharray="6 8"/>
 
-  <!-- Neural network structure simplified for backprop -->
-  <!-- Input layer -->
-  <circle cx="25" cy="30" r="4" fill="rgba(255,255,255,0.9)"/>
-  <circle cx="25" cy="50" r="4" fill="rgba(255,255,255,0.9)"/>
+  <g fill="none" stroke="url(#forward)" stroke-width="3.5" stroke-linecap="round" marker-end="url(#arrowHead)">
+    <path d="M80 90 C 140 70, 260 70, 320 90"/>
+    <path d="M80 150 C 140 140, 260 140, 320 150"/>
+    <path d="M80 210 C 140 230, 260 230, 320 210"/>
+  </g>
 
-  <!-- Hidden layer -->
-  <circle cx="60" cy="25" r="4" fill="rgba(52,152,219,0.9)"/>
-  <circle cx="60" cy="40" r="4" fill="rgba(52,152,219,0.9)"/>
-  <circle cx="60" cy="55" r="4" fill="rgba(52,152,219,0.9)"/>
+  <g fill="none" stroke="url(#backward)" stroke-width="3.5" stroke-linecap="round" marker-end="url(#arrowHeadBack)">
+    <path d="M320 100 C 260 120, 140 120, 80 100"/>
+    <path d="M320 160 C 260 170, 140 170, 80 160"/>
+    <path d="M320 220 C 260 200, 140 200, 80 220"/>
+  </g>
 
-  <!-- Output layer -->
-  <circle cx="95" cy="40" r="4" fill="rgba(231,76,60,0.9)"/>
+  <g fill="#ffffff" stroke="#94a3b8" stroke-width="2">
+    <circle cx="80" cy="90" r="18"/>
+    <circle cx="80" cy="150" r="18"/>
+    <circle cx="80" cy="210" r="18"/>
+    <circle cx="320" cy="90" r="18"/>
+    <circle cx="320" cy="150" r="18"/>
+    <circle cx="320" cy="210" r="18"/>
+  </g>
 
-  <!-- Forward connections (thinner) -->
-  <line x1="29" y1="30" x2="56" y2="25" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
-  <line x1="29" y1="50" x2="56" y2="55" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
-  <line x1="64" y1="40" x2="91" y2="40" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+  <g fill="#fff9ed" stroke="#f59e0b" stroke-width="2.5">
+    <circle cx="200" cy="115" r="22"/>
+    <circle cx="200" cy="185" r="22"/>
+  </g>
 
-  <!-- Backward gradients (thicker, colored) -->
-  <line x1="91" y1="40" x2="64" y2="40" stroke="rgba(255,100,100,0.8)" stroke-width="2"/>
-  <line x1="56" y1="25" x2="29" y2="30" stroke="rgba(255,150,100,0.7)" stroke-width="2"/>
-  <line x1="56" y1="55" x2="29" y2="50" stroke="rgba(255,150,100,0.7)" stroke-width="2"/>
+  <text x="200" y="75" fill="#1f2937" font-family="'Inter', 'Helvetica', sans-serif" font-size="18" text-anchor="middle" letter-spacing="1">
+    Forward pass ⇢   Gradients ⇠
+  </text>
 
-  <!-- Gradient flow arrows -->
-  <polygon points="85,38 85,42 88,40" fill="rgba(255,100,100,0.8)"/>
-  <polygon points="50,23 50,27 53,25" fill="rgba(255,150,100,0.7)"/>
-  <polygon points="50,53 50,57 53,55" fill="rgba(255,150,100,0.7)"/>
-
-  <!-- Error/loss indicator at output -->
-
-  <!-- Gradient labels -->
+  <text x="200" y="45" fill="#1f2937" font-family="'Inter', 'Helvetica', sans-serif" font-size="20" text-anchor="middle">
+    Backpropagation
+  </text>
 </svg>

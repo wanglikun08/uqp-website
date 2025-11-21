@@ -1,9 +1,30 @@
 /* K-Means Clustering Demo - Specific Styles */
 
-/* Override dataset buttons section width to match plot container */
+/* Canvas wrapper takes full width */
+.canvas-wrapper {
+    position: relative;
+    width: 100%;
+    height: 600px;
+}
+
+/* Dataset buttons section matches full width */
 .dataset-buttons-section,
 .dataset-info-box {
-    width: 550px;
+    width: 100%;
+}
+
+/* Dataset buttons in single row */
+.dataset-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+}
+
+/* Plot buttons arranged in 2 rows */
+.plot-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
 }
 
 /* Custom dataset info styling for k-means */

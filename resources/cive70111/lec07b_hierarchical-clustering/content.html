@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hierarchical Clustering</title>
+    <script src="../phoebe-js/mathhelper.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../phoebe-js/phoebe.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="iframe-content">
+        <div class="container">
+
+        <div class="infotab">
+            <div class="infotab-header">
+            </div>
+            <div class="infotab-content">
+                <div class="infotab-panel active" data-tab-title="Introduction">
+                    <h3>Hierarchical Clustering</h3>
+                    <p>Hierarchical clustering builds a tree of clusters, revealing data structure at multiple scales. Unlike k-means, it does not require specifying the number of clusters in advance and produces a dendrogram showing nested relationships.</p>
+
+                    <p>This algorithm is particularly useful for:</p>
+                    <ul>
+                        <li><strong>Taxonomy creation</strong> - discovering natural hierarchies</li>
+                        <li><strong>Infrastructure portfolios</strong> - multi-scale asset grouping</li>
+                        <li><strong>Phylogenetic analysis</strong> - evolutionary relationships</li>
+                        <li><strong>Document clustering</strong> - organizing text by similarity</li>
+                    </ul>
+
+                    <p>Agglomerative hierarchical clustering starts with each point as its own cluster, then iteratively merges the closest pairs until a single cluster remains.</p>
+                </div>
+
+                <div class="infotab-panel" data-tab-title="Theory">
+                    <h3>Mathematical Foundation</h3>
+
+                    <p><strong>Agglomerative Algorithm:</strong></p>
+                    <ol>
+                        <li><strong>Initialize:</strong> Start with $m$ clusters, one per data point</li>
+                        <li><strong>Compute:</strong> Calculate pairwise distances between all clusters</li>
+                        <li><strong>Merge:</strong> Combine the two closest clusters into a new cluster</li>
+                        <li><strong>Record:</strong> Store merge height in dendrogram</li>
+                        <li><strong>Repeat:</strong> Steps 2-4 until one cluster remains</li>
+                    </ol>
+
+                    <p><strong>Linkage Criteria:</strong> Different methods for computing cluster distances:</p>
+
+                    <div class="metriclabel-block">
+                        <strong>Single Linkage:</strong> $$d(A, B) = \min_{x \in A, y \in B} ||x - y||$$
+                    </div>
+                    <p>Minimum distance between any two points. Creates elongated "chain-like" clusters.</p>
+
+                    <div class="metriclabel-block">
+                        <strong>Complete Linkage:</strong> $$d(A, B) = \max_{x \in A, y \in B} ||x - y||$$
+                    </div>
+                    <p>Maximum distance between any two points. Creates compact, spherical clusters.</p>
+
+                    <div class="metriclabel-block">
+                        <strong>Average Linkage:</strong> $$d(A, B) = \frac{1}{|A||B|} \sum_{x \in A} \sum_{y \in B} ||x - y||$$
+                    </div>
+                    <p>Mean distance between all pairs. Balanced compromise between single and complete.</p>
+
+                    <div class="metriclabel-block">
+                        <strong>Ward's Method:</strong> $$\Delta(A, B) = \frac{|A||B|}{|A|+|B|} ||\mu_A - \mu_B||^2$$
+                    </div>
+                    <p>Minimize within-cluster variance increase. Similar to k-means objective.</p>
+
+                    <p><strong>Dendrogram Interpretation:</strong> The tree diagram shows merge order and distances. Cutting at different heights produces different numbers of clusters.</p>
+                </div>
+
+                <div class="infotab-panel" data-tab-title="Instructions">
+                    <h3>How to Use This Demo</h3>
+
+                    <p>This demo illustrates agglomerative hierarchical clustering, which starts with each point as its own cluster and iteratively merges the closest pairs.</p>
+
+                    <p><strong>Controls:</strong></p>
+                    <ul>
+                        <li><strong>Linkage Method</strong> - Choose how cluster distances are measured (Single, Complete, Average, or Ward's)</li>
+                        <li><strong>Step Forward</strong> - Merge the two closest clusters. Watch the dendrogram grow and colors update</li>
+                        <li><strong>Reset</strong> - Return to initial state with each point as its own cluster (keeps current data)</li>
+                        <li><strong>New Data</strong> - Generate a fresh set of random data points</li>
+                        <li><strong>Add Points</strong> - Check the box and click on the scatter plot to add your own data points</li>
+                    </ul>
+
+                    <p><strong>What to Observe:</strong></p>
+                    <ul>
+                        <li><strong>Color stability:</strong> When two clusters merge, only those points change color (inheriting from the larger cluster). Other clusters maintain their colors.</li>
+                        <li><strong>Merge distances:</strong> Watch "Last Merge Distance" increase as you step through. Early merges join very similar points; later merges join distinct groups.</li>
+                        <li><strong>Dendrogram structure:</strong> The tree grows upward. Height shows merge distance. Large vertical gaps suggest natural cluster boundaries.</li>
+                        <li><strong>Linkage effects:</strong> Different methods produce different merge orders. Try Single vs Complete on the same data to see dramatic differences.</li>
+                    </ul>
+
+                    <p><strong>Suggested Exploration:</strong></p>
+                    <ol>
+                        <li>Generate new data and step through completely with Average linkage</li>
+                        <li>Reset and try Complete linkage - notice which clusters merge first</li>
+                        <li>Add outlier points and observe when they merge into clusters</li>
+                        <li>Look for large jumps in merge distance indicating natural groupings</li>
+                    </ol>
+                </div>
+
+                <div class="infotab-panel" data-tab-title="Tips">
+                    <h3>Quick Tips</h3>
+
+                    <ul>
+                        <li><strong>Watch the dendrogram gap:</strong> pause when you see a tall vertical jump—cutting the tree there usually reveals the clearest grouping.</li>
+                        <li><strong>Swap linkage modes:</strong> Single stretches through skinny shapes, Complete prefers compact blobs, Average is the safe middle, Ward behaves most like k-means.</li>
+                        <li><strong>Track the stats panel:</strong> the merge counter and "Last Merge Distance" give early warnings that you are about to fuse very different clusters.</li>
+                        <li><strong>Add an outlier:</strong> drop a point far from the rest and notice how only Ward's method delays merging it until the end.</li>
+                        <li><strong>Use color memory:</strong> after a merge only one colour changes—retrace how the cluster evolved by following that colour in the scatter plot.</li>
+                        <li><strong>Cut interactively:</strong> once the dendrogram finishes, imagine slicing it at different heights and count the branches to decide how many clusters you would keep.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-area">
+            <div class="two-plot-layout">
+                <div class="scatter-plot-section">
+                    <h4>Scatter Plot</h4>
+                    <div style="position: relative; width: 100%; height: 450px;">
+                        <canvas id="scatter-plot"></canvas>
+                        <canvas id="scatter-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: transparent; z-index: 1;"></canvas>
+                    </div>
+                </div>
+                <div class="dendrogram-section">
+                    <h4>Dendrogram</h4>
+                    <div style="position: relative; width: 100%; height: 450px;">
+                        <canvas id="dendrogram-plot"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls-horizontal">
+                <div class="control-group">
+                    <label for="linkage-method">Linkage Method</label>
+                    <select id="linkage-method" class="linkage-select">
+                        <option value="single">Single (Minimum)</option>
+                        <option value="complete">Complete (Maximum)</option>
+                        <option value="average" selected>Average</option>
+                        <option value="ward">Ward's Method</option>
+                    </select>
+                    <label style="margin-top: 8px;">
+                        <input type="checkbox" id="add-data-mode" style="margin-right: 8px;" checked>
+                        Enable Adding Data Points
+                    </label>
+                </div>
+
+                <div class="control-group">
+                    <div class="plot-buttons">
+                        <button id="step-btn" class="generate-data-btn">Step Forward</button>
+                        <button id="reset-btn" class="clear-data-btn">Reset</button>
+                        <button id="new-data-btn" class="generate-data-btn">New Data</button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="display-group">
+                        <div class="display-item">
+                            <label>Merges Completed:</label>
+                            <span id="merge-count" class="value-display">0</span>
+                        </div>
+                        <div class="display-item">
+                            <label>Current Clusters:</label>
+                            <span id="cluster-count" class="value-display">0</span>
+                        </div>
+                        <div class="display-item">
+                            <label>Data Points:</label>
+                            <span id="points-count" class="value-display">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        </div>
+    </div>
+
+    <script src="../phoebe-js/infotab.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

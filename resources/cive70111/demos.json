@@ -205,7 +205,7 @@
       "week": 8,
       "lectureNumber": "07",
       "lectureTitle": "Unsupervised Learning",
-      "locked": true,
+      "locked": false,
       "demos": [
         {
           "id": "k-means",
@@ -213,6 +213,22 @@
           "path": "lec07a_k-means-clustering",
           "title": "K-Means Clustering",
           "description": "Interactive clustering demonstration with step-by-step k-means algorithm visualization. Add your own points and watch how centroids move to minimize within-cluster distances.",
+          "preview": "preview.svg"
+        },
+        {
+          "id": "hierarchical-clustering",
+          "code": "lec07b",
+          "path": "lec07b_hierarchical-clustering",
+          "title": "Hierarchical Clustering",
+          "description": "Explore agglomerative clustering with interactive dendrogram visualization. Compare different linkage criteria and discover nested cluster structures.",
+          "preview": "preview.svg"
+        },
+        {
+          "id": "pca",
+          "code": "lec07c",
+          "path": "lec07c_principal-component-analysis",
+          "title": "PCA",
+          "description": "Investigate PCA on real civil engineering scenarios. Toggle standardisation, inspect explained variance, and compare feature loadings with saved snapshots.",
           "preview": "preview.svg"
         }
       ]

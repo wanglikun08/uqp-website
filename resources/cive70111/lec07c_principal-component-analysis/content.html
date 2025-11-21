@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Principal Component Analysis Playground</title>
+    <script src="../phoebe-js/mathhelper.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../phoebe-js/phoebe.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="iframe-content">
+        <div class="container">
+
+        <div class="infotab">
+            <div class="infotab-header">
+            </div>
+            <div class="infotab-content">
+                <div class="infotab-panel active" data-tab-title="Introduction">
+                    <h3>Geometric PCA Intuition</h3>
+                    <p>Principal Component Analysis (PCA) is a fundamental dimensionality reduction technique that identifies the directions of maximum variance in your data. This interactive demo visualizes how PCA discovers these principal directions in 2D space.</p>
+                    <p>Watch as PCA behaves like a smart compass, automatically aligning PC1 and PC2 with the data's natural spread regardless of correlation, noise, or position. The projections show how each point maps onto the principal component axes.</p>
+                </div>
+
+                <div class="infotab-panel" data-tab-title="Theory">
+                    <h3>Mathematical Foundation</h3>
+                    <p>PCA works by computing the eigenvectors and eigenvalues of the data covariance matrix. The eigenvector with the largest eigenvalue becomes PC1, capturing the direction of maximum variance. The second eigenvector (orthogonal to the first) becomes PC2.</p>
+                    <p>The covariance matrix structure:</p>
+                    <div class="metriclabel-block">$$\Sigma = \begin{bmatrix} \operatorname{Var}(x) & \operatorname{Cov}(x, y) \\ \operatorname{Cov}(x, y) & \operatorname{Var}(y) \end{bmatrix}$$</div>
+                    <p>In 2D, PC1 + PC2 always accounts for 100% of the variance. The variance explained by each component tells you how much information is retained when projecting onto that axis. High correlation creates elongated clouds where PC1 captures most of the variance.</p>
+                    <p>Hover over any point to see its position in the original space and its projections onto PC1 and PC2 simultaneously.</p>
+                </div>
+
+                <div class="infotab-panel" data-tab-title="Instructions">
+                    <h3>Using the Demo</h3>
+                    <p><strong>Controls:</strong></p>
+                    <ul>
+                        <li><strong>Correlation (ρ)</strong> – drag from −1 to +1 to control how elongated the point cloud becomes. High correlation means PC1 captures most variance.</li>
+                        <li><strong>Noise level</strong> – add isotropic (uniform in all directions) noise to blur the distinction between PCs.</li>
+                        <li><strong>Number of points</strong> – increase sample size to reduce sampling noise and get more stable PC estimates.</li>
+                        <li><strong>Mean offset</strong> – shift the cloud away from the origin to verify that PCA is translation-invariant.</li>
+                    </ul>
+                    <p><strong>Buttons:</strong></p>
+                    <ul>
+                        <li><strong>Reset Defaults</strong> – restore original settings.</li>
+                        <li><strong>Generate Dataset</strong> – resample new random points with current parameter settings.</li>
+                    </ul>
+                    <p><strong>Interactive highlighting:</strong> Hover over any point in the scatter plot or projection plots to see corresponding highlights across all views.</p>
+                </div>
+
+                <div class="infotab-panel" data-tab-title="Tips">
+                    <h3>Quick Tips</h3>
+                    <ul>
+                        <li><strong>Start neutral:</strong> set ρ ≈ 0 and low noise to see a circular cloud where PC1 and PC2 can point anywhere—perfect reminder that PCA cares only about variance.</li>
+                        <li><strong>Pump up correlation:</strong> slide ρ toward ±1 and watch PC1 snap to the long axis while the variance badge shows it claiming most of the information.</li>
+                        <li><strong>Add noise sparingly:</strong> increasing the noise slider instantly shortens the PC arrows; use it to illustrate how messy measurements dilute variance.</li>
+                        <li><strong>Play with sample size:</strong> drag the point-count slider down to 40 to observe noisy eigenvectors, then back up to confirm they stabilise with more data.</li>
+                        <li><strong>Shift the cloud:</strong> change the mean offsets to prove PCA recentres the data before analysis—the arrows stay put even though the cloud moves.</li>
+                        <li><strong>Use projections as a checklist:</strong> if you’re unsure what a slider change did, glance at the projection histograms; balanced bars mean the variance is split evenly.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-area">
+                <section class="visual-panel card">
+                    <div class="panel-header">
+                        <div>
+                            <h3>Point Cloud & PCA Axes</h3>
+                            <p>PC arrows originate at the data mean; lengths reflect variance captured.</p>
+                        </div>
+                        <div class="summary-badges">
+                            <div>
+                                <span>Samples</span>
+                                <strong id="stat-count">0</strong>
+                            </div>
+                            <div>
+                                <span>Sample Corr</span>
+                                <strong id="stat-corr">0.00</strong>
+                            </div>
+                            <div>
+                                <span>Mean</span>
+                                <strong id="stat-mean">(0.00, 0.00)</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="plot-wrapper">
+                        <canvas id="pca-plot" aria-label="Interactive PCA scatter plot" role="img"></canvas>
+                    </div>
+                    <div class="projection-plots">
+                        <div class="projection-plot-container">
+                            <h4>Projection onto PC1</h4>
+                            <canvas id="pc1-projection" aria-label="1D projection onto PC1" role="img"></canvas>
+                        </div>
+                        <div class="projection-plot-container">
+                            <h4>Projection onto PC2</h4>
+                            <canvas id="pc2-projection" aria-label="1D projection onto PC2" role="img"></canvas>
+                        </div>
+                    </div>
+                    <div class="variance-cov-grid">
+                        <div class="variance-card">
+                            <h4>Variance Explained</h4>
+                            <div class="variance-values">
+                                <div>
+                                    <span>PC1</span>
+                                    <strong id="pc1-variance">0%</strong>
+                                </div>
+                                <div>
+                                    <span>PC2</span>
+                                    <strong id="pc2-variance">0%</strong>
+                                </div>
+                            </div>
+                            <p id="variance-summary" class="variance-summary">Adjust a slider to see how the variance redistributes.</p>
+                        </div>
+                        <div class="covariance-card">
+                            <h4>Covariance Matrix</h4>
+                            <table id="covariance-table">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>x</th>
+                                        <th>y</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>x</th>
+                                        <td id="cov-xx">0.00</td>
+                                        <td id="cov-xy">0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <th>y</th>
+                                        <td id="cov-yx">0.00</td>
+                                        <td id="cov-yy">0.00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="control-panel card">
+                    <h3>Dataset Controls</h3>
+                    <div class="control-group">
+                        <label for="correlation-control">Correlation (ρ)</label>
+                        <input type="range" id="correlation-control" min="-0.95" max="0.95" step="0.05" value="0">
+                        <div class="control-value" id="correlation-value">0.00</div>
+                    </div>
+                    <div class="control-group">
+                        <label for="noise-control">Noise level</label>
+                        <input type="range" id="noise-control" min="0" max="1" step="0.05" value="0.2">
+                        <div class="control-value" id="noise-value">0.20</div>
+                    </div>
+                    <div class="control-group">
+                        <label for="count-control">Number of points</label>
+                        <input type="range" id="count-control" min="40" max="400" step="10" value="160">
+                        <div class="control-value" id="count-value">160</div>
+                    </div>
+                    <div class="control-group inline-inputs">
+                        <label for="mean-x">Mean offset (x̄, ȳ)</label>
+                        <div>
+                            <input type="number" id="mean-x" step="0.1" value="0">
+                            <input type="number" id="mean-y" step="0.1" value="0">
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button id="reset-controls" class="secondary">Reset Defaults</button>
+                        <button id="regenerate-data">Generate Dataset</button>
+                    </div>
+                    <p class="control-hint">Use the controls in the sequence suggested in the classroom flow tab, or freestyle to answer “what if” questions from the cohort.</p>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script src="../phoebe-js/infotab.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

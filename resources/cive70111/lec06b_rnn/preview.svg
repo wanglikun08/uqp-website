@@ -1,56 +1,50 @@
-<svg viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
   <defs>
-    <linearGradient id="rnnGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#8e44ad;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#9b59b6;stop-opacity:1" />
+    <linearGradient id="rnnBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fefefe"/>
+      <stop offset="100%" stop-color="#e6f1ff"/>
     </linearGradient>
+    <marker id="headRnn" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
+      <polygon points="0 0 6 3 0 6" fill="#7c3aed"/>
+    </marker>
+    <marker id="headLoop" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
+      <polygon points="0 0 6 3 0 6" fill="#f97316"/>
+    </marker>
   </defs>
 
-  <!-- Background -->
-  <rect width="120" height="80" fill="url(#rnnGradient)"/>
+  <rect width="400" height="300" rx="24" fill="url(#rnnBg)" stroke="#d6e3f3" stroke-width="2"/>
 
-  <!-- Time steps -->
-  <g transform="translate(15,30)">
-    <!-- t=0 -->
-    <rect x="0" y="0" width="12" height="8" fill="rgba(52,152,219,0.8)" rx="2"/>
-    <circle cx="6" cy="4" r="2" fill="rgba(255,255,255,0.9)"/>
-
-    <!-- Hidden state h₀ -->
-    <rect x="3" y="-15" width="6" height="6" fill="rgba(46,204,113,0.8)" rx="1"/>
+  <g fill="#ffffff" stroke="#94a3b8" stroke-width="2">
+    <rect x="60" y="120" width="70" height="60" rx="12"/>
+    <rect x="165" y="120" width="70" height="60" rx="12"/>
+    <rect x="270" y="120" width="70" height="60" rx="12"/>
   </g>
 
-  <!-- Arrow to t=1 -->
-  <polygon points="35,34 43,34 41,32 41,36" fill="rgba(255,255,255,0.7)"/>
-  <path d="M30,20 Q35,15 40,20" stroke="rgba(46,204,113,0.8)" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
-
-  <g transform="translate(45,30)">
-    <!-- t=1 -->
-    <rect x="0" y="0" width="12" height="8" fill="rgba(52,152,219,0.8)" rx="2"/>
-    <circle cx="6" cy="4" r="2" fill="rgba(255,255,255,0.9)"/>
-
-    <!-- Hidden state h₁ -->
-    <rect x="3" y="-15" width="6" height="6" fill="rgba(46,204,113,0.8)" rx="1"/>
+  <g fill="none" stroke="#c4d5f2" stroke-width="3" stroke-linecap="round" stroke-dasharray="6 6">
+    <path d="M340 150 H 370"/>
+    <path d="M30 150 H 60"/>
   </g>
 
-  <!-- Arrow to t=2 -->
-  <polygon points="65,34 73,34 71,32 71,36" fill="rgba(255,255,255,0.7)"/>
-  <path d="M60,20 Q65,15 70,20" stroke="rgba(46,204,113,0.8)" stroke-width="2" fill="none"/>
-
-  <g transform="translate(75,30)">
-    <!-- t=2 -->
-    <rect x="0" y="0" width="12" height="8" fill="rgba(52,152,219,0.8)" rx="2"/>
-    <circle cx="6" cy="4" r="2" fill="rgba(255,255,255,0.9)"/>
-
-    <!-- Hidden state h₂ -->
-    <rect x="3" y="-15" width="6" height="6" fill="rgba(46,204,113,0.8)" rx="1"/>
-
-    <!-- Output -->
-    <rect x="3" y="12" width="6" height="6" fill="rgba(231,76,60,0.8)" rx="1"/>
+  <g fill="none" stroke="#7c3aed" stroke-width="3" stroke-linecap="round" marker-end="url(#headRnn)">
+    <path d="M130 150 H 165"/>
+    <path d="M235 150 H 270"/>
   </g>
 
-  <!-- Recurrent connection arrows -->
-  <path d="M27,15 Q35,10 43,15" stroke="rgba(46,204,113,0.6)" stroke-width="1.5" fill="none"/>
-  <path d="M57,15 Q65,10 73,15" stroke="rgba(46,204,113,0.6)" stroke-width="1.5" fill="none"/>
+  <g fill="#ffd9a6" stroke="#f4a259" stroke-width="2">
+    <circle cx="95" cy="212" r="10"/>
+    <circle cx="200" cy="212" r="10"/>
+    <circle cx="305" cy="212" r="10"/>
+  </g>
 
-  <!-- "..." indicator -->
+  <g fill="#1f2937" font-family="'Inter', 'Helvetica', sans-serif" font-size="16" font-weight="600">
+    <text x="95" y="155" text-anchor="middle">h<tspan baseline-shift="sub" font-size="10">t-1</tspan></text>
+    <text x="200" y="155" text-anchor="middle">h<tspan baseline-shift="sub" font-size="10">t</tspan></text>
+    <text x="305" y="155" text-anchor="middle">h<tspan baseline-shift="sub" font-size="10">t+1</tspan></text>
+  </g>
+
+  <path d="M200 110 C 230 80, 170 80, 200 110" fill="none" stroke="#f97316" stroke-width="3" marker-end="url(#headLoop)"/>
+
+  <text x="200" y="60" fill="#1f2937" font-family="'Inter', 'Helvetica', sans-serif" font-size="22" text-anchor="middle">
+    Recurrent Neural Network
+  </text>
 </svg>

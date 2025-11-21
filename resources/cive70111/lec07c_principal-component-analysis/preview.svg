@@ -1,0 +1,33 @@
+<svg width="360" height="220" viewBox="0 0 360 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title>PCA preview thumbnail</title>
+  <desc>Scatter plot with two principal component axes and highlighted loadings.</desc>
+  <defs>
+    <linearGradient id="pc-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1d4e89" />
+      <stop offset="100%" stop-color="#ff6b35" />
+    </linearGradient>
+  </defs>
+  <rect width="360" height="220" rx="16" fill="#f5f7fb" />
+  <g transform="translate(40 180)">
+    <g fill="#1d4e89" opacity="0.9">
+      <circle cx="40" cy="-30" r="5" />
+      <circle cx="80" cy="-50" r="5" />
+      <circle cx="120" cy="-20" r="5" />
+      <circle cx="60" cy="-70" r="5" />
+      <circle cx="150" cy="-90" r="5" />
+      <circle cx="200" cy="-40" r="5" />
+      <circle cx="170" cy="-10" r="5" />
+      <circle cx="110" cy="-75" r="5" />
+    </g>
+    <g stroke="url(#pc-gradient)" stroke-width="4" stroke-linecap="round">
+      <line x1="20" y1="-10" x2="220" y2="-90" />
+      <line x1="90" y1="-140" x2="150" y2="40" />
+    </g>
+  </g>
+  <text x="40" y="35" font-family="'IBM Plex Sans', Arial, sans-serif" font-size="16" fill="#1d2233" font-weight="600">
+    lec07b · Principal Component Analysis
+  </text>
+  <text x="40" y="60" font-family="'IBM Plex Sans', Arial, sans-serif" font-size="13" fill="#4b5563">
+    Compare datasets, inspect variance, and link features to components.
+  </text>
+</svg>
