@@ -132,66 +132,99 @@
         <div class="user-play-section">
             <h3 style="text-align: center; margin-bottom: 20px;">Interactive Arms - Try Your Strategy!</h3>
             <div class="arms-container">
-                <div class="arm-section">
-                    <h4>Arm 1</h4>
-                    <button class="arm-button arm1-btn" id="arm1-btn" onclick="pullArm(1)">
-                        Pull Arm 1
-                    </button>
-                    <div class="stats-box" id="arm1-stats">
-                        <div class="stat-item">
-                            <span class="stat-label">Total Reward:</span>
-                            <span class="stat-value" id="arm1-total">0</span>
+                <div class="arm-section slot-machine slot-machine-1">
+                    <div class="machine-top">
+                        <div class="machine-lights">
+                            <span class="light"></span>
+                            <span class="light"></span>
+                            <span class="light"></span>
                         </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Number of Pulls:</span>
-                            <span class="stat-value" id="arm1-count">0</span>
+                        <h4 class="machine-label">Arm 1</h4>
+                    </div>
+                    <div class="machine-body">
+                        <div class="display-window">
+                            <div class="stats-display" id="arm1-stats">
+                                <div class="stat-row">
+                                    <span class="stat-label">Total:</span>
+                                    <span class="stat-value" id="arm1-total">0</span>
+                                </div>
+                                <div class="stat-row">
+                                    <span class="stat-label">Pulls:</span>
+                                    <span class="stat-value" id="arm1-count">0</span>
+                                </div>
+                                <div class="stat-row stat-highlight">
+                                    <span class="stat-label">Mean:</span>
+                                    <span class="stat-value" id="arm1-mean">0.00</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Mean Reward:</span>
-                            <span class="stat-value" id="arm1-mean">0.00</span>
-                        </div>
+                        <button class="lever-button" id="arm1-btn" onclick="pullArm(1)">
+                            <span class="lever-handle">PULL</span>
+                        </button>
                     </div>
                 </div>
 
-                <div class="arm-section">
-                    <h4>Arm 2</h4>
-                    <button class="arm-button arm2-btn" id="arm2-btn" onclick="pullArm(2)">
-                        Pull Arm 2
-                    </button>
-                    <div class="stats-box" id="arm2-stats">
-                        <div class="stat-item">
-                            <span class="stat-label">Total Reward:</span>
-                            <span class="stat-value" id="arm2-total">0</span>
+                <div class="arm-section slot-machine slot-machine-2">
+                    <div class="machine-top">
+                        <div class="machine-lights">
+                            <span class="light"></span>
+                            <span class="light"></span>
+                            <span class="light"></span>
                         </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Number of Pulls:</span>
-                            <span class="stat-value" id="arm2-count">0</span>
+                        <h4 class="machine-label">Arm 2</h4>
+                    </div>
+                    <div class="machine-body">
+                        <div class="display-window">
+                            <div class="stats-display" id="arm2-stats">
+                                <div class="stat-row">
+                                    <span class="stat-label">Total:</span>
+                                    <span class="stat-value" id="arm2-total">0</span>
+                                </div>
+                                <div class="stat-row">
+                                    <span class="stat-label">Pulls:</span>
+                                    <span class="stat-value" id="arm2-count">0</span>
+                                </div>
+                                <div class="stat-row stat-highlight">
+                                    <span class="stat-label">Mean:</span>
+                                    <span class="stat-value" id="arm2-mean">0.00</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Mean Reward:</span>
-                            <span class="stat-value" id="arm2-mean">0.00</span>
-                        </div>
+                        <button class="lever-button" id="arm2-btn" onclick="pullArm(2)">
+                            <span class="lever-handle">PULL</span>
+                        </button>
                     </div>
                 </div>
 
-                <div class="arm-section">
-                    <h4>Arm 3</h4>
-                    <button class="arm-button arm3-btn" id="arm3-btn" onclick="pullArm(3)">
-                        Pull Arm 3
-                    </button>
-                    <div class="stats-box" id="arm3-stats">
-                        <div class="stat-item">
-                            <span class="stat-label">Total Reward:</span>
-                            <span class="stat-value" id="arm3-total">0</span>
+                <div class="arm-section slot-machine slot-machine-3">
+                    <div class="machine-top">
+                        <div class="machine-lights">
+                            <span class="light"></span>
+                            <span class="light"></span>
+                            <span class="light"></span>
                         </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Number of Pulls:</span>
-                            <span class="stat-value" id="arm3-count">0</span>
+                        <h4 class="machine-label">Arm 3</h4>
+                    </div>
+                    <div class="machine-body">
+                        <div class="display-window">
+                            <div class="stats-display" id="arm3-stats">
+                                <div class="stat-row">
+                                    <span class="stat-label">Total:</span>
+                                    <span class="stat-value" id="arm3-total">0</span>
+                                </div>
+                                <div class="stat-row">
+                                    <span class="stat-label">Pulls:</span>
+                                    <span class="stat-value" id="arm3-count">0</span>
+                                </div>
+                                <div class="stat-row stat-highlight">
+                                    <span class="stat-label">Mean:</span>
+                                    <span class="stat-value" id="arm3-mean">0.00</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Mean Reward:</span>
-                            <span class="stat-value" id="arm3-mean">0.00</span>
-                        </div>
+                        <button class="lever-button" id="arm3-btn" onclick="pullArm(3)">
+                            <span class="lever-handle">PULL</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -199,7 +232,7 @@
             <div style="text-align: center; margin: 20px 0;">
                 <p><strong>Total Rewards:</strong> <span id="total-rewards" style="font-family: monospace; font-size: 18px; font-weight: bold; color: #007bff;">0</span></p>
                 <p><strong>Total Pulls:</strong> <span id="total-pulls">0</span> / 50</p>
-                <button class="demo-button" onclick="resetUserSession()" style="background: #6c757d; color: white;">Reset Game</button>
+                <button class="reset-game-button" onclick="resetUserSession()">Reset Game</button>
             </div>
         </div>
 

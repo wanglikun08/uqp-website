@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <!-- Background -->
+  <rect width="400" height="300" fill="#f8f9fa"/>
+
+  <!-- Title -->
+  <text x="200" y="30" font-family="Arial, sans-serif" font-size="20" font-weight="bold" text-anchor="middle" fill="#343a40">Grid World Navigation</text>
+
+  <!-- Grid cells -->
+  <g transform="translate(80, 60)">
+    <!-- Row 0 -->
+    <rect x="0" y="0" width="40" height="40" fill="#ffffff" stroke="#dee2e6" stroke-width="2"/>
+    <rect x="48" y="0" width="40" height="40" fill="#ffffff" stroke="#dee2e6" stroke-width="2"/>
+    <rect x="96" y="0" width="40" height="40" fill="#6c757d" stroke="#dee2e6" stroke-width="2"/>
+    <rect x="144" y="0" width="40" height="40" fill="#ffffff" stroke="#dee2e6" stroke-width="2"/>
+    <rect x="192" y="0" width="40" height="40" fill="#ffc107" stroke="#dee2e6" stroke-width="2"/>
+    <text x="212" y="26" font-family="monospace" font-size="10" font-weight="bold" text-anchor="middle" fill="#343a40">GOAL</text>
+
+    <!-- Row 1 -->
+    <rect x="0" y="48" width="40" height="40" fill="#ffffff" stroke="#dee2e6" stroke-width="2"/>
+    <rect x="48" y="48" width="40" height="40" fill="#ffffff" stroke="#dee2e6" stroke-width="2"/>
+    <rect x="96" y="48" width="40" height="40" fill="#ffffff" stroke="#dee2e6" stroke-width="2"/>
+    <rect x="144" y="48" width="40" height="40" fill="#ffffff" stroke="#dee2e6" stroke-width="2"/>
+    <rect x="192" y="48" width="40" height="40" fill="#ffffff" stroke="#dee2e6" stroke-width="2"/>
+
+    <!-- Row 2 -->
+    <rect x="0" y="96" width="40" height="40" fill="#ffffff" stroke="#dee2e6" stroke-width="2"/>
+    <rect x="48" y="96" width="40" height="40" fill="#ffffff" stroke="#dee2e6" stroke-width="2"/>
+    <rect x="96" y="96" width="40" height="40" fill="#6c757d" stroke="#dee2e6" stroke-width="2"/>
+    <rect x="144" y="96" width="40" height="40" fill="#6c757d" stroke="#dee2e6" stroke-width="2"/>
+    <rect x="192" y="96" width="40" height="40" fill="#6c757d" stroke="#dee2e6" stroke-width="2"/>
+
+    <!-- Row 3 -->
+    <rect x="0" y="144" width="40" height="40" fill="#ffffff" stroke="#dee2e6" stroke-width="2"/>
+    <rect x="48" y="144" width="40" height="40" fill="#ffffff" stroke="#dee2e6" stroke-width="2"/>
+    <rect x="96" y="144" width="40" height="40" fill="#ffffff" stroke="#dee2e6" stroke-width="2"/>
+    <rect x="144" y="144" width="40" height="40" fill="#ffffff" stroke="#dee2e6" stroke-width="2"/>
+    <rect x="192" y="144" width="40" height="40" fill="#ffffff" stroke="#dee2e6" stroke-width="2"/>
+
+    <!-- Row 4 -->
+    <rect x="0" y="192" width="40" height="40" fill="#007bff" stroke="#dee2e6" stroke-width="2"/>
+    <text x="20" y="218" font-family="monospace" font-size="20" font-weight="bold" text-anchor="middle" fill="#ffffff">A</text>
+    <rect x="48" y="192" width="40" height="40" fill="#6c757d" stroke="#dee2e6" stroke-width="2"/>
+    <rect x="96" y="192" width="40" height="40" fill="#ffffff" stroke="#dee2e6" stroke-width="2"/>
+    <rect x="144" y="192" width="40" height="40" fill="#ffffff" stroke="#dee2e6" stroke-width="2"/>
+    <rect x="192" y="192" width="40" height="40" fill="#ffffff" stroke="#dee2e6" stroke-width="2"/>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(20, 240)">
+    <rect x="0" y="0" width="20" height="20" fill="#007bff" stroke="#dee2e6" stroke-width="1"/>
+    <text x="25" y="15" font-family="Arial, sans-serif" font-size="12" fill="#343a40">Agent</text>
+
+    <rect x="90" y="0" width="20" height="20" fill="#ffc107" stroke="#dee2e6" stroke-width="1"/>
+    <text x="115" y="15" font-family="Arial, sans-serif" font-size="12" fill="#343a40">Goal</text>
+
+    <rect x="180" y="0" width="20" height="20" fill="#6c757d" stroke="#dee2e6" stroke-width="1"/>
+    <text x="205" y="15" font-family="Arial, sans-serif" font-size="12" fill="#343a40">Obstacle</text>
+  </g>
+</svg>

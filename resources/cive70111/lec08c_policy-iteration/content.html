@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Policy Iteration</title>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4.2.8/dist/es6-promise.auto.min.js"></script>
+    <script src="../phoebe-js/mathhelper.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../phoebe-js/phoebe.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="iframe-content">
+        <div class="container">
+
+        <div class="infotab">
+            <div class="infotab-header">
+            </div>
+            <div class="infotab-content">
+                <div class="infotab-panel active" data-tab-title="Introduction">
+                    <h3>Policy Iteration</h3>
+                    <p>Policy Iteration is a fundamental reinforcement learning algorithm that finds the optimal policy by alternating between two steps: evaluating how good the current policy is, and improving the policy based on that evaluation.</p>
+
+                    <p><strong>Why Policy Iteration?</strong></p>
+                    <ul>
+                        <li><strong>Guaranteed convergence</strong> - Always finds the optimal policy for the gridworld</li>
+                        <li><strong>Clear structure</strong> - Separates evaluation and improvement into distinct phases</li>
+                        <li><strong>Foundation for RL</strong> - Core concepts appear in many modern RL algorithms</li>
+                    </ul>
+
+                    <p><strong>The Two Phases:</strong></p>
+                    <ul>
+                        <li><strong>Policy Evaluation:</strong> Calculate the value V(s) of each state under the current policy</li>
+                        <li><strong>Policy Improvement:</strong> Update the policy to choose better actions based on those values</li>
+                    </ul>
+
+                    <p>Watch as the algorithm discovers the optimal path through the gridworld, iteratively refining both the value estimates and the policy!</p>
+                </div>
+
+                <div class="infotab-panel" data-tab-title="Theory">
+                    <h3>How Policy Iteration Works</h3>
+
+                    <p><strong>Policy Evaluation Phase:</strong></p>
+                    <p>Compute the value V(s) for each state by repeatedly applying the Bellman equation until values stabilize:</p>
+                    <div class="metriclabel-block">
+                        $$V(s) \leftarrow R(s, \pi(s)) + \gamma \sum_{s'} P(s'|s, \pi(s)) V(s')$$
+                    </div>
+                    <p>Where:</p>
+                    <ul>
+                        <li>$V(s)$ = value of state $s$</li>
+                        <li>$R(s,a)$ = immediate reward</li>
+                        <li>$\gamma$ = discount factor (0.9)</li>
+                        <li>$\pi(s)$ = current policy (action to take in state $s$)</li>
+                    </ul>
+
+                    <p><strong>Policy Improvement Phase:</strong></p>
+                    <p>Update the policy to be greedy with respect to the current values:</p>
+                    <div class="metriclabel-block">
+                        $$\pi(s) \leftarrow \arg\max_a \left[ R(s,a) + \gamma \sum_{s'} P(s'|s,a) V(s') \right]$$
+                    </div>
+                    <p>Choose the action that leads to the highest expected value.</p>
+
+                    <p><strong>Convergence:</strong></p>
+                    <ul>
+                        <li>Policy Evaluation converges when value updates are below threshold (δ < 0.01)</li>
+                        <li>Policy Iteration converges when the policy stops changing</li>
+                        <li>The final policy is guaranteed to be optimal</li>
+                    </ul>
+
+                    <p><strong>Grid World Specifics:</strong></p>
+                    <ul>
+                        <li>Goal reward: +10</li>
+                        <li>Step penalty: -1</li>
+                        <li>Discount factor: γ = 0.9</li>
+                        <li>Deterministic transitions (actions always succeed)</li>
+                    </ul>
+                </div>
+
+                <div class="infotab-panel" data-tab-title="Instructions">
+                    <h3>How to Use This Demo</h3>
+
+                    <p><strong>Value Grid (Left):</strong></p>
+                    <ul>
+                        <li>Shows the estimated value V(s) of each state</li>
+                        <li>Higher values indicate states closer to the goal</li>
+                        <li>Click "Policy Evaluation Step" to update values for one iteration</li>
+                        <li>Values stabilize when the current policy is fully evaluated</li>
+                    </ul>
+
+                    <p><strong>Policy Grid (Right):</strong></p>
+                    <ul>
+                        <li>Shows the current policy as arrows (↑↓←→)</li>
+                        <li>Arrows point to the best action from each state</li>
+                        <li>Click "Policy Improvement Step" to update the policy based on current values</li>
+                        <li>Policy stabilizes when it becomes optimal</li>
+                    </ul>
+
+                    <p><strong>Control Buttons:</strong></p>
+                    <ul>
+                        <li><strong>"Policy Evaluation Step":</strong> Run one iteration of value updates</li>
+                        <li><strong>"Policy Improvement Step":</strong> Update policy to be greedy with current values</li>
+                        <li><strong>"Run Until Convergence":</strong> Automatically iterate until optimal policy found</li>
+                        <li><strong>"Reset":</strong> Start over with zero values and random policy</li>
+                    </ul>
+
+                    <p><strong>Agent Visualization (Bottom):</strong></p>
+                    <ul>
+                        <li>Click "Animate Agent" to see the agent follow the current policy</li>
+                        <li>Agent starts at bottom-left, follows policy arrows to reach goal</li>
+                        <li>Watch how the path improves as the policy gets better!</li>
+                    </ul>
+                </div>
+
+                <div class="infotab-panel" data-tab-title="Tips">
+                    <h3>What to Observe</h3>
+
+                    <p><strong>Starting Out:</strong></p>
+                    <ul>
+                        <li>Initially, all values are zero (except goal = +10)</li>
+                        <li>The policy starts random (may not lead to goal)</li>
+                        <li>Try animating the agent at start - it won't reach the goal efficiently!</li>
+                    </ul>
+
+                    <p><strong>During Policy Evaluation:</strong></p>
+                    <ul>
+                        <li>Values propagate backward from the goal</li>
+                        <li>States near the goal get higher values first</li>
+                        <li>Multiple evaluation steps needed for values to stabilize</li>
+                        <li>Watch the step penalty (-1) affect values of distant states</li>
+                    </ul>
+
+                    <p><strong>During Policy Improvement:</strong></p>
+                    <ul>
+                        <li>Policy arrows update to point toward higher-value states</li>
+                        <li>Usually only takes one improvement step after full evaluation</li>
+                        <li>Policy changes dramatically in early iterations</li>
+                        <li>Later iterations show smaller refinements</li>
+                    </ul>
+
+                    <p><strong>Convergence:</strong></p>
+                    <ul>
+                        <li>Values stabilize to reflect true expected return from each state</li>
+                        <li>Policy arrows show the optimal path from every position</li>
+                        <li>Agent animation follows the shortest path to goal</li>
+                        <li>Typical convergence: 5-10 full policy iteration cycles</li>
+                    </ul>
+
+                    <p><strong>Experiment:</strong></p>
+                    <ul>
+                        <li>Try doing several evaluation steps before one improvement step</li>
+                        <li>Click "Reset" and watch the learning process from scratch</li>
+                        <li>Compare the final policy to your manual solution from lec08b!</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Demo Area -->
+        <div class="demo-area">
+            <!-- Two Grids Side by Side -->
+            <div class="grids-container">
+                <!-- Value Grid -->
+                <div class="grid-section">
+                    <h4>Value Function V(s)</h4>
+                    <div class="grid-wrapper">
+                        <canvas id="valueCanvas"></canvas>
+                    </div>
+                    <div class="controls">
+                        <button class="btn-primary" onclick="policyEvaluationStep()">Policy Evaluation Step</button>
+                        <div class="status" id="eval-status">Ready</div>
+                    </div>
+                </div>
+
+                <!-- Policy Grid -->
+                <div class="grid-section">
+                    <h4>Policy π(s)</h4>
+                    <div class="grid-wrapper">
+                        <canvas id="policyCanvas"></canvas>
+                    </div>
+                    <div class="controls">
+                        <button class="btn-primary" onclick="policyImprovementStep()">Policy Improvement Step</button>
+                        <div class="status" id="policy-status">Ready</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shared Controls -->
+            <div class="shared-controls">
+                <button class="btn-success" onclick="runUntilConvergence()">Run Until Convergence</button>
+                <button class="btn-secondary" onclick="resetAll()">Reset</button>
+                <div class="convergence-info" id="convergence-info">
+                    <span>Iterations: <strong id="iteration-count">0</strong></span>
+                    <span>Policy Stable: <strong id="policy-stable">No</strong></span>
+                </div>
+            </div>
+
+            <!-- Agent Visualization -->
+            <div class="agent-section">
+                <h4>Agent Following Current Policy</h4>
+                <div class="grid-wrapper">
+                    <canvas id="agentCanvas"></canvas>
+                </div>
+                <div class="agent-controls">
+                    <div class="agent-buttons">
+                        <button class="btn-info" id="animate-btn" onclick="animateAgent()">Animate Agent</button>
+                        <button class="btn-danger" id="stop-btn" onclick="stopAgent()" style="display: none;">Stop</button>
+                    </div>
+                    <div class="agent-stats">
+                        <span>Steps: <strong id="agent-steps">0</strong></span>
+                        <span>Reward: <strong id="agent-reward">0</strong></span>
+                        <span>Status: <strong id="agent-status">Ready</strong></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        </div>
+    </div>
+
+    <script src="../phoebe-js/infotab.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

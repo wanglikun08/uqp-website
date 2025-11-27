@@ -237,7 +237,7 @@
       "week": 9,
       "lectureNumber": "08",
       "lectureTitle": "Reinforcement Learning",
-      "locked": true,
+      "locked": false,
       "demos": [
         {
           "id": "multi-armed-bandit",
@@ -245,6 +245,22 @@
           "path": "lec08a_multi-armed-bandit",
           "title": "Multi-Armed Bandit",
           "description": "Explore the exploration vs exploitation tradeoff with interactive epsilon-greedy algorithm. Watch an agent learn to balance trying new actions with exploiting known good ones.",
+          "preview": "preview.svg"
+        },
+        {
+          "id": "grid-world",
+          "code": "lec08b",
+          "path": "lec08b_grid-world",
+          "title": "Grid World",
+          "description": "Navigate a 5×5 grid world from start to goal while avoiding obstacles. Learn the fundamentals of state spaces, action spaces, and sequential decision making.",
+          "preview": "preview.svg"
+        },
+        {
+          "id": "policy-iteration",
+          "code": "lec08c",
+          "path": "lec08c_policy-iteration",
+          "title": "Policy Iteration",
+          "description": "Watch Policy Iteration find the optimal policy through alternating evaluation and improvement. Visualize value functions and policies converging to the optimal solution.",
           "preview": "preview.svg"
         }
       ]

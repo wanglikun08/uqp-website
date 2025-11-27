@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid World</title>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4.2.8/dist/es6-promise.auto.min.js"></script>
+    <script src="../phoebe-js/mathhelper.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../phoebe-js/phoebe.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="iframe-content">
+        <div class="container">
+
+        <div class="infotab">
+            <div class="infotab-header">
+            </div>
+            <div class="infotab-content">
+                <div class="infotab-panel active" data-tab-title="Introduction">
+                    <h3>What is a Grid World?</h3>
+                    <p>A grid world is a simple environment where an agent (marked with "A") must navigate from a starting position to a goal while avoiding obstacles. Think of it like a maze or a simple video game level.</p>
+
+                    <p>This demo lets you experience the navigation problem firsthand by manually controlling the agent. You'll see why finding the optimal path isn't always obvious!</p>
+
+                    <p><strong>Why Grid Worlds Matter:</strong></p>
+                    <ul>
+                        <li><strong>Simple but not trivial</strong> - Easy to visualize, but planning ahead is still challenging</li>
+                        <li><strong>Real-world parallels</strong> - Robot navigation, warehouse routing, game AI</li>
+                        <li><strong>Foundation for RL</strong> - This problem structure appears throughout reinforcement learning</li>
+                    </ul>
+
+                    <p>Try navigating the grid yourself to understand the challenge before learning how algorithms can solve it automatically!</p>
+                </div>
+
+                <div class="infotab-panel" data-tab-title="The Problem">
+                    <h3>The Navigation Challenge</h3>
+
+                    <p><strong>Your Mission:</strong></p>
+                    <p>Navigate the agent from the starting position (lower left) to the goal (upper right) in as few steps as possible.</p>
+
+                    <p><strong>The Environment:</strong></p>
+                    <ul>
+                        <li><strong>Grid:</strong> 5 × 5 cells</li>
+                        <li><strong>Start:</strong> Blue cell with "A" in lower left corner</li>
+                        <li><strong>Goal:</strong> Yellow cell in upper right corner</li>
+                        <li><strong>Obstacles:</strong> Gray cells block your path</li>
+                        <li><strong>Valid cells:</strong> White cells are walkable</li>
+                    </ul>
+
+                    <p><strong>Movement Rules:</strong></p>
+                    <ul>
+                        <li>You can move: ↑ Up, ↓ Down, ← Left, → Right</li>
+                        <li>If you try to move into an obstacle or outside the grid, you stay in place</li>
+                        <li>Every move counts as one step</li>
+                    </ul>
+
+                    <p><strong>Scoring:</strong></p>
+                    <ul>
+                        <li>Each step costs you -1 point</li>
+                        <li>Reaching the goal gives you +10 points</li>
+                        <li>Fewer steps = higher score</li>
+                    </ul>
+
+                    <p><strong>The Challenge:</strong></p>
+                    <p>The obstacles create a barrier that forces you to plan your route. Dead ends waste steps, so you need to think ahead!</p>
+                </div>
+
+                <div class="infotab-panel" data-tab-title="Instructions">
+                    <h3>How to Use This Demo</h3>
+
+                    <p><strong>Manual Control:</strong></p>
+                    <ul>
+                        <li>Use the arrow buttons or keyboard arrow keys to move the agent</li>
+                        <li>Watch the total reward accumulate with each step</li>
+                        <li>Try to find the shortest path to the goal</li>
+                        <li>Click "Reset" to start over from the beginning</li>
+                    </ul>
+
+                    <p><strong>Visual Guide:</strong></p>
+                    <ul>
+                        <li><strong>Blue cell with "A":</strong> Agent's current position</li>
+                        <li><strong>Yellow cell with "GOAL":</strong> Target destination</li>
+                        <li><strong>Gray cells:</strong> Obstacles (impassable)</li>
+                        <li><strong>White cells:</strong> Empty, walkable cells</li>
+                        <li><strong>Light blue cells:</strong> Your path history</li>
+                    </ul>
+
+                    <p><strong>Understanding the Metrics:</strong></p>
+                    <ul>
+                        <li><strong>Steps:</strong> Total number of moves taken</li>
+                        <li><strong>Total Reward:</strong> Cumulative reward (starts at 0, decreases by 1 per step, +10 at goal)</li>
+                        <li><strong>Status:</strong> Current state (Ready / In Progress / Goal Reached!)</li>
+                    </ul>
+                </div>
+
+                <div class="infotab-panel" data-tab-title="Tips">
+                    <h3>Navigation Strategy</h3>
+
+                    <p><strong>Finding the Optimal Path:</strong></p>
+                    <ul>
+                        <li>The shortest path requires careful planning around obstacles</li>
+                        <li>Dead ends waste steps and reduce your score</li>
+                        <li>The optimal path is 8 steps - can you find it?</li>
+                        <li>Best possible score: 10 - 8 = +2 points</li>
+                    </ul>
+
+                    <p><strong>Understanding the Layout:</strong></p>
+                    <ul>
+                        <li>Notice the obstacle wall in the middle of the grid</li>
+                        <li>There's an obstacle immediately to the right of the start position</li>
+                        <li>The barrier forces you to navigate around it strategically</li>
+                        <li>Think several moves ahead to avoid dead ends</li>
+                    </ul>
+
+                    <p><strong>Common Mistakes:</strong></p>
+                    <ul>
+                        <li>Moving right immediately (blocked by obstacle!)</li>
+                        <li>Not planning the full route before starting</li>
+                        <li>Getting trapped in dead ends and having to backtrack</li>
+                        <li>Taking diagonal thinking when you can only move in four directions</li>
+                    </ul>
+
+                    <p><strong>Try This:</strong></p>
+                    <ul>
+                        <li>First attempt: Just try to reach the goal any way you can</li>
+                        <li>Second attempt: Count your steps and try to improve</li>
+                        <li>Challenge: Can you find the 8-step optimal path?</li>
+                        <li>Think: How would you describe the winning strategy to someone else?</li>
+                    </ul>
+
+                    <p><strong>What's Next:</strong></p>
+                    <p>After experiencing this problem manually, you'll learn how reinforcement learning algorithms can automatically discover optimal navigation strategies through trial and error - without being explicitly told the solution!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Grid World Area -->
+        <div class="demo-area">
+            <div class="grid-container">
+                <h3 style="text-align: center; margin-bottom: 20px;">Navigate to the Goal</h3>
+
+                <div class="grid-wrapper">
+                    <canvas id="gridCanvas"></canvas>
+                </div>
+
+                <div class="controls-panel">
+                    <div class="stats-display">
+                        <div class="stat-item">
+                            <span class="stat-label">Steps:</span>
+                            <span class="stat-value" id="steps-count">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Total Reward:</span>
+                            <span class="stat-value" id="total-reward">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Status:</span>
+                            <span class="stat-value" id="status">Ready</span>
+                        </div>
+                    </div>
+
+                    <div class="direction-controls">
+                        <div class="arrow-row">
+                            <button class="arrow-btn" id="btn-up" onclick="moveAgent('up')">↑</button>
+                        </div>
+                        <div class="arrow-row">
+                            <button class="arrow-btn" id="btn-left" onclick="moveAgent('left')">←</button>
+                            <button class="arrow-btn" id="btn-down" onclick="moveAgent('down')">↓</button>
+                            <button class="arrow-btn" id="btn-right" onclick="moveAgent('right')">→</button>
+                        </div>
+                    </div>
+
+                    <button class="reset-button" onclick="resetEnvironment()">Reset</button>
+                </div>
+            </div>
+        </div>
+
+        </div>
+    </div>
+
+    <script src="../phoebe-js/infotab.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
