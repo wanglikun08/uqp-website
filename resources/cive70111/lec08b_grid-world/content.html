@@ -99,81 +99,178 @@
                 <div class="infotab-panel" data-tab-title="Tips">
                     <h3>Navigation Strategy</h3>
 
-                    <p><strong>Finding the Optimal Path:</strong></p>
+                    <p><strong>Key Points:</strong></p>
                     <ul>
-                        <li>The shortest path requires careful planning around obstacles</li>
-                        <li>Dead ends waste steps and reduce your score</li>
-                        <li>The optimal path is 8 steps - can you find it?</li>
-                        <li>Best possible score: 10 - 8 = +2 points</li>
+                        <li>The optimal path is 8 steps (best score: +2 points)</li>
+                        <li>Obstacles form a wall requiring strategic navigation</li>
+                        <li>Don't move right immediately - there's an obstacle blocking</li>
+                        <li>Plan ahead to avoid dead ends and backtracking</li>
                     </ul>
 
-                    <p><strong>Understanding the Layout:</strong></p>
+                    <p><strong>Practice Approach:</strong></p>
                     <ul>
-                        <li>Notice the obstacle wall in the middle of the grid</li>
-                        <li>There's an obstacle immediately to the right of the start position</li>
-                        <li>The barrier forces you to navigate around it strategically</li>
-                        <li>Think several moves ahead to avoid dead ends</li>
+                        <li>Try 1: Reach the goal any way you can</li>
+                        <li>Try 2: Count steps and optimize your path</li>
+                        <li>Challenge: Find the 8-step optimal solution</li>
+                        <li><strong>Pro tip:</strong> Try mentally tracking the "value" (expected future reward) of each square you visit - this is exactly what RL algorithms learn!</li>
                     </ul>
 
-                    <p><strong>Common Mistakes:</strong></p>
+                    <p><strong>Next:</strong> Learn how RL algorithms automatically discover optimal paths through trial and error!</p>
+                </div>
+
+                <div class="infotab-panel" data-tab-title="Compete">
+                    <h3>Live Competition Mode</h3>
+
+                    <p><strong>Challenge:</strong> Navigate the 6×6 grid world over 3 attempts and compete for the highest total score in your class!</p>
+
+                    <p><span style="color: darkred; font-weight: bold;">⚠️ Keep this tab active - switching to another tab may temporarily remove you from the leaderboard</span></p>
+
+                    <p><strong>Competition Rules:</strong></p>
                     <ul>
-                        <li>Moving right immediately (blocked by obstacle!)</li>
-                        <li>Not planning the full route before starting</li>
-                        <li>Getting trapped in dead ends and having to backtrack</li>
-                        <li>Taking diagonal thinking when you can only move in four directions</li>
+                        <li>Everyone plays the same 6×6 grid with fog of war</li>
+                        <li>You must complete all 3 attempts</li>
+                        <li>Your score is submitted automatically after attempt 3 completes</li>
+                        <li><strong>One-time only:</strong> Your first completion counts - no retries</li>
+                        <li>Real-time leaderboard shows top performers</li>
                     </ul>
 
-                    <p><strong>Try This:</strong></p>
+                    <div id="username-display-info" style="display: none; margin: 10px 0; padding: 10px; background: #e8f4fd; border: 1px solid #bee5eb; border-radius: 4px;">
+                        Your anonymous name: <span id="competition-username-info" style="font-weight: bold; color: #3498db;"></span>
+                    </div>
+
+                    <p><strong>Three-Attempt Structure:</strong></p>
                     <ul>
-                        <li>First attempt: Just try to reach the goal any way you can</li>
-                        <li>Second attempt: Count your steps and try to improve</li>
-                        <li>Challenge: Can you find the 8-step optimal path?</li>
-                        <li>Think: How would you describe the winning strategy to someone else?</li>
+                        <li><strong>Attempt 1:</strong> Pure exploration - fog of war, no information</li>
+                        <li><strong>Attempt 2:</strong> Value estimates shown on visited cells from attempt 1</li>
+                        <li><strong>Attempt 3:</strong> Back to fog of war - test your memory!</li>
                     </ul>
 
-                    <p><strong>What's Next:</strong></p>
-                    <p>After experiencing this problem manually, you'll learn how reinforcement learning algorithms can automatically discover optimal navigation strategies through trial and error - without being explicitly told the solution!</p>
+                    <p><strong>Scoring:</strong></p>
+                    <ul>
+                        <li>Goal reward: +20 points</li>
+                        <li>Step penalty: -1 per move</li>
+                        <li>Small treats: +1 and +2 along the way (repeatable)</li>
+                        <li><strong>Final Score:</strong> Sum of all rewards across 3 attempts</li>
+                    </ul>
+
+                    <p><strong>Strategy Tips:</strong></p>
+                    <ul>
+                        <li>Explore efficiently in attempt 1 to build good value estimates</li>
+                        <li>Use value information in attempt 2 to find optimal path</li>
+                        <li>Memorize the best route for attempt 3</li>
+                    </ul>
                 </div>
             </div>
         </div>
 
         <!-- Main Grid World Area -->
         <div class="demo-area">
-            <div class="grid-container">
-                <h3 style="text-align: center; margin-bottom: 20px;">Navigate to the Goal</h3>
-
-                <div class="grid-wrapper">
-                    <canvas id="gridCanvas"></canvas>
+            <div class="demo-tabs">
+                <!-- Tab Header -->
+                <div class="demo-tab-header" id="demo-tab-header">
+                    <button class="demo-tab-button active" data-tab="normal">Normal</button>
+                    <button class="demo-tab-button" data-tab="fogofwar">Fog of War</button>
                 </div>
 
-                <div class="controls-panel">
-                    <div class="stats-display">
-                        <div class="stat-item">
-                            <span class="stat-label">Steps:</span>
-                            <span class="stat-value" id="steps-count">0</span>
+                <!-- Tab 1: Normal Mode -->
+                <div class="demo-tab-content active" data-tab="normal">
+                    <div class="grid-container">
+                        <h3 id="mode-title" style="text-align: center; margin-bottom: 20px;">Navigate to the Goal</h3>
+                        <p id="mode-subtitle" style="text-align: center; color: #6c757d; margin-bottom: 20px; display: none;"></p>
+
+                        <div id="competition-instructions" class="competition-instructions" style="display: none;">
+                            <div id="instructions-content" class="instructions-content">
+                                <p><strong>Instructions:</strong></p>
+                                <p>In this grid world you will receive <strong>+20</strong> for reaching the goal and <strong>-1</strong> for each step. There are some small treats along the way that don't end the game (unlike the goal), you may visit them as many times as you like.</p>
+                                <p><strong>You have 3 attempts in total:</strong></p>
+                                <ul>
+                                    <li><strong>Attempt 1:</strong> No information available, explore the grid.</li>
+                                    <li><strong>Attempt 2:</strong> Value estimates are shown on squares visited in attempt 1, try to find the optimal path!</li>
+                                    <li><strong>Attempt 3:</strong> No information again, how much do you remember?</li>
+                                </ul>
+                                <p>Your final score is the total reward received throughout the 3 attempts. <em>Only the first full run will be recorded.</em></p>
+                            </div>
+                            <div class="instructions-toggle">
+                                <a href="#" id="toggle-instructions" onclick="toggleInstructions(event)">Hide Instructions</a>
+                            </div>
                         </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Total Reward:</span>
-                            <span class="stat-value" id="total-reward">0</span>
+
+                        <div class="grid-wrapper">
+                            <canvas id="gridCanvas"></canvas>
+                            <div id="coordinate-display" class="coordinate-display"></div>
                         </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Status:</span>
-                            <span class="stat-value" id="status">Ready</span>
+
+                        <div class="controls-panel">
+                            <!-- Stats display - changes based on mode -->
+                            <div class="stats-display" id="stats-normal">
+                                <div class="stat-item">
+                                    <span class="stat-label">Steps:</span>
+                                    <span class="stat-value" id="steps-count">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Total Reward:</span>
+                                    <span class="stat-value" id="total-reward">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Status:</span>
+                                    <span class="stat-value" id="status">Ready</span>
+                                </div>
+                            </div>
+
+                            <!-- Competition mode stats -->
+                            <div class="stats-display" id="stats-competition" style="display: none;">
+                                <div class="stat-item">
+                                    <span class="stat-label">Attempt:</span>
+                                    <span class="stat-value" id="attempt-count">1 / 3</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Steps:</span>
+                                    <span class="stat-value" id="steps-count-comp">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Current Reward:</span>
+                                    <span class="stat-value" id="current-reward">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Total Score:</span>
+                                    <span class="stat-value" id="total-score">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Status:</span>
+                                    <span class="stat-value" id="status-comp">Ready</span>
+                                </div>
+                            </div>
+
+                            <div class="direction-controls">
+                                <div class="arrow-row">
+                                    <button class="arrow-btn" id="btn-up" onclick="moveAgent('up')">↑</button>
+                                </div>
+                                <div class="arrow-row">
+                                    <button class="arrow-btn" id="btn-left" onclick="moveAgent('left')">←</button>
+                                    <button class="arrow-btn" id="btn-down" onclick="moveAgent('down')">↓</button>
+                                    <button class="arrow-btn" id="btn-right" onclick="moveAgent('right')">→</button>
+                                </div>
+                            </div>
+
+                            <div id="button-controls" style="display: flex; gap: 10px; justify-content: center;">
+                                <button class="reset-button" onclick="resetEnvironment()">Reset</button>
+                                <button class="attempt-button" id="next-attempt-btn" onclick="startNextAttempt()" style="display: none;">Start Attempt 2</button>
+                            </div>
+
+                            <!-- Leaderboard Panel -->
+                            <div class="leaderboard-panel" id="leaderboard-panel" style="display: none; margin: 30px auto 0 auto;">
+                                <div class="panel-title">🏆 Live Competition Leaderboard - Top 10</div>
+                                <div class="leaderboard-status" id="leaderboard-status">
+                                    <span class="status-indicator" id="status-dot"></span>
+                                    <span id="status-text">Connecting...</span>
+                                </div>
+                                <div class="leaderboard-content" id="leaderboard-content">
+                                    <div class="your-position" id="your-position"></div>
+                                    <div class="leaderboard-list" id="leaderboard-list"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="direction-controls">
-                        <div class="arrow-row">
-                            <button class="arrow-btn" id="btn-up" onclick="moveAgent('up')">↑</button>
-                        </div>
-                        <div class="arrow-row">
-                            <button class="arrow-btn" id="btn-left" onclick="moveAgent('left')">←</button>
-                            <button class="arrow-btn" id="btn-down" onclick="moveAgent('down')">↓</button>
-                            <button class="arrow-btn" id="btn-right" onclick="moveAgent('right')">→</button>
-                        </div>
-                    </div>
-
-                    <button class="reset-button" onclick="resetEnvironment()">Reset</button>
                 </div>
             </div>
         </div>
@@ -182,6 +279,8 @@
     </div>
 
     <script src="../phoebe-js/infotab.js"></script>
+    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
+    <script src="../leaderboard-client.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
