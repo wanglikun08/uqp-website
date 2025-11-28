@@ -125,6 +125,41 @@
                         <li><strong>Non-stationary Bandits</strong> - Reward distributions change over time</li>
                     </ul>
                 </div>
+
+                <div class="infotab-panel" data-tab-title="Compete">
+                    <h3>Live Competition Mode</h3>
+
+                    <p><strong>Challenge:</strong> Maximize your total reward over 100 pulls and compete against your classmates!</p>
+
+                    <p><span style="color: darkred; font-weight: bold;">Keep this tab active - switching to another tab may temporarily remove you from the leaderboard</span></p>
+
+                    <p><strong>Competition Rules:</strong></p>
+                    <ul>
+                        <li>You have exactly <strong>100 pulls</strong> to maximize your reward</li>
+                        <li>The arm distributions are <strong>different</strong> from practice mode</li>
+                        <li>Your score is submitted automatically after all 100 pulls</li>
+                        <li><strong>One-time only:</strong> Your first completion counts - no retries</li>
+                        <li>Real-time leaderboard shows top performers</li>
+                    </ul>
+
+                    <div id="username-display-info" style="display: none; margin: 10px 0; padding: 10px; background: #e8f4fd; border: 1px solid #bee5eb; border-radius: 4px;">
+                        Your anonymous name: <span id="competition-username-info" style="font-weight: bold; color: #3498db;"></span>
+                    </div>
+
+                    <p><strong>Strategy Hints:</strong></p>
+                    <ul>
+                        <li>Balance exploration (trying different arms) with exploitation (using best-known arm)</li>
+                        <li>Early exploration helps you find the best arm faster</li>
+                        <li>Don't spend too many pulls exploring - you need to exploit to win!</li>
+                    </ul>
+
+                    <p><strong>Scoring:</strong></p>
+                    <ul>
+                        <li>Each arm has a hidden probability distribution</li>
+                        <li>Your total reward is the sum of all rewards received</li>
+                        <li>Higher total reward = better rank on the leaderboard</li>
+                    </ul>
+                </div>
             </div>
         </div>
 
@@ -231,8 +266,21 @@
 
             <div style="text-align: center; margin: 20px 0;">
                 <p><strong>Total Rewards:</strong> <span id="total-rewards" style="font-family: monospace; font-size: 18px; font-weight: bold; color: #007bff;">0</span></p>
-                <p><strong>Total Pulls:</strong> <span id="total-pulls">0</span> / 50</p>
-                <button class="reset-game-button" onclick="resetUserSession()">Reset Game</button>
+                <p><strong>Total Pulls:</strong> <span id="total-pulls">0</span> / <span id="max-pulls">50</span></p>
+                <button class="reset-game-button" id="reset-game-btn" onclick="resetUserSession()">Reset Game</button>
+            </div>
+
+            <!-- Leaderboard Panel (shown in competition mode) -->
+            <div class="leaderboard-panel" id="leaderboard-panel" style="display: none; margin: 20px auto 0 auto;">
+                <div class="panel-title">Live Competition Leaderboard - Top 10</div>
+                <div class="leaderboard-status" id="leaderboard-status">
+                    <span class="status-indicator" id="status-dot"></span>
+                    <span id="status-text">Connecting...</span>
+                </div>
+                <div class="leaderboard-content" id="leaderboard-content">
+                    <div class="your-position" id="your-position"></div>
+                    <div class="leaderboard-list" id="leaderboard-list"></div>
+                </div>
             </div>
         </div>
 
@@ -289,8 +337,10 @@
     </div>
 
     <script src="../phoebe-js/infotab.js"></script>
+    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
+    <script src="../leaderboard-client.js"></script>
     <script src="bandit-engine.js"></script>
-    <script src="script.js?v=1.0"></script>
+    <script src="script.js?v=1.1"></script>
     <script>
         // Force layout recalculation on page load to fix positioning
         document.addEventListener('DOMContentLoaded', function() {
