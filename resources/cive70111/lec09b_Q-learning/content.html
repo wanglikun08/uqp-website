@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Model-Free RL</title>
+    <title>Model-Free Control Methods</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -212,15 +212,6 @@
                             <h4>Q-Table (θ vs θ̇)</h4>
                             <canvas id="qlearning-qtable" width="250" height="250"></canvas>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Shared TD Error Display -->
-                <div class="td-error-panel">
-                    <h3>Temporal Difference Error Breakdown</h3>
-                    <p class="td-subtitle">Click an agent to see its update rule with sample values</p>
-                    <div id="td-breakdown">
-                        <p>Select a checkpoint and click "Play" on an agent to see TD error details.</p>
                     </div>
                 </div>
             </div>

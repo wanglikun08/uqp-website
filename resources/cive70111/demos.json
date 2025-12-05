@@ -283,7 +283,7 @@
           "id": "q-learning",
           "code": "lec09b",
           "path": "lec09b_Q-learning",
-          "title": "Model-Free RL",
+          "title": "Model-Free Control",
           "description": "Compare three model-free RL algorithms side-by-side on CartPole. Watch Monte Carlo, SARSA, and Q-learning learn through 4 training checkpoints with Q-table visualizations.",
           "preview": "preview.svg"
         }
