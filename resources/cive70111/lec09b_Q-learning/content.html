@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q-learning vs SARSA vs Monte Carlo</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../phoebe-js/phoebe.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="iframe-content">
+        <div class="container">
+            <!-- InfoTab (left sidebar) -->
+            <div class="infotab">
+                <div class="infotab-header"></div>
+                <div class="infotab-content">
+                    <div class="infotab-panel active" data-tab-title="Introduction">
+                        <h3>Comparing Model-Free RL Algorithms</h3>
+                        <p>This demonstration compares three fundamental reinforcement learning algorithms on the CartPole balancing task:</p>
+                        <ul>
+                            <li><strong>Monte Carlo (MC)</strong>: Updates Q-values at episode end using the full episode return</li>
+                            <li><strong>SARSA</strong>: On-policy temporal difference learning using the actual next action taken</li>
+                            <li><strong>Q-learning</strong>: Off-policy temporal difference learning using the maximum Q-value over next actions</li>
+                        </ul>
+                        <p>All three agents use tabular Q-tables with discretized states. You can switch between training checkpoints to see how each algorithm learns over time.</p>
+                        <h4>Key Concepts</h4>
+                        <ul>
+                            <li><strong>On-policy vs Off-policy</strong>: SARSA learns from actions it actually takes, while Q-learning learns from optimal actions</li>
+                            <li><strong>Temporal Difference</strong>: TD methods (SARSA, Q-learning) update after each step, while MC waits until episode end</li>
+                            <li><strong>Exploration vs Exploitation</strong>: All algorithms use epsilon-greedy policies with decaying exploration</li>
+                        </ul>
+                    </div>
+
+                    <div class="infotab-panel" data-tab-title="Theory">
+                        <h3>Model-Free Control Refresher</h3>
+                        <p>All agents maximize the same discounted return but bootstrap differently:</p>
+                        <ul>
+                            <li><strong>Monte Carlo</strong>: wait for the full episode return \(G_t\) and update \(Q \leftarrow Q + \alpha (G_t - Q)\). Low bias, high variance.</li>
+                            <li><strong>SARSA</strong>: on-policy target \(R_{t+1} + \gamma Q(S_{t+1}, A_{t+1})\). Learns cautious policies that reflect the exploration behavior.</li>
+                            <li><strong>Q-learning</strong>: off-policy target \(R_{t+1} + \gamma \max_a Q(S_{t+1}, a)\). Fast convergence but can overestimate with noisy values.</li>
+                        </ul>
+                        <p>Each agent uses epsilon-greedy exploration. SARSA and Q-learning now decay \(\epsilon\) per <em>environment step</em> so TD methods see the same exploration schedule regardless of episode length, while Monte Carlo continues to decay after each episode.</p>
+                        <h4>State Discretization</h4>
+                        <p>CartPole’s continuous state \((x, \dot{x}, \theta, \dot{\theta})\) is bucketed into 5 bins per dimension (625 states) with 2 discrete actions. The resulting Q-table stores 1,250 values per checkpoint.</p>
+                        <table class="info-table">
+                            <tr>
+                                <th>Variable</th>
+                                <th>Range</th>
+                                <th>Bins</th>
+                            </tr>
+                            <tr>
+                                <td>Cart Position (x)</td>
+                                <td>[-2.4, 2.4] m</td>
+                                <td>5 bins</td>
+                            </tr>
+                            <tr>
+                                <td>Cart Velocity (ẋ)</td>
+                                <td>[-3, 3] m/s</td>
+                                <td>5 bins</td>
+                            </tr>
+                            <tr>
+                                <td>Pole Angle (θ)</td>
+                                <td>[-0.21, 0.21] rad</td>
+                                <td>5 bins</td>
+                            </tr>
+                            <tr>
+                                <td>Angular Velocity (θ̇)</td>
+                                <td>[-2, 2] rad/s</td>
+                                <td>5 bins</td>
+                            </tr>
+                        </table>
+                        <p><strong>Trade-off:</strong> coarse bins speed up learning but miss nuance; finer bins explode the state space. This discretization mirrors the checkpoints generated by <code>train_agents.py</code>.</p>
+                    </div>
+
+                    <div class="infotab-panel" data-tab-title="Instructions">
+                        <h3>How to Use This Demo</h3>
+                        <ul>
+                            <li><strong>Select a checkpoint</strong> (0, 2k, 10k, 50k steps) to load the saved Q-table and statistics for all three algorithms.</li>
+                            <li><strong>Play / Step / Reset</strong> controls run the current agent policy inside the browser CartPole environment. Reset also stops playback.</li>
+                            <li><strong>Learning curve panel</strong> plots return vs. training steps (rescaled from logged episodes). Use it to compare sample efficiency.</li>
+                            <li><strong>Q-table heatmap</strong> shows a slice through \(x=0, \dot{x}=0\) with the greedy action arrow. Hover between checkpoints to see how policies sharpen.</li>
+                            <li><strong>Metrics row</strong> displays running average return, exploration rate, and (for Q-learning) best episode so far.</li>
+                            <li><strong>Checkpoint notes</strong> under the buttons explain what changes between training stages—read them while flipping between algorithms.</li>
+                        </ul>
+                        <p>Open the browser console to read debug logs from <code>initialize()</code>, <code>loadCheckpoint()</code>, and chart updates—handy when adding new checkpoints.</p>
+                    </div>
+
+                    <div class="infotab-panel" data-tab-title="Tips">
+                        <h3>What to Notice</h3>
+                        <ul>
+                            <li><strong>0 steps:</strong> Q-tables are flat and learning curves hug zero—this is your baseline behavior.</li>
+                            <li><strong>2k steps:</strong> Compare MC vs TD returns; TD agents improve faster because they update every step, even though exploration is still high.</li>
+                            <li><strong>10k steps:</strong> Watch the Q-table heatmaps: SARSA tends to favor safer (center) actions, while Q-learning pushes harder to the extremes.</li>
+                            <li><strong>50k steps:</strong> Policies almost match; subtle differences remain in exploration rate and max return stats.</li>
+                            <li><strong>Environment tweaks:</strong> Rewards are now +1 per step and episodes stop as soon as \(|x|\) or \(|\theta|\) leave bounds, so curves mirror Gymnasium’s behavior.</li>
+                        </ul>
+                        <p>Try pausing at a checkpoint, stepping each agent manually, and observing how the greedy policy reacts to different pole angles. When you’re ready for function approximation, imagine replacing the Q-table with a neural network (DQN) to handle continuous states without discretization.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main demo area -->
+            <div class="demo-wrapper">
+                <!-- Checkpoint Selector (global controls) -->
+                <div class="checkpoint-controls">
+                    <h3>Training Checkpoint</h3>
+                    <div class="checkpoint-selector">
+                        <button class="checkpoint-btn active" data-step="0">0 steps<br>(random)</button>
+                        <button class="checkpoint-btn" data-step="2000">2k steps<br>(early)</button>
+                        <button class="checkpoint-btn" data-step="10000">10k steps<br>(mid)</button>
+                        <button class="checkpoint-btn" data-step="50000">50k steps<br>(converged)</button>
+                    </div>
+                    <div class="teaching-callout" id="teaching-callout">
+                        <strong id="current-config">Currently viewing: Random initialization (0 steps)</strong>
+                        <p id="teaching-tip">Random initialization - watch all three agents fail to balance!</p>
+                    </div>
+                </div>
+
+                <!-- Three-column comparison -->
+                <div class="algorithms-grid">
+                    <!-- Monte Carlo Column -->
+                    <div class="algorithm-column" id="mc-column">
+                        <div class="algo-header">
+                            <h3>Monte Carlo</h3>
+                            <span class="algo-badge">Episode-end updates</span>
+                        </div>
+
+                        <div class="canvas-card">
+                            <div class="canvas-shell">
+                                <span class="attempt-counter" id="mc-attempt">Attempt: 01</span>
+                                <canvas id="mc-canvas" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="metrics-row">
+                            <div class="metriclabel" id="mc-avg-return"></div>
+                            <div class="metriclabel" id="mc-epsilon"></div>
+                        </div>
+
+                        <div class="chart-card">
+                            <h4>Learning Curve</h4>
+                            <canvas id="mc-chart" height="150"></canvas>
+                        </div>
+
+                        <div class="qtable-card">
+                            <h4>Q-Table (θ vs θ̇)</h4>
+                            <canvas id="mc-qtable" width="250" height="250"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- SARSA Column -->
+                    <div class="algorithm-column" id="sarsa-column">
+                        <div class="algo-header">
+                            <h3>SARSA</h3>
+                            <span class="algo-badge">On-policy TD</span>
+                        </div>
+
+                        <div class="canvas-card">
+                            <div class="canvas-shell">
+                                <span class="attempt-counter" id="sarsa-attempt">Attempt: 01</span>
+                                <canvas id="sarsa-canvas" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="metrics-row">
+                            <div class="metriclabel" id="sarsa-avg-return"></div>
+                            <div class="metriclabel" id="sarsa-epsilon"></div>
+                        </div>
+
+                        <div class="chart-card">
+                            <h4>Learning Curve</h4>
+                            <canvas id="sarsa-chart" height="150"></canvas>
+                        </div>
+
+                        <div class="qtable-card">
+                            <h4>Q-Table (θ vs θ̇)</h4>
+                            <canvas id="sarsa-qtable" width="250" height="250"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Q-learning Column -->
+                    <div class="algorithm-column" id="qlearning-column">
+                        <div class="algo-header">
+                            <h3>Q-learning</h3>
+                            <span class="algo-badge">Off-policy TD</span>
+                        </div>
+
+                        <div class="canvas-card">
+                            <div class="canvas-shell">
+                                <span class="attempt-counter" id="qlearning-attempt">Attempt: 01</span>
+                                <canvas id="qlearning-canvas" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="metrics-row">
+                            <div class="metriclabel" id="qlearning-avg-return"></div>
+                            <div class="metriclabel" id="qlearning-epsilon"></div>
+                        </div>
+
+                        <div class="chart-card">
+                            <h4>Learning Curve</h4>
+                            <canvas id="qlearning-chart" height="150"></canvas>
+                        </div>
+
+                        <div class="qtable-card">
+                            <h4>Q-Table (θ vs θ̇)</h4>
+                            <canvas id="qlearning-qtable" width="250" height="250"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shared TD Error Display -->
+                <div class="td-error-panel">
+                    <h3>Temporal Difference Error Breakdown</h3>
+                    <p class="td-subtitle">Click an agent to see its update rule with sample values</p>
+                    <div id="td-breakdown">
+                        <p>Select a checkpoint and click "Play" on an agent to see TD error details.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../phoebe-js/canvashelper.js"></script>
+    <script src="../phoebe-js/metriclabel.js"></script>
+    <script src="../phoebe-js/infotab.js"></script>
+    <script src="cartpole-engine.js?v=2"></script>
+    <script src="q-learning-engine.js?v=2"></script>
+    <script src="snapshot-loader.js?v=2"></script>
+    <script src="q-table-viz.js?v=2"></script>
+    <script src="script.js?v=2"></script>
+</body>
+</html>

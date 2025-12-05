@@ -38,15 +38,5 @@
     <rect x="260" y="110" width="40" height="40" rx="8" fill="#bfdbfe" stroke="#60a5fa"/>
   </g>
 
-  <g fill="#475569" font-family="'Inter', 'Helvetica', sans-serif" font-size="12" text-anchor="middle">
-    <text x="120" y="175">Arm 1</text>
-    <text x="200" y="175">Arm 2</text>
-    <text x="280" y="175">Arm 3</text>
-  </g>
 
-  <rect x="140" y="220" width="120" height="24" rx="12" fill="#eff6ff" stroke="#bfdbfe" stroke-width="2"/>
-  <text x="200" y="238" text-anchor="middle" fill="#2563eb" font-family="'Inter', 'Helvetica', sans-serif" font-size="12" letter-spacing="1.2">PULL ARM</text>
-
-  <text x="200" y="33" text-anchor="middle" fill="#0f172a" font-family="'Inter', 'Helvetica', sans-serif" font-size="22">Multi-Armed Bandit</text>
-  <text x="200" y="280" text-anchor="middle" fill="#475569" font-family="'Inter', 'Helvetica', sans-serif" font-size="14" letter-spacing="1.5">explore vs. exploit</text>
 </svg>

@@ -43,11 +43,4 @@
     <circle cx="310" cy="200" r="20"/>
   </g>
 
-  <text x="200" y="80" text-anchor="middle" fill="#475569" font-family="'Inter', 'Helvetica', sans-serif" font-size="16" letter-spacing="1">
-    Input     Hidden     Output
-  </text>
-
-  <text x="200" y="270" text-anchor="middle" fill="#0f172a" font-family="'Inter', 'Helvetica', sans-serif" font-size="18" letter-spacing="0.5">
-    Neural Networks
-  </text>
 </svg>

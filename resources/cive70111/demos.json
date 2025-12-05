@@ -264,6 +264,30 @@
           "preview": "preview.svg"
         }
       ]
+    },
+    {
+      "week": 10,
+      "lectureNumber": "09",
+      "lectureTitle": "Deep RL",
+      "locked": false,
+      "demos": [
+        {
+          "id": "cartpole-control",
+          "code": "lec09a",
+          "path": "lec09a_cartpole-control",
+          "title": "Cartpole Control",
+          "description": "Manual control of CartPole environment. Experience continuous state spaces and unstable dynamics before learning RL algorithms.",
+          "preview": "preview.svg"
+        },
+        {
+          "id": "q-learning",
+          "code": "lec09b",
+          "path": "lec09b_Q-learning",
+          "title": "Comparing DRL methods",
+          "description": "Compare three model-free RL algorithms side-by-side on CartPole. Watch Monte Carlo, SARSA, and Q-learning learn through 4 training checkpoints with Q-table visualizations.",
+          "preview": "preview.svg"
+        }
+      ]
     }
   ]
 }

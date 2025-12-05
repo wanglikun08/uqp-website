@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CartPole Control</title>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../phoebe-js/phoebe.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
+</head>
+<body>
+    <div class="iframe-content">
+        <div class="container">
+            <div class="infotab">
+                <div class="infotab-header"></div>
+                <div class="infotab-content">
+                    <div class="infotab-panel active" data-tab-title="Introduction">
+                        <h3>Why CartPole?</h3>
+                        <p>CartPole is the hello world of continuous control. A cart can move left or right, while a pole pivots freely on top. With no controller, gravity quickly pulls the pole over. To balance it, you must push left and right to keep the system within a narrow range.</p>
+                        <p>This demo focuses on <strong>continuous state spaces</strong> rather than grid cells. Every small nudge changes four real-valued variables, and small delays mean failure&mdash;a perfect illustration of why reinforcement learning agents are needed.</p>
+                    </div>
+                    <div class="infotab-panel" data-tab-title="State & Actions">
+                        <h3>The State Vector</h3>
+                        <ul>
+                            <li><strong>Cart position</strong> \(x \in [-2.4, 2.4]\) meters</li>
+                            <li><strong>Cart velocity</strong> \(\dot{x}\) (m/s)</li>
+                            <li><strong>Pole angle</strong> \(\theta \in [-12^\circ, 12^\circ]\) from vertical</li>
+                            <li><strong>Pole angular velocity</strong> \(\dot{\theta}\) (rad/s)</li>
+                        </ul>
+                        <p><strong>Actions:</strong> discrete left or right pushes. Use the left/right arrows (or A/D). A neutral action (no push) is included for completeness, but makes balancing harder.</p>
+                    </div>
+                    <div class="infotab-panel" data-tab-title="Physics">
+                        <h3>Gym-Compatible Dynamics</h3>
+                        <ul>
+                            <li>Force magnitude: 10 N applied to the cart (left or right)</li>
+                            <li>Masses: cart 1.0 kg, pole 0.1 kg; pole half-length 0.5 m</li>
+                            <li>Update rate: 50 Hz (\(\tau = 0.02\) s) using Euler integration</li>
+                            <li>Gravity: 9.8 m/s^2; pole torque couples cart acceleration and angle</li>
+                            <li>Termination: \(|x| &gt; 2.4\) m, \(|\theta| &gt; 12^\circ\), or 500 steps</li>
+                        </ul>
+                        <p>These are the exact equations from OpenAI Gym's CartPole-v1 so you can swap in an RL agent later without changing the environment.</p>
+                    </div>
+                    <div class="infotab-panel" data-tab-title="Instructions">
+                        <h3>How to Play</h3>
+                        <ul>
+                            <li><strong>Controls:</strong> hold left/right arrows (or A/D) to push the cart</li>
+                            <li><strong>Goal:</strong> keep the pole upright and the cart on the track</li>
+                            <li><strong>Score:</strong> +1 every physics step; max episode length 500</li>
+                            <li><strong>Fail conditions:</strong> pole angle beyond 12&deg;, or cart beyond &plusmn;2.4 m</li>
+                            <li><strong>Reset:</strong> click "Reset Episode" to randomize the initial state</li>
+                        </ul>
+                        <p>Watch the state values update in real time. Even tiny delays push the system toward failure.</p>
+                    </div>
+                    <div class="infotab-panel" data-tab-title="Tips & Insights">
+                        <h3>What to Notice</h3>
+                        <ul>
+                            <li>The best strategy is gentle, rapid corrections&mdash;overcorrection makes the pole whip around.</li>
+                            <li>CartPole highlights why <strong>tabular RL</strong> (like grid world) fails on continuous spaces.</li>
+                            <li>This manual controller sets the stage for <strong>Deep RL</strong> (e.g., DQN) to automate balancing.</li>
+                            <li>Look at angular velocity: reacting to \(\dot{\theta}\) early is key to staying upright.</li>
+                            <li>Try letting go: within seconds the pole diverges, showing the inherent instability.</li>
+                        </ul>
+                    </div>
+                    <div class="infotab-panel" data-tab-title="Competition">
+                        <h3>Live Competition Mode</h3>
+                        <p><strong>Challenge:</strong> Keep the pole balanced for as long as possible in slow motion! Compete for the highest survival time in your class.</p>
+
+                        <p><span style="color: darkred; font-weight: bold;">⚠️ Keep this tab active - switching to another tab may temporarily remove you from the leaderboard</span></p>
+
+                        <div id="username-display-competition" style="display: none; margin: 10px 0; padding: 10px; background: #e8f4fd; border: 1px solid #bee5eb; border-radius: 4px;">
+                            Your anonymous name: <span id="competition-username-display" style="font-weight: bold; color: #3498db;"></span>
+                        </div>
+
+                        <p><strong>Competition Rules:</strong></p>
+                        <ul>
+                            <li>Everyone uses the same initial CartPole physics</li>
+                            <li>Rendering runs at 10 FPS (slow motion) for fairness</li>
+                            <li>Physics still runs at 50 Hz internally - no accuracy compromises</li>
+                            <li>Unlimited attempts - your best survival time counts</li>
+                            <li>Real-time leaderboard shows top 10 performers</li>
+                        </ul>
+
+                        <p><strong>Scoring:</strong></p>
+                        <ul>
+                            <li>Score = survival time (number of steps before termination)</li>
+                            <li>Maximum possible score: 500 steps</li>
+                            <li>Your best attempt is automatically submitted</li>
+                        </ul>
+
+                        <p><strong>Strategy Tips:</strong></p>
+                        <ul>
+                            <li>Slow motion gives you more time to react</li>
+                            <li>Watch angular velocity closely for early corrections</li>
+                            <li>Practice on normal mode first to understand the physics</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cartpole-wrapper">
+                <div class="canvas-card">
+                    <div class="canvas-header">
+                        <div>
+                            <p class="eyebrow">Continuous Control</p>
+                            <h3>Balance the CartPole by hand</h3>
+                            <p class="subtitle">Feel the instability that Deep RL algorithms must master.</p>
+                        </div>
+                        <button id="start-btn" class="primary-btn">Start</button>
+                        <button id="reset-btn" class="primary-btn">Reset Episode</button>
+                    </div>
+                    <div class="canvas-shell">
+                        <canvas id="cartpole-canvas" width="800" height="300"></canvas>
+                        <div class="canvas-legend">
+                            <span class="legend-item"><span class="legend-dot left"></span>Left force</span>
+                            <span class="legend-item"><span class="legend-dot right"></span>Right force</span>
+                            <span class="legend-item"><span class="legend-dot danger"></span>Termination zone</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metrics-section">
+                    <h4>Live state variables</h4>
+                    <p class="metric-hint">Watch how the continuous state evolves as you apply discrete pushes.</p>
+                    <div class="metric-grid">
+                        <div class="metriclabel" id="metric-position"></div>
+                        <div class="metriclabel" id="metric-velocity"></div>
+                        <div class="metriclabel" id="metric-angle"></div>
+                        <div class="metriclabel" id="metric-angular-velocity"></div>
+                        <div class="metriclabel" id="metric-score"></div>
+                    </div>
+
+                    <div class="leaderboard-panel" id="leaderboard-panel" style="display: none; margin-top: 20px;">
+                        <div class="panel-title">🏆 Live Competition Leaderboard - Top 10</div>
+                        <div class="leaderboard-status" id="leaderboard-status">
+                            <span class="status-indicator" id="status-dot"></span>
+                            <span id="status-text">Connecting...</span>
+                        </div>
+                        <div class="leaderboard-content" id="leaderboard-content">
+                            <div class="your-position" id="your-position"></div>
+                            <div class="leaderboard-list" id="leaderboard-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../phoebe-js/canvashelper.js"></script>
+    <script src="../phoebe-js/metriclabel.js"></script>
+    <script src="../phoebe-js/infotab.js"></script>
+    <script src="../leaderboard-client.js"></script>
+    <script src="cartpole-engine.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
