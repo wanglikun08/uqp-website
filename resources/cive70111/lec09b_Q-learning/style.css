@@ -203,12 +203,31 @@
     gap: 10px;
 }
 
-/* Metric labels: allow stacked label/value without breaking digits */
+/* Metric labels: big value with small label in corner */
 .algorithms-grid .metriclabel {
-    white-space: pre-line;
-    word-break: normal;
-    overflow-wrap: break-word;
-    height: 72px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    padding: 8px;
+}
+
+.algorithms-grid .metric-value {
+    font-size: 24px;
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+}
+
+.algorithms-grid .metric-label {
+    position: absolute;
+    bottom: 4px;
+    right: 8px;
+    font-size: 10px;
+    font-weight: 500;
+    opacity: 0.7;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 /* Chart Card */
