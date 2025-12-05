@@ -199,8 +199,16 @@
 /* Metrics Row */
 .metrics-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
+}
+
+/* Metric labels: allow stacked label/value without breaking digits */
+.algorithms-grid .metriclabel {
+    white-space: pre-line;
+    word-break: normal;
+    overflow-wrap: break-word;
+    height: 72px;
 }
 
 /* Chart Card */
