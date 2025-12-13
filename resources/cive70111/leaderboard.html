@@ -1,0 +1,2808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIVE70111 Presentation Peer Assessment Leaderboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px 40px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #f39c12, #e74c3c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 15px 0;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            padding: 15px 30px;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 0;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: linear-gradient(90deg, #f39c12, #e74c3c);
+            border-color: transparent;
+            transform: translateY(-2px);
+        }
+
+        .section {
+            display: none;
+            padding: 20px 0;
+        }
+
+        .section.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Leaderboard Section */
+        .leaderboard {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+
+        /* Podium Layout */
+        .podium {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .podium-place {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: all 0.5s ease;
+        }
+
+        .podium-place.first {
+            order: 2;
+        }
+
+        .podium-place.second {
+            order: 1;
+        }
+
+        .podium-place.third {
+            order: 3;
+        }
+
+        .podium-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+            border-radius: 15px;
+            padding: 25px 35px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .podium-place.first .podium-card {
+            padding: 30px 45px;
+            border: 3px solid #ffd700;
+            box-shadow: 0 0 40px rgba(255,215,0,0.4);
+        }
+
+        .podium-place.second .podium-card {
+            border: 2px solid #c0c0c0;
+            box-shadow: 0 0 25px rgba(192,192,192,0.3);
+        }
+
+        .podium-place.third .podium-card {
+            border: 2px solid #cd7f32;
+            box-shadow: 0 0 25px rgba(205,127,50,0.3);
+        }
+
+        .podium-medal {
+            font-size: 3.5em;
+            margin-bottom: 10px;
+        }
+
+        .podium-place.first .podium-medal {
+            font-size: 4.5em;
+        }
+
+        .podium-name {
+            font-size: 1.6em;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .podium-place.first .podium-name {
+            font-size: 2em;
+        }
+
+        .podium-score {
+            font-size: 2.2em;
+            font-weight: bold;
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .podium-place.first .podium-score {
+            font-size: 3em;
+        }
+
+        .podium-pedestal {
+            width: 100%;
+            margin-top: 15px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .podium-place.first .podium-pedestal {
+            background: linear-gradient(180deg, #ffd700, #b8860b);
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .podium-place.second .podium-pedestal {
+            background: linear-gradient(180deg, #c0c0c0, #808080);
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .podium-place.third .podium-pedestal {
+            background: linear-gradient(180deg, #cd7f32, #8b4513);
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .group-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .group-card:hover {
+            transform: translateX(10px);
+        }
+
+        .group-card.rank-1 {
+            border: 2px solid #ffd700;
+            box-shadow: 0 0 30px rgba(255,215,0,0.3);
+        }
+
+        .group-card.rank-2 {
+            border: 2px solid #c0c0c0;
+            box-shadow: 0 0 20px rgba(192,192,192,0.2);
+        }
+
+        .group-card.rank-3 {
+            border: 2px solid #cd7f32;
+            box-shadow: 0 0 20px rgba(205,127,50,0.2);
+        }
+
+        .group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .group-name {
+            font-size: 1.8em;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .medal {
+            font-size: 2em;
+        }
+
+        .overall-score {
+            font-size: 2.5em;
+            font-weight: bold;
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .category-scores {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .category {
+            background: rgba(0,0,0,0.2);
+            padding: 12px;
+            border-radius: 10px;
+        }
+
+        .category-name {
+            font-size: 0.85em;
+            color: #888;
+            margin-bottom: 5px;
+        }
+
+        .category-score {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .score-excellent { background: linear-gradient(90deg, #00d2ff, #3a7bd5); }
+        .score-good { background: linear-gradient(90deg, #56ab2f, #a8e063); }
+        .score-fair { background: linear-gradient(90deg, #f39c12, #f1c40f); }
+        .score-poor { background: linear-gradient(90deg, #e74c3c, #c0392b); }
+
+        /* Awards Section */
+        .awards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .award-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .award-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .award-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .award-title {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: #f39c12;
+        }
+
+        .award-winner {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .award-score {
+            color: #888;
+        }
+
+        /* Easiest to Please Section */
+        .assessor-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .assessor-table th {
+            background: rgba(243, 156, 18, 0.2);
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .assessor-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .assessor-table tr:hover td {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .assessor-rank {
+            width: 60px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .assessor-score {
+            font-weight: bold;
+        }
+
+        .excluded-section {
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(231, 76, 60, 0.1);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            border-radius: 15px;
+        }
+
+        .excluded-section h3 {
+            color: #e74c3c;
+            margin-bottom: 15px;
+        }
+
+        .excluded-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .excluded-tag {
+            background: rgba(231, 76, 60, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .info-box {
+            background: rgba(52, 152, 219, 0.1);
+            border: 1px solid rgba(52, 152, 219, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            color: #3498db;
+        }
+
+        .section-title {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid rgba(255,255,255,0.1);
+            text-align: center;
+            background: linear-gradient(90deg, #f39c12, #e74c3c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .award-description {
+            color: #ccc;
+            font-size: 1.4em;
+            margin-bottom: 40px;
+            text-align: center;
+            max-width: 800px;
+        }
+
+        .winners-container {
+            width: 100%;
+        }
+
+        .welcome-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 70vh;
+            text-align: center;
+        }
+
+        .welcome-title {
+            font-size: 5em;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #f39c12, #e74c3c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .welcome-subtitle {
+            font-size: 2em;
+            color: #888;
+            margin-bottom: 60px;
+        }
+
+        .start-btn {
+            padding: 25px 80px;
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(90deg, #f39c12, #e74c3c);
+            border: none;
+            border-radius: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(243, 156, 18, 0.5);
+        }
+
+        .start-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 30px rgba(243, 156, 18, 0.7);
+        }
+
+        .honorable-mention {
+            margin-top: 40px;
+            padding: 25px;
+            background: linear-gradient(145deg, rgba(243, 156, 18, 0.1), rgba(231, 76, 60, 0.1));
+            border: 2px solid rgba(243, 156, 18, 0.3);
+            border-radius: 15px;
+            text-align: center;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .honorable-mention h3 {
+            color: #f39c12;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .honorable-mention p {
+            font-size: 1.2em;
+            color: #ccc;
+        }
+
+        .podium-place.honorable {
+            opacity: 0;
+            transform: translateY(30px);
+            pointer-events: none;
+        }
+
+        .podium-place.honorable.revealed {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+            transition: all 0.6s ease;
+        }
+
+
+        .expand-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 25px;
+            font-size: 0.9em;
+            color: #888;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .expand-btn:hover {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+
+        .next-winner-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 20px 50px;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(90deg, #f39c12, #e74c3c);
+            border: none;
+            border-radius: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(243, 156, 18, 0.5);
+            z-index: 1000;
+            display: none;
+        }
+
+        .next-winner-btn:hover {
+            transform: translateX(-50%) translateY(-3px);
+            box-shadow: 0 8px 30px rgba(243, 156, 18, 0.7);
+        }
+
+        .next-winner-btn.hidden {
+            display: none;
+        }
+
+        /* Hide podium places by default until revealed */
+        .podium-place {
+            opacity: 0;
+            transform: translateY(30px);
+            pointer-events: none;
+        }
+
+        .podium-place.revealed {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+            transition: all 0.6s ease;
+        }
+
+        .expandable-container {
+            transition: all 0.3s ease;
+        }
+
+        .expandable-container.hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .group-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .category-scores {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <button class="nav-btn" onclick="showSection('fairest')">Accurate</button>
+            <button class="nav-btn" onclick="showSection('easiest')">Generous</button>
+            <button class="nav-btn" onclick="showSection('visuals')">Visuals</button>
+            <button class="nav-btn" onclick="showSection('speech')">Speech</button>
+            <button class="nav-btn" onclick="showSection('dashboard')">Dashboard</button>
+            <button class="nav-btn" onclick="showSection('relaxed')">Relaxed</button>
+            <button class="nav-btn" onclick="showSection('overall')">Overall</button>
+        </div>
+
+        <!-- Welcome Screen -->
+        <div id="welcome" class="section active">
+            <div class="welcome-container">
+                <h1 class="welcome-title">CIVE70111</h1>
+                <h2 class="welcome-subtitle">Presentation Peer Assessment Awards</h2>
+                <button class="start-btn" onclick="startPresentation()">Start</button>
+            </div>
+        </div>
+
+        <!-- Fairest Voters Section -->
+        <div id="fairest" class="section">
+            <h2 class="section-title">Voice of the People</h2>
+            <p class="award-description"><strong>Scores closest to the class average. Lower deviation = more accurate.</strong></p>
+            <div id="fairest-winners" class="winners-container">
+                <div class="podium">
+
+                    <div class="podium-place first">
+                        <div class="podium-card">
+                            <div class="podium-medal">🥇</div>
+                            <div class="podium-name">Helen Petrou</div>
+                            <div class="podium-score">7.2</div>
+                        </div>
+                        <div class="podium-pedestal">1st</div>
+                    </div>
+
+                    <div class="podium-place second">
+                        <div class="podium-card">
+                            <div class="podium-medal">🥈</div>
+                            <div class="podium-name">Mohammad Bilal Yasser</div>
+                            <div class="podium-score">7.7</div>
+                        </div>
+                        <div class="podium-pedestal">2nd</div>
+                    </div>
+
+                    <div class="podium-place third">
+                        <div class="podium-card">
+                            <div class="podium-medal">🥉</div>
+                            <div class="podium-name">Andrew Patten</div>
+                            <div class="podium-score">8.4</div>
+                        </div>
+                        <div class="podium-pedestal">3rd</div>
+                    </div>
+
+                </div>
+
+                <button class="expand-btn" onclick="toggleExpand('fairest-rest')">Show All Voters</button>
+                <div id="fairest-rest" class="expandable-container hidden">
+                <table class="assessor-table">
+                    <thead>
+                        <tr>
+                            <th class="assessor-rank">Rank</th>
+                            <th>Name</th>
+                            <th>Deviation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <td class="assessor-rank">4</td>
+                            <td>Xu Qinyuan</td>
+                            <td class="assessor-score">9.5</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">5</td>
+                            <td>BAO WEIYI</td>
+                            <td class="assessor-score">9.8</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">6</td>
+                            <td>Chanaporn Vethakarn</td>
+                            <td class="assessor-score">10.2</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">7</td>
+                            <td>Miranda Huang</td>
+                            <td class="assessor-score">10.4</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">8</td>
+                            <td>Kritvi Gera</td>
+                            <td class="assessor-score">10.7</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">9</td>
+                            <td>Akaravin Kongvinyu</td>
+                            <td class="assessor-score">10.7</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">10</td>
+                            <td>Sergi Marsol</td>
+                            <td class="assessor-score">11.0</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">11</td>
+                            <td>Yiran Peng</td>
+                            <td class="assessor-score">11.1</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">12</td>
+                            <td>Zaid Maayah</td>
+                            <td class="assessor-score">11.6</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">13</td>
+                            <td>Chio Fuseya</td>
+                            <td class="assessor-score">11.8</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">14</td>
+                            <td>Matthew Williams</td>
+                            <td class="assessor-score">11.8</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">15</td>
+                            <td>Juan Camilo Castro Barandica</td>
+                            <td class="assessor-score">11.9</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">16</td>
+                            <td>Chen Like</td>
+                            <td class="assessor-score">12.0</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">17</td>
+                            <td>Iker Decimavilla Garrido</td>
+                            <td class="assessor-score">12.1</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">18</td>
+                            <td>Clive Gwee</td>
+                            <td class="assessor-score">12.1</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">19</td>
+                            <td>HAN RONGCHUAN</td>
+                            <td class="assessor-score">12.2</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">20</td>
+                            <td>Jiarui Chen</td>
+                            <td class="assessor-score">12.2</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">21</td>
+                            <td>Kenta Matsui</td>
+                            <td class="assessor-score">12.2</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">22</td>
+                            <td>Hei Man Chan</td>
+                            <td class="assessor-score">12.3</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">23</td>
+                            <td>Chiyan Chui</td>
+                            <td class="assessor-score">12.5</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">24</td>
+                            <td>Kevin Yu</td>
+                            <td class="assessor-score">13.0</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">25</td>
+                            <td>Shayan RAJABALI TABARMIRI</td>
+                            <td class="assessor-score">13.1</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">26</td>
+                            <td>Marco Di Trapani</td>
+                            <td class="assessor-score">13.2</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">27</td>
+                            <td>WANG Haojiang</td>
+                            <td class="assessor-score">13.3</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">28</td>
+                            <td>Allison Boyd</td>
+                            <td class="assessor-score">13.6</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">29</td>
+                            <td>Wu Ruiying</td>
+                            <td class="assessor-score">13.7</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">30</td>
+                            <td>Emmanuel Oke</td>
+                            <td class="assessor-score">13.9</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">31</td>
+                            <td>Deng Sibo</td>
+                            <td class="assessor-score">14.2</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">32</td>
+                            <td>Kai Zhuo</td>
+                            <td class="assessor-score">14.4</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">33</td>
+                            <td>Steven Sze Yin</td>
+                            <td class="assessor-score">14.5</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">34</td>
+                            <td>Zeng Chloe</td>
+                            <td class="assessor-score">15.0</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">35</td>
+                            <td>Reed Smith</td>
+                            <td class="assessor-score">15.0</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">36</td>
+                            <td>LIN XIAOYANG</td>
+                            <td class="assessor-score">15.3</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">37</td>
+                            <td>Chen Fanrui</td>
+                            <td class="assessor-score">15.4</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">38</td>
+                            <td>Edgar Leung</td>
+                            <td class="assessor-score">15.7</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">39</td>
+                            <td>Panagiotis Angeloudis</td>
+                            <td class="assessor-score">16.5</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">40</td>
+                            <td>Fei Zhiyuan</td>
+                            <td class="assessor-score">16.5</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">41</td>
+                            <td>Maria Lucia Sanchez Gomez</td>
+                            <td class="assessor-score">16.8</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">42</td>
+                            <td>Lu Yiyang</td>
+                            <td class="assessor-score">17.1</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">43</td>
+                            <td>Li Haicheng</td>
+                            <td class="assessor-score">17.5</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">44</td>
+                            <td>Xia Ziqin</td>
+                            <td class="assessor-score">17.7</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">45</td>
+                            <td>Yiran Tian</td>
+                            <td class="assessor-score">17.8</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">46</td>
+                            <td>YUAN Shirui</td>
+                            <td class="assessor-score">19.0</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">47</td>
+                            <td>Anton Glotov</td>
+                            <td class="assessor-score">20.5</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">48</td>
+                            <td>LI CHUN</td>
+                            <td class="assessor-score">20.8</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">49</td>
+                            <td>Zhang Shuyue</td>
+                            <td class="assessor-score">21.1</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">50</td>
+                            <td>Zhou Chengchen</td>
+                            <td class="assessor-score">21.2</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">51</td>
+                            <td>Deng Xiao</td>
+                            <td class="assessor-score">22.8</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">52</td>
+                            <td>Wang Ziqi</td>
+                            <td class="assessor-score">22.8</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">53</td>
+                            <td>Mert Topak</td>
+                            <td class="assessor-score">24.6</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Easiest to Please Section -->
+        <div id="easiest" class="section">
+            <h2 class="section-title">The Oprah Award</h2>
+            <p class="award-description"><strong>"You get an A! You get an A!" The most generous graders.</strong></p>
+            <div id="easiest-winners" class="winners-container">
+                <div class="podium">
+
+                    <div class="podium-place first">
+                        <div class="podium-card">
+                            <div class="podium-medal">🥇</div>
+                            <div class="podium-name">Mert Topak</div>
+                            <div class="podium-score">95.3%</div>
+                        </div>
+                        <div class="podium-pedestal">1st</div>
+                    </div>
+
+                    <div class="podium-place second">
+                        <div class="podium-card">
+                            <div class="podium-medal">🥈</div>
+                            <div class="podium-name">LI CHUN</div>
+                            <div class="podium-score">91.2%</div>
+                        </div>
+                        <div class="podium-pedestal">2nd</div>
+                    </div>
+
+                    <div class="podium-place third">
+                        <div class="podium-card">
+                            <div class="podium-medal">🥉</div>
+                            <div class="podium-name">Xia Ziqin</div>
+                            <div class="podium-score">87.7%</div>
+                        </div>
+                        <div class="podium-pedestal">3rd</div>
+                    </div>
+
+                </div>
+
+                <div class="honorable-mention podium-place honorable">
+                    <h3>Honorable Mention</h3>
+
+                    <p><strong>Shang Chenxi</strong> - Gave Exceptional to everyone. Literally everyone. 100%.</p>
+
+                </div>
+
+                <button class="expand-btn" onclick="toggleExpand('easiest-rest')">Show All Voters</button>
+                <div id="easiest-rest" class="expandable-container hidden">
+                <table class="assessor-table">
+                    <thead>
+                        <tr>
+                            <th class="assessor-rank">Rank</th>
+                            <th>Name</th>
+                            <th>Average Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <td class="assessor-rank">4</td>
+                            <td>Yiran Tian</td>
+                            <td class="assessor-score">85.2%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">5</td>
+                            <td>Zhou Chengchen</td>
+                            <td class="assessor-score">84.5%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">6</td>
+                            <td>Maria Lucia Sanchez Gomez</td>
+                            <td class="assessor-score">83.9%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">7</td>
+                            <td>Wu Ruiying</td>
+                            <td class="assessor-score">80.6%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">8</td>
+                            <td>Anton Glotov</td>
+                            <td class="assessor-score">78.6%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">9</td>
+                            <td>Panagiotis Angeloudis</td>
+                            <td class="assessor-score">78.3%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">10</td>
+                            <td>Deng Sibo</td>
+                            <td class="assessor-score">77.9%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">11</td>
+                            <td>Chiyan Chui</td>
+                            <td class="assessor-score">76.6%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">12</td>
+                            <td>Mohammad Bilal Yasser</td>
+                            <td class="assessor-score">75.8%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">13</td>
+                            <td>Chio Fuseya</td>
+                            <td class="assessor-score">75.7%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">14</td>
+                            <td>Chanaporn Vethakarn</td>
+                            <td class="assessor-score">75.1%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">15</td>
+                            <td>Chen Like</td>
+                            <td class="assessor-score">74.3%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">16</td>
+                            <td>Kevin Yu</td>
+                            <td class="assessor-score">73.8%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">17</td>
+                            <td>Allison Boyd</td>
+                            <td class="assessor-score">73.8%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">18</td>
+                            <td>Akaravin Kongvinyu</td>
+                            <td class="assessor-score">73.2%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">19</td>
+                            <td>Kai Zhuo</td>
+                            <td class="assessor-score">73.0%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">20</td>
+                            <td>Zeng Chloe</td>
+                            <td class="assessor-score">72.7%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">21</td>
+                            <td>Helen Petrou</td>
+                            <td class="assessor-score">72.7%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">22</td>
+                            <td>Jiarui Chen</td>
+                            <td class="assessor-score">72.6%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">23</td>
+                            <td>Shayan RAJABALI TABARMIRI</td>
+                            <td class="assessor-score">71.2%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">24</td>
+                            <td>Andrew Patten</td>
+                            <td class="assessor-score">70.6%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">25</td>
+                            <td>Chen Fanrui</td>
+                            <td class="assessor-score">70.6%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">26</td>
+                            <td>Xu Qinyuan</td>
+                            <td class="assessor-score">70.6%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">27</td>
+                            <td>BAO WEIYI</td>
+                            <td class="assessor-score">70.5%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">28</td>
+                            <td>Iker Decimavilla Garrido</td>
+                            <td class="assessor-score">70.4%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">29</td>
+                            <td>WANG Haojiang</td>
+                            <td class="assessor-score">69.8%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">30</td>
+                            <td>Wang Ziqi</td>
+                            <td class="assessor-score">69.6%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">31</td>
+                            <td>Deng Xiao</td>
+                            <td class="assessor-score">68.9%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">32</td>
+                            <td>Matthew Williams</td>
+                            <td class="assessor-score">68.8%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">33</td>
+                            <td>Miranda Huang</td>
+                            <td class="assessor-score">68.3%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">34</td>
+                            <td>Sergi Marsol</td>
+                            <td class="assessor-score">68.0%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">35</td>
+                            <td>Juan Camilo Castro Barandica</td>
+                            <td class="assessor-score">67.8%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">36</td>
+                            <td>Steven Sze Yin</td>
+                            <td class="assessor-score">67.1%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">37</td>
+                            <td>Kritvi Gera</td>
+                            <td class="assessor-score">67.0%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">38</td>
+                            <td>Fei Zhiyuan</td>
+                            <td class="assessor-score">66.8%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">39</td>
+                            <td>Reed Smith</td>
+                            <td class="assessor-score">66.5%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">40</td>
+                            <td>Marco Di Trapani</td>
+                            <td class="assessor-score">65.7%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">41</td>
+                            <td>Zaid Maayah</td>
+                            <td class="assessor-score">65.5%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">42</td>
+                            <td>YUAN Shirui</td>
+                            <td class="assessor-score">64.9%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">43</td>
+                            <td>Yiran Peng</td>
+                            <td class="assessor-score">64.4%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">44</td>
+                            <td>Kenta Matsui</td>
+                            <td class="assessor-score">63.7%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">45</td>
+                            <td>Clive Gwee</td>
+                            <td class="assessor-score">63.4%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">46</td>
+                            <td>Lu Yiyang</td>
+                            <td class="assessor-score">62.3%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">47</td>
+                            <td>Zhang Shuyue</td>
+                            <td class="assessor-score">61.3%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">48</td>
+                            <td>Hei Man Chan</td>
+                            <td class="assessor-score">61.3%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">49</td>
+                            <td>HAN RONGCHUAN</td>
+                            <td class="assessor-score">61.0%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">50</td>
+                            <td>LIN XIAOYANG</td>
+                            <td class="assessor-score">60.6%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">51</td>
+                            <td>Emmanuel Oke</td>
+                            <td class="assessor-score">59.6%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">52</td>
+                            <td>Edgar Leung</td>
+                            <td class="assessor-score">57.7%</td>
+                        </tr>
+
+                        <tr>
+                            <td class="assessor-rank">53</td>
+                            <td>Li Haicheng</td>
+                            <td class="assessor-score">55.3%</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Best Presentation (Visuals) Section -->
+        <div id="visuals" class="section">
+            <h2 class="section-title">The Picasso Award</h2>
+            <p class="award-description"><strong>Highest Quality of Visuals score.</strong></p>
+            <div id="visuals-winners" class="winners-container">
+                <div class="podium">
+
+                    <div class="podium-place first">
+                        <div class="podium-card">
+                            <div class="podium-medal">🥇</div>
+                            <div class="podium-name">Group 5</div>
+                            <div class="podium-score">80.4%</div>
+                        </div>
+                        <div class="podium-pedestal">1st</div>
+                    </div>
+
+                    <div class="podium-place second">
+                        <div class="podium-card">
+                            <div class="podium-medal">🥈</div>
+                            <div class="podium-name">Group 3</div>
+                            <div class="podium-score">78.9%</div>
+                        </div>
+                        <div class="podium-pedestal">2nd</div>
+                    </div>
+
+                    <div class="podium-place third">
+                        <div class="podium-card">
+                            <div class="podium-medal">🥉</div>
+                            <div class="podium-name">Group 1</div>
+                            <div class="podium-score">77.0%</div>
+                        </div>
+                        <div class="podium-pedestal">3rd</div>
+                    </div>
+
+                </div>
+
+                <button class="expand-btn" onclick="toggleExpand('visuals-rest')">Show All Groups</button>
+                <div id="visuals-rest" class="expandable-container hidden">
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#4 Group 6</div>
+                            <div class="overall-score">75.4%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#5 Group 2</div>
+                            <div class="overall-score">71.9%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#6 Group 4</div>
+                            <div class="overall-score">71.7%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#7 Group 9</div>
+                            <div class="overall-score">71.4%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#8 Group 12</div>
+                            <div class="overall-score">69.8%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#9 Group 11</div>
+                            <div class="overall-score">68.6%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#10 Group 7</div>
+                            <div class="overall-score">67.8%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#11 Group 8</div>
+                            <div class="overall-score">62.4%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#12 Group 10</div>
+                            <div class="overall-score">59.1%</div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Best Speech Section -->
+        <div id="speech" class="section">
+            <h2 class="section-title">Smooth Talkers</h2>
+            <p class="award-description"><strong>Based on Verbal Clarity and Team Participation scores.</strong></p>
+            <div id="speech-winners" class="winners-container">
+                <div class="podium">
+
+                    <div class="podium-place first">
+                        <div class="podium-card">
+                            <div class="podium-medal">🥇</div>
+                            <div class="podium-name">Group 12</div>
+                            <div class="podium-score">79.8%</div>
+                        </div>
+                        <div class="podium-pedestal">1st</div>
+                    </div>
+
+                    <div class="podium-place second">
+                        <div class="podium-card">
+                            <div class="podium-medal">🥈</div>
+                            <div class="podium-name">Group 5</div>
+                            <div class="podium-score">78.9%</div>
+                        </div>
+                        <div class="podium-pedestal">2nd</div>
+                    </div>
+
+                    <div class="podium-place third">
+                        <div class="podium-card">
+                            <div class="podium-medal">🥉</div>
+                            <div class="podium-name">Group 9</div>
+                            <div class="podium-score">75.5%</div>
+                        </div>
+                        <div class="podium-pedestal">3rd</div>
+                    </div>
+
+                </div>
+
+                <button class="expand-btn" onclick="toggleExpand('speech-rest')">Show All Groups</button>
+                <div id="speech-rest" class="expandable-container hidden">
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#4 Group 7</div>
+                            <div class="overall-score">74.5%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#5 Group 4</div>
+                            <div class="overall-score">74.2%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#6 Group 2</div>
+                            <div class="overall-score">74.1%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#7 Group 3</div>
+                            <div class="overall-score">72.5%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#8 Group 8</div>
+                            <div class="overall-score">70.8%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#9 Group 10</div>
+                            <div class="overall-score">69.6%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#10 Group 11</div>
+                            <div class="overall-score">68.0%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#11 Group 1</div>
+                            <div class="overall-score">66.5%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#12 Group 6</div>
+                            <div class="overall-score">64.8%</div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Best Dashboard Section -->
+        <div id="dashboard" class="section">
+            <h2 class="section-title">The Data Wizards</h2>
+            <p class="award-description"><strong>Most sophisticated dashboard.</strong></p>
+            <div id="dashboard-winners" class="winners-container">
+                <div class="podium">
+
+                    <div class="podium-place first">
+                        <div class="podium-card">
+                            <div class="podium-medal">🥇</div>
+                            <div class="podium-name">Group 5</div>
+                            <div class="podium-score">84.5%</div>
+                        </div>
+                        <div class="podium-pedestal">1st</div>
+                    </div>
+
+                    <div class="podium-place second">
+                        <div class="podium-card">
+                            <div class="podium-medal">🥈</div>
+                            <div class="podium-name">Group 1</div>
+                            <div class="podium-score">82.2%</div>
+                        </div>
+                        <div class="podium-pedestal">2nd</div>
+                    </div>
+
+                    <div class="podium-place third">
+                        <div class="podium-card">
+                            <div class="podium-medal">🥉</div>
+                            <div class="podium-name">Group 3</div>
+                            <div class="podium-score">76.0%</div>
+                        </div>
+                        <div class="podium-pedestal">3rd</div>
+                    </div>
+
+                </div>
+
+                <button class="expand-btn" onclick="toggleExpand('dashboard-rest')">Show All Groups</button>
+                <div id="dashboard-rest" class="expandable-container hidden">
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#4 Group 12</div>
+                            <div class="overall-score">75.6%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#5 Group 11</div>
+                            <div class="overall-score">74.5%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#6 Group 4</div>
+                            <div class="overall-score">69.8%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#7 Group 7</div>
+                            <div class="overall-score">65.9%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#8 Group 6</div>
+                            <div class="overall-score">65.0%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#9 Group 9</div>
+                            <div class="overall-score">63.7%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#10 Group 8</div>
+                            <div class="overall-score">63.1%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#11 Group 10</div>
+                            <div class="overall-score">61.7%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#12 Group 2</div>
+                            <div class="overall-score">60.3%</div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Most Relaxed Section -->
+        <div id="relaxed" class="section">
+            <h2 class="section-title">The Fashionably Late Award</h2>
+            <p class="award-description"><strong>A more... flexible approach to timekeeping.</strong></p>
+            <div id="relaxed-winners" class="winners-container">
+                <div class="podium">
+
+                    <div class="podium-place first">
+                        <div class="podium-card">
+                            <div class="podium-medal">🥇</div>
+                            <div class="podium-name">Group 7</div>
+                            <div class="podium-score">36.9%</div>
+                        </div>
+                        <div class="podium-pedestal">1st</div>
+                    </div>
+
+                    <div class="podium-place second">
+                        <div class="podium-card">
+                            <div class="podium-medal">🥈</div>
+                            <div class="podium-name">Group 6</div>
+                            <div class="podium-score">50.4%</div>
+                        </div>
+                        <div class="podium-pedestal">2nd</div>
+                    </div>
+
+                    <div class="podium-place third">
+                        <div class="podium-card">
+                            <div class="podium-medal">🥉</div>
+                            <div class="podium-name">Group 9</div>
+                            <div class="podium-score">54.3%</div>
+                        </div>
+                        <div class="podium-pedestal">3rd</div>
+                    </div>
+
+                </div>
+
+                <button class="expand-btn" onclick="toggleExpand('relaxed-rest')">Show All Groups</button>
+                <div id="relaxed-rest" class="expandable-container hidden">
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#4 Group 8</div>
+                            <div class="overall-score">57.6%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#5 Group 10</div>
+                            <div class="overall-score">70.2%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#6 Group 11</div>
+                            <div class="overall-score">71.8%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#7 Group 5</div>
+                            <div class="overall-score">79.2%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#8 Group 4</div>
+                            <div class="overall-score">80.4%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#9 Group 12</div>
+                            <div class="overall-score">80.4%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#10 Group 2</div>
+                            <div class="overall-score">81.4%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#11 Group 1</div>
+                            <div class="overall-score">84.4%</div>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-name">#12 Group 3</div>
+                            <div class="overall-score">88.0%</div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Overall Awards Section -->
+        <div id="overall" class="section">
+            <h2 class="section-title">The GOAT</h2>
+            <p class="award-description"><strong>The ultimate ranking based on all categories combined.</strong></p>
+            <div id="overall-winners" class="winners-container">
+            <div class="leaderboard">
+                <h3 style="margin-bottom: 20px; color: #f39c12;">Group Rankings (All Categories)</h3>
+
+                <div class="group-card rank-1">
+                    <div class="group-header">
+                        <div class="group-name">
+                            <span class="medal">🥇</span>
+                            Group 5
+                        </div>
+                        <div class="overall-score">79.6%</div>
+                    </div>
+                    <div class="category-scores">
+
+                        <div class="category">
+                            <div class="category-name">Technical Details</div>
+                            <div class="category-score">74.7%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 74.71698113207547%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Team Participation</div>
+                            <div class="category-score">80.0%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-excellent" style="width: 80.0%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Verbal Clarity</div>
+                            <div class="category-score">77.7%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 77.73584905660377%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Quality of Visuals</div>
+                            <div class="category-score">80.4%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-excellent" style="width: 80.37735849056604%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Timekeeping</div>
+                            <div class="category-score">79.2%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 79.24528301886792%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Dashboard Sophistication</div>
+                            <div class="category-score">84.5%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-excellent" style="width: 84.52830188679245%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Answers to Questions</div>
+                            <div class="category-score">80.4%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-excellent" style="width: 80.37735849056604%"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="group-card rank-2">
+                    <div class="group-header">
+                        <div class="group-name">
+                            <span class="medal">🥈</span>
+                            Group 12
+                        </div>
+                        <div class="overall-score">77.3%</div>
+                    </div>
+                    <div class="category-scores">
+
+                        <div class="category">
+                            <div class="category-name">Technical Details</div>
+                            <div class="category-score">79.1%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 79.11111111111111%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Team Participation</div>
+                            <div class="category-score">79.6%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 79.55555555555556%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Verbal Clarity</div>
+                            <div class="category-score">80.0%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-excellent" style="width: 80.0%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Quality of Visuals</div>
+                            <div class="category-score">69.8%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 69.77777777777777%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Timekeeping</div>
+                            <div class="category-score">80.4%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-excellent" style="width: 80.44444444444444%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Dashboard Sophistication</div>
+                            <div class="category-score">75.6%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 75.55555555555556%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Answers to Questions</div>
+                            <div class="category-score">76.9%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 76.88888888888889%"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="group-card rank-3">
+                    <div class="group-header">
+                        <div class="group-name">
+                            <span class="medal">🥉</span>
+                            Group 3
+                        </div>
+                        <div class="overall-score">77.1%</div>
+                    </div>
+                    <div class="category-scores">
+
+                        <div class="category">
+                            <div class="category-name">Technical Details</div>
+                            <div class="category-score">77.5%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 77.45454545454545%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Team Participation</div>
+                            <div class="category-score">69.5%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 69.45454545454545%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Verbal Clarity</div>
+                            <div class="category-score">75.6%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 75.63636363636364%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Quality of Visuals</div>
+                            <div class="category-score">78.9%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 78.9090909090909%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Timekeeping</div>
+                            <div class="category-score">88.0%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-excellent" style="width: 88.0%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Dashboard Sophistication</div>
+                            <div class="category-score">76.0%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 76.0%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Answers to Questions</div>
+                            <div class="category-score">74.5%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 74.54545454545455%"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="group-card ">
+                    <div class="group-header">
+                        <div class="group-name">
+                            <span class="medal"></span>
+                            Group 1
+                        </div>
+                        <div class="overall-score">76.7%</div>
+                    </div>
+                    <div class="category-scores">
+
+                        <div class="category">
+                            <div class="category-name">Technical Details</div>
+                            <div class="category-score">83.3%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-excellent" style="width: 83.33333333333333%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Team Participation</div>
+                            <div class="category-score">61.5%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 61.48148148148148%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Verbal Clarity</div>
+                            <div class="category-score">71.5%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 71.48148148148148%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Quality of Visuals</div>
+                            <div class="category-score">77.0%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 77.03703703703704%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Timekeeping</div>
+                            <div class="category-score">84.4%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-excellent" style="width: 84.44444444444444%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Dashboard Sophistication</div>
+                            <div class="category-score">82.2%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-excellent" style="width: 82.22222222222223%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Answers to Questions</div>
+                            <div class="category-score">76.7%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 76.66666666666667%"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="group-card ">
+                    <div class="group-header">
+                        <div class="group-name">
+                            <span class="medal"></span>
+                            Group 2
+                        </div>
+                        <div class="overall-score">73.6%</div>
+                    </div>
+                    <div class="category-scores">
+
+                        <div class="category">
+                            <div class="category-name">Technical Details</div>
+                            <div class="category-score">76.6%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 76.61016949152543%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Team Participation</div>
+                            <div class="category-score">77.6%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 77.62711864406779%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Verbal Clarity</div>
+                            <div class="category-score">70.5%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 70.50847457627118%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Quality of Visuals</div>
+                            <div class="category-score">71.9%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 71.86440677966101%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Timekeeping</div>
+                            <div class="category-score">81.4%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-excellent" style="width: 81.35593220338983%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Dashboard Sophistication</div>
+                            <div class="category-score">60.3%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 60.33898305084746%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Answers to Questions</div>
+                            <div class="category-score">76.6%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 76.61016949152543%"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="group-card ">
+                    <div class="group-header">
+                        <div class="group-name">
+                            <span class="medal"></span>
+                            Group 4
+                        </div>
+                        <div class="overall-score">73.3%</div>
+                    </div>
+                    <div class="category-scores">
+
+                        <div class="category">
+                            <div class="category-name">Technical Details</div>
+                            <div class="category-score">73.6%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 73.58490566037736%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Team Participation</div>
+                            <div class="category-score">77.4%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 77.35849056603773%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Verbal Clarity</div>
+                            <div class="category-score">70.9%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 70.94339622641509%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Quality of Visuals</div>
+                            <div class="category-score">71.7%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 71.69811320754717%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Timekeeping</div>
+                            <div class="category-score">80.4%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-excellent" style="width: 80.37735849056604%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Dashboard Sophistication</div>
+                            <div class="category-score">69.8%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 69.81132075471699%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Answers to Questions</div>
+                            <div class="category-score">69.4%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 69.43396226415095%"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="group-card ">
+                    <div class="group-header">
+                        <div class="group-name">
+                            <span class="medal"></span>
+                            Group 11
+                        </div>
+                        <div class="overall-score">69.4%</div>
+                    </div>
+                    <div class="category-scores">
+
+                        <div class="category">
+                            <div class="category-name">Technical Details</div>
+                            <div class="category-score">69.0%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 69.01960784313725%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Team Participation</div>
+                            <div class="category-score">72.5%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 72.54901960784314%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Verbal Clarity</div>
+                            <div class="category-score">63.5%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 63.529411764705884%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Quality of Visuals</div>
+                            <div class="category-score">68.6%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 68.62745098039215%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Timekeeping</div>
+                            <div class="category-score">71.8%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 71.76470588235294%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Dashboard Sophistication</div>
+                            <div class="category-score">74.5%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 74.50980392156863%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Answers to Questions</div>
+                            <div class="category-score">65.9%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 65.88235294117646%"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="group-card ">
+                    <div class="group-header">
+                        <div class="group-name">
+                            <span class="medal"></span>
+                            Group 9
+                        </div>
+                        <div class="overall-score">68.5%</div>
+                    </div>
+                    <div class="category-scores">
+
+                        <div class="category">
+                            <div class="category-name">Technical Details</div>
+                            <div class="category-score">70.6%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 70.61224489795919%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Team Participation</div>
+                            <div class="category-score">78.0%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 77.95918367346938%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Verbal Clarity</div>
+                            <div class="category-score">73.1%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 73.06122448979592%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Quality of Visuals</div>
+                            <div class="category-score">71.4%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 71.42857142857143%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Timekeeping</div>
+                            <div class="category-score">54.3%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-fair" style="width: 54.285714285714285%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Dashboard Sophistication</div>
+                            <div class="category-score">63.7%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 63.673469387755105%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Answers to Questions</div>
+                            <div class="category-score">68.6%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 68.57142857142857%"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="group-card ">
+                    <div class="group-header">
+                        <div class="group-name">
+                            <span class="medal"></span>
+                            Group 7
+                        </div>
+                        <div class="overall-score">65.9%</div>
+                    </div>
+                    <div class="category-scores">
+
+                        <div class="category">
+                            <div class="category-name">Technical Details</div>
+                            <div class="category-score">71.0%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 70.98039215686275%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Team Participation</div>
+                            <div class="category-score">77.6%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 77.6470588235294%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Verbal Clarity</div>
+                            <div class="category-score">71.4%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 71.37254901960785%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Quality of Visuals</div>
+                            <div class="category-score">67.8%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 67.84313725490196%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Timekeeping</div>
+                            <div class="category-score">36.9%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-poor" style="width: 36.86274509803921%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Dashboard Sophistication</div>
+                            <div class="category-score">65.9%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 65.88235294117646%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Answers to Questions</div>
+                            <div class="category-score">70.6%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 70.58823529411765%"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="group-card ">
+                    <div class="group-header">
+                        <div class="group-name">
+                            <span class="medal"></span>
+                            Group 10
+                        </div>
+                        <div class="overall-score">65.2%</div>
+                    </div>
+                    <div class="category-scores">
+
+                        <div class="category">
+                            <div class="category-name">Technical Details</div>
+                            <div class="category-score">62.6%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 62.5531914893617%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Team Participation</div>
+                            <div class="category-score">70.6%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 70.63829787234043%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Verbal Clarity</div>
+                            <div class="category-score">68.5%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 68.51063829787235%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Quality of Visuals</div>
+                            <div class="category-score">59.1%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-fair" style="width: 59.148936170212764%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Timekeeping</div>
+                            <div class="category-score">70.2%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 70.2127659574468%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Dashboard Sophistication</div>
+                            <div class="category-score">61.7%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 61.702127659574465%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Answers to Questions</div>
+                            <div class="category-score">63.8%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 63.829787234042556%"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="group-card ">
+                    <div class="group-header">
+                        <div class="group-name">
+                            <span class="medal"></span>
+                            Group 6
+                        </div>
+                        <div class="overall-score">65.1%</div>
+                    </div>
+                    <div class="category-scores">
+
+                        <div class="category">
+                            <div class="category-name">Technical Details</div>
+                            <div class="category-score">71.5%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 71.53846153846153%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Team Participation</div>
+                            <div class="category-score">61.9%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 61.92307692307692%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Verbal Clarity</div>
+                            <div class="category-score">67.7%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 67.6923076923077%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Quality of Visuals</div>
+                            <div class="category-score">75.4%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 75.38461538461539%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Timekeeping</div>
+                            <div class="category-score">50.4%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-fair" style="width: 50.38461538461539%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Dashboard Sophistication</div>
+                            <div class="category-score">65.0%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 65.0%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Answers to Questions</div>
+                            <div class="category-score">63.8%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 63.84615384615385%"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="group-card ">
+                    <div class="group-header">
+                        <div class="group-name">
+                            <span class="medal"></span>
+                            Group 8
+                        </div>
+                        <div class="overall-score">65.0%</div>
+                    </div>
+                    <div class="category-scores">
+
+                        <div class="category">
+                            <div class="category-name">Technical Details</div>
+                            <div class="category-score">63.5%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 63.529411764705884%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Team Participation</div>
+                            <div class="category-score">71.0%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 70.98039215686275%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Verbal Clarity</div>
+                            <div class="category-score">70.6%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 70.58823529411765%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Quality of Visuals</div>
+                            <div class="category-score">62.4%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 62.35294117647059%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Timekeeping</div>
+                            <div class="category-score">57.6%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-fair" style="width: 57.64705882352941%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Dashboard Sophistication</div>
+                            <div class="category-score">63.1%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 63.13725490196079%"></div>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-name">Answers to Questions</div>
+                            <div class="category-score">66.7%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill score-good" style="width: 66.66666666666667%"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <h3 style="margin: 30px 0 20px 0; color: #f39c12;">Award Winners</h3>
+            <div class="awards-grid">
+
+                <div class="award-card">
+                    <div class="award-icon">🎨</div>
+                    <div class="award-title">Best Presentation (Visuals)</div>
+                    <div class="award-winner">Group 5</div>
+                    <div class="award-score">80.4%</div>
+                </div>
+
+                <div class="award-card">
+                    <div class="award-icon">🎤</div>
+                    <div class="award-title">Best Speech</div>
+                    <div class="award-winner">Group 12</div>
+                    <div class="award-score">79.8%</div>
+                </div>
+
+                <div class="award-card">
+                    <div class="award-icon">📊</div>
+                    <div class="award-title">Best Dashboard</div>
+                    <div class="award-winner">Group 5</div>
+                    <div class="award-score">84.5%</div>
+                </div>
+
+                <div class="award-card">
+                    <div class="award-icon">🏆</div>
+                    <div class="award-title">Best Overall</div>
+                    <div class="award-winner">Group 5</div>
+                    <div class="award-score">79.6%</div>
+                </div>
+
+            </div>
+
+            <div class="excluded-section">
+                <h3>Excluded Voters</h3>
+                <p style="margin-bottom: 15px; color: #888;">The following voters gave 100% "Exceptional" ratings and were excluded from all rankings and calculations:</p>
+                <div class="excluded-list">
+
+                    <span class="excluded-tag">Shang Chenxi</span>
+
+                </div>
+            </div>
+
+            </div>
+        </div>
+
+        <button class="next-winner-btn" onclick="revealNextWinner()">Reveal 3rd Place</button>
+    </div>
+
+    <script>
+        // Track reveal state: 0 = none, 1 = 3rd revealed, 2 = 2nd revealed, 3 = 1st revealed, 4 = honorable revealed
+        let revealState = 0;
+        const revealOrder = ['third', 'second', 'first', 'honorable'];
+        const buttonLabels = ['Reveal 3rd Place', 'Reveal 2nd Place', 'Reveal 1st Place', 'Honorable Mention'];
+
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Find and activate the correct nav button
+            const sectionsList = ['welcome', 'fairest', 'easiest', 'visuals', 'speech', 'dashboard', 'relaxed', 'overall'];
+            const index = sectionsList.indexOf(sectionId);
+            if (index >= 0) {
+                currentSection = index;
+                // Nav buttons start from index 0 but sections start from 'welcome' at index 0
+                // So nav button index = section index - 1 (since welcome has no nav button)
+                if (index > 0) {
+                    document.querySelectorAll('.nav-btn')[index - 1].classList.add('active');
+                }
+            }
+
+            // Reset reveal state when switching sections
+            resetRevealState();
+        }
+
+        function revealWinners(containerId) {
+            const container = document.getElementById(containerId);
+            const btn = container.previousElementSibling;
+            container.classList.remove('hidden');
+            btn.style.display = 'none';
+        }
+
+        function revealNextWinner() {
+            const activeSection = document.querySelector('.section.active');
+            const winnersContainer = activeSection.querySelector('.winners-container');
+            const revealBtn = activeSection.querySelector('.reveal-btn');
+
+            // First, make sure the winners container is visible
+            if (winnersContainer && winnersContainer.classList.contains('hidden')) {
+                winnersContainer.classList.remove('hidden');
+                if (revealBtn) revealBtn.style.display = 'none';
+            }
+
+            // Check how many reveals are possible for this section
+            const hasHonorable = activeSection.querySelector('.podium-place.honorable') !== null;
+            const maxReveals = hasHonorable ? 4 : 3;
+
+            if (revealState >= maxReveals) return;
+
+            // Reveal the next place
+            const placeClass = revealOrder[revealState];
+            const placeElement = activeSection.querySelector('.podium-place.' + placeClass);
+            if (placeElement) {
+                placeElement.classList.add('revealed');
+            }
+
+            revealState++;
+
+            // Update button text or hide if done
+            const nextBtn = document.querySelector('.next-winner-btn');
+            if (revealState >= maxReveals) {
+                nextBtn.textContent = 'All Revealed!';
+                setTimeout(() => {
+                    nextBtn.style.display = 'none';
+                }, 1000);
+            } else {
+                nextBtn.textContent = buttonLabels[revealState];
+            }
+        }
+
+        function resetRevealState() {
+            revealState = 0;
+            const nextBtn = document.querySelector('.next-winner-btn');
+            nextBtn.textContent = buttonLabels[0];
+
+            // Hide button on welcome page, show on other pages
+            const activeSection = document.querySelector('.section.active');
+            if (activeSection && activeSection.id === 'welcome') {
+                nextBtn.style.display = 'none';
+            } else {
+                nextBtn.style.display = 'block';
+            }
+
+            // Hide all podium places in the new active section
+            if (activeSection) {
+                activeSection.querySelectorAll('.podium-place').forEach(p => p.classList.remove('revealed'));
+            }
+        }
+
+        function toggleExpand(containerId) {
+            const container = document.getElementById(containerId);
+            const btn = container.previousElementSibling;
+            if (container.classList.contains('hidden')) {
+                container.classList.remove('hidden');
+                btn.textContent = 'Hide';
+            } else {
+                container.classList.add('hidden');
+                btn.textContent = 'Show All Groups';
+            }
+        }
+
+        // Keyboard navigation
+        const sections = ['welcome', 'fairest', 'easiest', 'visuals', 'speech', 'dashboard', 'relaxed', 'overall'];
+        let currentSection = 0;
+
+        function startPresentation() {
+            currentSection = 1;
+            showSectionByIndex(currentSection);
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                e.preventDefault();
+                currentSection = (currentSection + 1) % sections.length;
+                showSectionByIndex(currentSection);
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                currentSection = (currentSection - 1 + sections.length) % sections.length;
+                showSectionByIndex(currentSection);
+            } else if (e.key === ' ' || e.key === 'Enter') {
+                e.preventDefault();
+                revealNextWinner();
+            }
+        });
+
+        function showSectionByIndex(index) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(sections[index]).classList.add('active');
+            // Nav buttons don't include welcome, so offset by 1
+            if (index > 0) {
+                document.querySelectorAll('.nav-btn')[index - 1].classList.add('active');
+            }
+            // Reset reveal state when switching sections
+            resetRevealState();
+        }
+    </script>
+</body>
+</html>
