@@ -1,22 +1,6 @@
 ---
 redirect_from:
   - home/
-  - cive60008_21/
-  - cive60008_21/week01/seminar1/
-  - cive60008_22/
-  - cive60008_22/assignments/1/
-  - cive60008_22/assignments/2/
-  - cive60008_22/week01/notebooks/
-  - cive60008_22/week02/notebooks/
-  - cive60008_22/week03/notebooks/
-  - cive60008_22/week04/notebooks/
-  - cive60008_22/week05/notebooks/
-  - cive60008_22/week06/notebooks/
-  - cive60008_22/week07/notebooks/
-  - cive60008_22/week08/notebooks/
-  - cive60008_22/week09/notebooks/
-  - cive97129_23/assignments/1/
-  - cive97129_23/assignments/2/
   - demo-pathfinding/
   - project/shift-project/
   - research/autonomy/
@@ -32,7 +16,7 @@ redirect_from:
 
 The Ultrafast Quantum Probe Lab at Zhejiang University undertakes research in surface and low dimensional quantum material systems, with focus on advanced scanning probe techniques to reach unprecedented spatial, temporal, and momentum resolutions.
 
-Our group is led by [**Prof Likun Wang**](/members/angeloudis-p), and is affiliated with the **Institute of Condensed Matter Physics** of the **School of Physics** at **Zhejiang University**.
+Our group is led by [**Prof. Likun Wang**](/members/angeloudis-p), and is affiliated with the **Institute of Condensed Matter Physics** of the **School of Physics** at **Zhejiang University**.
 
 {% include section.html %}
 
@@ -122,9 +106,9 @@ Our team benefits from strong links with other labs within Zhejiang University, 
 #### Our funders
 
 
-{% capture col1 %}
-<img src="images/funders/ukri.svg">
-{% endcapture %}
+#{% capture col1 %}
+#<img src="images/funders/ukri.svg">
+#{% endcapture %}
 
 
 {% include cols.html col1=col1 col2=col2 col3=col3 col4=col4%}
