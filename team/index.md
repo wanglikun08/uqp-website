@@ -7,21 +7,21 @@ redirect_from:
   - author
 ---
 
-<h1><a style="text-decoration: none; color: inherit;" href="/members/angeloudis-p.html">Director</a></h1>
+<h1><a style="text-decoration: none; color: inherit;" href="/members/likun-w.html">Principle Investigator</a></h1>
 
 {% capture floatcontent %}
 
 <div class="text-center mt-5">
-<a style="text-decoration: none; color: inherit;" href="/members/angeloudis-p.html">
+<a style="text-decoration: none; color: inherit;" href="/members/likun-w.html">
 
   <!-- Avatar -->
-  <img src="/images/team/angeloudis-p.jpg"
+  <img src="/images/team/likun-w.jpg"
        style=" max-width: 200px; "
        class="portrait-image"
        />
 
   <!-- Name & Role -->
-  <div class="text-center" style="margin-top: 10px; font-weight: var(--bold); font-size: 1.2rem" > Panagiotis Angeloudis </div> <br>
+  <div class="text-center" style="margin-top: 10px; font-weight: var(--bold); font-size: 1.2rem" > Likun Wang </div> <br>
   <div class="text-center" style="margin-top: -10px"> Professor & Lab Director </div> <br>
 </a>
 
@@ -31,7 +31,7 @@ redirect_from:
 
 {% include float.html content=floatcontent %}
 
-{% assign member = site.members | where: "slug", "angeloudis-p" | first %}
+{% assign member = site.members | where: "slug", "likun-w" | first %}
 
 <ul style="margin-top: 0; margin-bottom: 15px; padding-left: 0; list-style-position: inside; margin-left: 18px;">
   {% for affiliation in member.affiliations %}
@@ -40,12 +40,12 @@ redirect_from:
 </ul>
 
 
-<a style="text-decoration: none; color: inherit;" href="/members/angeloudis-p.html">
-Professor Panagiotis Angeloudis leads TSL and is part of the Centre for Transport Engineering & Modelling at Imperial.
+<a style="text-decoration: none; color: inherit;" href="/members/likun-w.html">
+Professor Likun Wang leads UQP and is part of the School of Physics at Zhejiang University.
 
-His research addresses challenges at the intersection of transportation technology and operations management.
+His research addresses challenges at the multi-dimensional measurement of quantum materials.
  &nbsp;&nbsp;&nbsp;
- <a href="/members/angeloudis-p.html">(more)</a>
+ <a href="/members/likun-w.html">(more)</a>
 
 
 {% include section.html %}
@@ -57,13 +57,8 @@ His research addresses challenges at the intersection of transportation technolo
 
 {% include section.html %}
 
-# Alumni
 
-{% include list.html data="members" component="portrait" filters="role: alumni" %}
-
-{% include section.html dark=true %}
-
- We are always looking for new members to our team. We will advertise any funded opportunities that are specific to our group on LinkedIn, as well as in the UTSG and robotics-worldwide mailing lists, while several scholarship schemes and fellowships are offered by Imperial College London. 
+ We are always looking for new members to our team.
  
  For more information on how to join us, you can review our [recruitment](/apply/) page. 
 
