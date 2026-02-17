@@ -87,7 +87,6 @@ exclude:
   - README.md
   - LICENSE.md
   - CITATION.cff
-  - "resources/cive70111/lec05b_cnn-architecture/data/pretrained_cnn_data.json"
 
 jekyll-minifier:
   exclude: ['*.xml', '*.json', '*.txt']  # Files to exclude from minification
