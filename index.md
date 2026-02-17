@@ -91,7 +91,7 @@ Our team benefits from strong links with other labs within Zhejiang University, 
 
 {%
   include feature.html
-  image="images/img_team.jpg"
+  <!-- image="images/img_team.jpg" -->
   link="team"
   title="Our team"
   style="bare"
