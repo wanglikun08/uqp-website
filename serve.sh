@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Transport Systems Lab - Jekyll View Script with temp directory
+# Ultrafast Quantum Probe Lab - Jekyll View Script with temp directory
 
 # Create a temporary directory for the build
 
