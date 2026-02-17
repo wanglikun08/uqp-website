@@ -57,6 +57,11 @@ His research addresses challenges at the multi-dimensional measurement of quantu
 
 {% include section.html %}
 
+# Alumni
+
+{% include list.html data="members" component="portrait" filters="role: alumni" %}
+
+{% include section.html dark=true %}
 
  We are always looking for new members to our team.
  
