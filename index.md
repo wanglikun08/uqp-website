@@ -16,7 +16,7 @@ redirect_from:
 
 The Ultrafast Quantum Probe Lab at Zhejiang University undertakes research in surface and low dimensional quantum material systems, with focus on advanced scanning probe techniques to reach unprecedented spatial, temporal, and momentum resolutions.
 
-Our group is led by [**Prof. Likun Wang**](/members/likun-wang), and is affiliated with the **Institute of Condensed Matter Physics** of the **School of Physics** at **Zhejiang University**.
+Our group is led by [**Prof. Likun Wang**](/members/likun-w), and is affiliated with the **Institute of Condensed Matter Physics** of the **School of Physics** at **Zhejiang University**.
 
 {% include section.html %}
 
